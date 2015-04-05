@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="Windows-1252"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\MovingConcaveDemo\ConcavePhysicsDemo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\MovingConcaveDemo\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{1DE34191-EED8-4919-86A8-202C7E2BA840}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

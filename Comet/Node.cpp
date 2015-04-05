@@ -8,11 +8,13 @@ namespace Comet
 	Node::Node()
 	{
 		parent = 0;
-		drt = true;
+		dirty();
 
 		position = glm::vec3(0.0f, 0.0f, 0.0f);
-		rotation = glm::quat();
+		rotation = glm::quat(glm::vec3(0, 0, 0));
 		scale = glm::vec3(1.0f, 1.0f, 1.0f);
+
+		layer = 1;	//Default rendering group
 	}
 
 	Node::~Node()
@@ -118,12 +120,31 @@ namespace Comet
 		dirty();
 	}
 
+	glm::vec3 Node::GetPosition()
+	{ 
+		glm::mat4 transform = GetTransform();
+
+		glm::vec3 pos;
+		pos.x = transform[3][0];
+		pos.y = transform[3][1];
+		pos.z = transform[3][2];
+
+		return pos; 
+	}
+
+	glm::vec3 Node::GetLocalPos()
+	{
+		return position;
+	}
+
 	glm::mat4 Node::GetTransform() //Нужно проверить
 	{
 		if (IsDirty())
 		{
 			if (parent)
-				transform = parent->GetTransform() * (glm::translate(glm::mat4(), this->position)*glm::toMat4(rotation)*glm::scale(glm::mat4(), this->scale));
+			{
+				transform = parent->GetTransform() * ((glm::translate(glm::mat4(), this->position)*glm::toMat4(rotation)*glm::scale(glm::mat4(), this->scale)));
+			}
 			else
 				transform = glm::translate(glm::mat4(), this->position)*glm::toMat4(rotation)*glm::scale(glm::mat4(), this->scale);
 			drt = false;
@@ -131,8 +152,36 @@ namespace Comet
 		return transform;
 	}
 
+	glm::mat4 Node::GetLocalTransform()
+	{
+		return (glm::translate(glm::mat4(), this->position)*glm::toMat4(rotation)*glm::scale(glm::mat4(), this->scale));
+	}
+
+	glm::vec3 Node::GetUp()
+	{
+		glm::mat4x4 t = GetTransform();
+		return glm::vec3(t[1][0], t[1][1], t[1][2]);
+	}
+	glm::vec3 Node::GetBack()
+	{
+		glm::mat4x4 t = GetTransform();
+		return glm::vec3(t[2][0], t[2][1], t[2][2]);
+	}
+	glm::vec3 Node::GetRight()
+	{
+		glm::mat4x4 t = GetTransform();
+		return glm::vec3(t[0][0], t[0][1], t[0][2]);
+	}
+
 	void Node::dirty()
-	{drt = true;}
+	{
+		drt = true;
+		std::set<Node*>::iterator it;
+		for (it = nodes.begin(); it != nodes.end(); it++)
+		{
+			(*it)->dirty(); 
+		}
+	}
 	bool Node::IsDirty()
 	{return drt;}
 

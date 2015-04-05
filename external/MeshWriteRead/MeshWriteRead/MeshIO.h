@@ -71,6 +71,8 @@ public:
 
 	void SwapYZ();
 
+	void AddMesh(Mesh &msh);
+
 	std::vector<Mesh> meshes;
 private:
 	

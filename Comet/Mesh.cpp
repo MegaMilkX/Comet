@@ -7,18 +7,22 @@ namespace Comet
 
 	Mesh::Mesh()
 	{
-		Core::GetInstance()->GetRenderer()->_regRenderable(this);
+		
+		
+	}
+
+	Mesh::Mesh(std::string resname)
+	{
+		SetMeshData(resname);
 		
 	}
 
 	Mesh::Mesh(MeshData* data)
 	{
-		Core::GetInstance()->GetRenderer()->_regRenderable(this);
 		meshData = data;
 	}
 	Mesh::Mesh(MeshData* data, std::string subMeshName)
 	{
-		Core::GetInstance()->GetRenderer()->_regRenderable(this);
 		meshData = data;
 	}
 

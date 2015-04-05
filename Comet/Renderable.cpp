@@ -1,5 +1,7 @@
 #include "Renderable.h"
 
+#include "Core.h"
+
 namespace Comet
 {
 
@@ -7,11 +9,23 @@ namespace Comet
 	{
 		meshData = 0;
 		textures.clear();
+
+		Core::GetInstance()->GetRenderer()->_regRenderable(this);
 	}
 
 
 	Renderable::~Renderable()
 	{
+	}
+
+	void Renderable::SetMeshData(std::string resname)
+	{
+		meshData = ResMan::GetInstance()->GetResource<MeshData>(resname);
+	}
+
+	void Renderable::SetMaterial(std::string resname)
+	{
+		mat = ResMan::GetInstance()->GetResource<Material>(resname);
 	}
 
 	void Renderable::SetTexture2D(Texture2D* tex, unsigned char layer)
@@ -24,4 +38,7 @@ namespace Comet
 		textures[layer] = tex;
 	}
 
+
+	//
+	
 };

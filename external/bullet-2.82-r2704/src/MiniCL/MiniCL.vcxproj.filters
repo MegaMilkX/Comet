@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="Windows-1252"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\src\MiniCL\MiniCL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\src\MiniCL\MiniCLTaskScheduler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\src\MiniCL\MiniCLTask\MiniCLTask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\src\MiniCL\MiniCLTaskScheduler.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\src\MiniCL\cl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\src\MiniCL\cl_gl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\src\MiniCL\cl_platform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\src\MiniCL\cl_MiniCL_Defs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\src\MiniCL\MiniCLTask\MiniCLTask.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\src\MiniCL\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{1DE34191-EED8-4919-86A8-202C7E2BA840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{E3C46393-DB27-47E8-9BB5-3F2738DF3E8C}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

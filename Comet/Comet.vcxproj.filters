@@ -1,153 +1,348 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="TestGame">
-      <UniqueIdentifier>{16501a6c-d495-4df9-b746-45b1858828c6}</UniqueIdentifier>
+    <Filter Include="AdventureGame">
+      <UniqueIdentifier>{7e8b6d6b-1ba4-4ffd-a514-432ff441e69d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="TestGame\Header">
-      <UniqueIdentifier>{1fb11bea-0b03-4358-9a3f-6604bbffb02e}</UniqueIdentifier>
+    <Filter Include="Comet">
+      <UniqueIdentifier>{34b88d59-4c47-4612-acaf-f41d5925a006}</UniqueIdentifier>
     </Filter>
-    <Filter Include="TestGame\Source">
-      <UniqueIdentifier>{f043d63d-b3da-4e24-9d0e-1c887526e50c}</UniqueIdentifier>
+    <Filter Include="Comet\Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Header Files\Renderer">
+    <Filter Include="Comet\Header Files\Renderer">
       <UniqueIdentifier>{5184421a-e0df-4574-b0e7-3c385ce776f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Renderer">
-      <UniqueIdentifier>{291efaa7-6795-4b47-8c84-6083b70e684e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Resources">
+    <Filter Include="Comet\Header Files\Resources">
       <UniqueIdentifier>{a145ccad-cbf4-435b-be05-5705191912b2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Resources">
-      <UniqueIdentifier>{eaba5705-e3f1-40a1-9cf8-3432cf6c19d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\external">
+    <Filter Include="Comet\Header Files\external">
       <UniqueIdentifier>{1abeef9b-0539-4979-b6cf-7f20e20fb3a9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\external">
+    <Filter Include="Comet\Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Comet\Source Files\Renderer">
+      <UniqueIdentifier>{291efaa7-6795-4b47-8c84-6083b70e684e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Comet\Source Files\Resources">
+      <UniqueIdentifier>{eaba5705-e3f1-40a1-9cf8-3432cf6c19d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Comet\Source Files\external">
       <UniqueIdentifier>{869812a3-33a8-4420-8dae-f529c4a37a00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AdventureGame\src">
+      <UniqueIdentifier>{41d867b9-e8e8-4b8a-9149-a6e355e5053b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AdventureGame\h">
+      <UniqueIdentifier>{ca06cb34-e4d4-42c1-8fb4-ef8ee93cb16d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Comet\BaseGame">
+      <UniqueIdentifier>{16501a6c-d495-4df9-b746-45b1858828c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Comet\BaseGame\Header">
+      <UniqueIdentifier>{1fb11bea-0b03-4358-9a3f-6604bbffb02e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Comet\BaseGame\Source">
+      <UniqueIdentifier>{f043d63d-b3da-4e24-9d0e-1c887526e50c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Comet\Header Files\GUI">
+      <UniqueIdentifier>{891d058b-1a53-4609-9960-53d2b8c6ebfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Comet\Source Files\GUI">
+      <UniqueIdentifier>{74bd168b-b25d-4c11-8fb7-be7adc6aafa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Comet\Header Files\Renderer\Landscape">
+      <UniqueIdentifier>{56aed124-33d0-4d07-a1a9-8ef2d6ed6f5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Comet\Source Files\Renderer\Landscape">
+      <UniqueIdentifier>{deea376d-f9d5-4326-b59f-cdb4b4f910a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShooterGame">
+      <UniqueIdentifier>{9b3ba1b3-3df1-4584-b2b3-46ce318c96c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShooterGame\h">
+      <UniqueIdentifier>{f89a4b1c-b204-4fda-947a-182e3410ab49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShooterGame\src">
+      <UniqueIdentifier>{6870aa34-c8e8-4942-a30d-5a58b5264ab9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Comet\Source Files\Physics">
+      <UniqueIdentifier>{c3dc6cb3-aa95-4299-8431-650571d62a86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Comet\Header Files\Physics">
+      <UniqueIdentifier>{1fd98646-f742-4332-b4d3-6f9e4646044a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TestGame.h">
-      <Filter>TestGame\Header</Filter>
+      <Filter>Comet\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Renderer.h">
-      <Filter>Header Files\Renderer</Filter>
+      <Filter>Comet\Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Node.h">
-      <Filter>Header Files\Renderer</Filter>
+      <Filter>Comet\Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Renderable.h">
-      <Filter>Header Files\Renderer</Filter>
+      <Filter>Comet\Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="UserConsole.h">
-      <Filter>Header Files</Filter>
+      <Filter>Comet\Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Viewport.h">
-      <Filter>Header Files\Renderer</Filter>
+      <Filter>Comet\Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Header Files\Renderer</Filter>
+      <Filter>Comet\Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
-      <Filter>Header Files\Renderer</Filter>
+      <Filter>Comet\Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="RenderObject.h">
-      <Filter>Header Files\Renderer</Filter>
+      <Filter>Comet\Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="MeshData.h">
-      <Filter>Header Files\Resources</Filter>
+      <Filter>Comet\Header Files\Resources</Filter>
     </ClInclude>
     <ClInclude Include="ResMan.h">
-      <Filter>Header Files\Resources</Filter>
+      <Filter>Comet\Header Files\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>Header Files\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\vcprojects\MeshWriteRead\MeshWriteRead\MeshIO.h">
-      <Filter>Header Files\external</Filter>
+      <Filter>Comet\Header Files\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Texture2D.h">
-      <Filter>Header Files\Resources</Filter>
+      <Filter>Comet\Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\external\MeshWriteRead\MeshWriteRead\MeshIO.h">
+      <Filter>Comet\Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Comet\Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Comet\Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseGame.h">
+      <Filter>Comet\BaseGame\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="UserConsole.h">
+      <Filter>Comet\BaseGame\Header</Filter>
+    </ClInclude>
+    <ClInclude Include="AdventureGame.h">
+      <Filter>AdventureGame\h</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>AdventureGame\h</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldMapScene.h">
+      <Filter>AdventureGame\h</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldTileMap.h">
+      <Filter>AdventureGame\h</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldMapTile.h">
+      <Filter>AdventureGame\h</Filter>
+    </ClInclude>
+    <ClInclude Include="TextRenderable.h">
+      <Filter>Comet\Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Comet\Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI.h">
+      <Filter>Comet\Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIElement.h">
+      <Filter>Comet\Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIText.h">
+      <Filter>Comet\Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUISprite.h">
+      <Filter>Comet\Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUICursor.h">
+      <Filter>Comet\Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIRect.h">
+      <Filter>Comet\Header Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Party.h">
+      <Filter>AdventureGame\h</Filter>
+    </ClInclude>
+    <ClInclude Include="Character.h">
+      <Filter>AdventureGame\h</Filter>
+    </ClInclude>
+    <ClInclude Include="BinTree.h">
+      <Filter>Comet\Header Files\external</Filter>
+    </ClInclude>
+    <ClInclude Include="Landscape.h">
+      <Filter>Comet\Header Files\Renderer\Landscape</Filter>
+    </ClInclude>
+    <ClInclude Include="LandscapeTile.h">
+      <Filter>Comet\Header Files\Renderer\Landscape</Filter>
+    </ClInclude>
+    <ClInclude Include="ShooterGame.h">
+      <Filter>ShooterGame\h</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>Comet\Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Comet\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Comet\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBody.h">
+      <Filter>Comet\Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="MotionState.h">
+      <Filter>Comet\Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeInfo.h">
+      <Filter>Comet\Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TestGame.cpp">
-      <Filter>TestGame\Source</Filter>
+      <Filter>Comet\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Renderer.cpp">
-      <Filter>Source Files\Renderer</Filter>
+      <Filter>Comet\Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Node.cpp">
-      <Filter>Source Files\Renderer</Filter>
+      <Filter>Comet\Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Renderable.cpp">
-      <Filter>Source Files\Renderer</Filter>
+      <Filter>Comet\Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="UserConsole.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Comet\Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Viewport.cpp">
-      <Filter>Source Files\Renderer</Filter>
+      <Filter>Comet\Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Source Files\Renderer</Filter>
+      <Filter>Comet\Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Light.cpp">
-      <Filter>Source Files\Renderer</Filter>
+      <Filter>Comet\Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="RenderObject.cpp">
-      <Filter>Source Files\Renderer</Filter>
+      <Filter>Comet\Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="ResMan.cpp">
-      <Filter>Source Files\Resources</Filter>
+      <Filter>Comet\Source Files\Resources</Filter>
     </ClCompile>
     <ClCompile Include="Resource.cpp">
-      <Filter>Source Files\Resources</Filter>
+      <Filter>Comet\Source Files\Resources</Filter>
     </ClCompile>
     <ClCompile Include="MeshData.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\vcprojects\MeshWriteRead\MeshWriteRead\MeshIO.cpp">
-      <Filter>Source Files\external</Filter>
+      <Filter>Comet\Source Files\Resources</Filter>
     </ClCompile>
     <ClCompile Include="Texture2D.cpp">
-      <Filter>Source Files\Resources</Filter>
+      <Filter>Comet\Source Files\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="..\external\MeshWriteRead\MeshWriteRead\MeshIO.cpp">
+      <Filter>Comet\Source Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Comet\Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Comet\Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseGame.cpp">
+      <Filter>Comet\BaseGame\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="UserConsole.cpp">
+      <Filter>Comet\BaseGame\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="AdventureGame.cpp">
+      <Filter>AdventureGame\src</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="GameScene.cpp">
+      <Filter>AdventureGame\src</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldMapScene.cpp">
+      <Filter>AdventureGame\src</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldTileMap.cpp">
+      <Filter>AdventureGame\src</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldMapTile.cpp">
+      <Filter>AdventureGame\src</Filter>
+    </ClCompile>
+    <ClCompile Include="TextRenderable.cpp">
+      <Filter>Comet\Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Comet\Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI.cpp">
+      <Filter>Comet\Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIElement.cpp">
+      <Filter>Comet\Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIText.cpp">
+      <Filter>Comet\Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUISprite.cpp">
+      <Filter>Comet\Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUICursor.cpp">
+      <Filter>Comet\Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIRect.cpp">
+      <Filter>Comet\Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Party.cpp">
+      <Filter>AdventureGame\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Character.cpp">
+      <Filter>AdventureGame\src</Filter>
+    </ClCompile>
+    <ClCompile Include="BinTree.cpp">
+      <Filter>Comet\Header Files\external</Filter>
+    </ClCompile>
+    <ClCompile Include="Landscape.cpp">
+      <Filter>Comet\Source Files\Renderer\Landscape</Filter>
+    </ClCompile>
+    <ClCompile Include="LandscapeTile.cpp">
+      <Filter>Comet\Source Files\Renderer\Landscape</Filter>
+    </ClCompile>
+    <ClCompile Include="ShooterGame.cpp">
+      <Filter>ShooterGame\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Comet\Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Comet\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Comet\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBody.cpp">
+      <Filter>Comet\Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="MotionState.cpp">
+      <Filter>Comet\Source Files\Physics</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\res.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

@@ -290,31 +290,31 @@ void MeshIO::SwapYZ()
 		{
 			a = meshes[i].verts[j].y;
 			meshes[i].verts[j].y = meshes[i].verts[j].z;
-			meshes[i].verts[j].z = a;
+			meshes[i].verts[j].z = -a;
 		}
 		for (int j = 0; j < meshes[i].normals.size(); j++)
 		{
 			a = meshes[i].normals[j].y;
 			meshes[i].normals[j].y = meshes[i].normals[j].z;
-			meshes[i].normals[j].z = a;
+			meshes[i].normals[j].z = -a;
 		}
 		for (int j = 0; j < meshes[i].vertsRAW.size(); j+=3)
 		{
 			a = meshes[i].vertsRAW[j+1];
 			meshes[i].vertsRAW[j + 1] = meshes[i].vertsRAW[j + 2];
-			meshes[i].vertsRAW[j + 2] = a;
+			meshes[i].vertsRAW[j + 2] = -a;
 		}
-		/*
-		for (int j = 0; j < meshes[i].uvwRAW.size(); j++)
+
+		for (int j = 0; j < meshes[i].faces.size(); j += 3)
 		{
-			for (int k = 0; k < meshes[i].uvwRAW[j].size(); k += 3)
-			{
-				a = meshes[i].uvwRAW[j].at(k+1);
-				meshes[i].uvwRAW[j].at(k + 1) = meshes[i].uvwRAW[j].at(k + 2);
-				meshes[i].uvwRAW[j].at(k + 2) = a;
-			}
-		}*/
+			
+		}
 	}
+}
+
+void MeshIO::AddMesh(Mesh &msh)
+{
+	meshes.insert(meshes.end(), msh);
 }
 
 };

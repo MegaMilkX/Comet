@@ -49,11 +49,15 @@ qt.conf
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
+[Rr]eleaseLibStatic/
 x64/
 build/
 bld/
 [Bb]in/
 [Oo]bj/
+
+#other
+data/
 
 # Roslyn cache directories
 *.ide/

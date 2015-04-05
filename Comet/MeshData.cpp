@@ -12,6 +12,7 @@ namespace Comet
 		bufNorm = 0;
 		bufCol = 0;
 		bufFace = 0;
+		primitiveType = TRIANGLE;
 	}
 
 
@@ -36,9 +37,9 @@ namespace Comet
 			uvwPool.clear();
 
 			std::vector<unsigned int> facePool;
-			for (int i = 0; i < meshIO.meshes.size(); i++)
+			for (unsigned int i = 0; i < meshIO.meshes.size(); i++)
 			{
-				for (int j = 0; j < meshIO.meshes[i].faces.size(); j++)
+				for (unsigned int j = 0; j < meshIO.meshes[i].faces.size(); j++)
 				{
 					meshIO.meshes[i].faces[j] += (vertexPool.size()/3);
 				}
@@ -145,6 +146,8 @@ namespace Comet
 			nFaces = 6;
 			nVerts = 7;
 		}
+
+		isReady = true;
 	}
 
 	void MeshData::Unload()
@@ -154,6 +157,49 @@ namespace Comet
 		glDeleteBuffers(1, &bufFace);
 		glDeleteBuffers(1, &bufUVW);
 		glDeleteBuffers(1, &bufNorm);
+	}
+
+	void MeshData::FillPosition(std::vector<float> data)
+	{
+		glDeleteBuffers(1, &bufPos);
+
+		vertexAttribLayout |= VATTR_POS;
+		glGenBuffers(1, &bufPos);
+		glBindBuffer(GL_ARRAY_BUFFER, bufPos);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* (data.size()), &data[0], GL_STATIC_DRAW);
+
+		nVerts = data.size()/3;
+	}
+	void MeshData::FillNormals(std::vector<float> data)
+	{
+		glDeleteBuffers(1, &bufNorm);
+
+		vertexAttribLayout |= VATTR_NOR;
+	}
+	void MeshData::FillColor(std::vector<float> data)
+	{
+		glDeleteBuffers(1, &bufCol);
+
+		vertexAttribLayout |= VATTR_COL;
+	}
+	void MeshData::FillIndices(std::vector<unsigned short> data)
+	{
+		glDeleteBuffers(1, &bufFace);
+
+		glGenBuffers(1, &bufFace);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufFace);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short)*(data.size()), &data[0], GL_STATIC_DRAW);
+
+		nFaces = data.size()/3;
+	}
+	void MeshData::FillUVW(std::vector<float> data)
+	{
+		glDeleteBuffers(1, &bufUVW);
+
+		vertexAttribLayout |= VATTR_UVW;
+		glGenBuffers(1, &bufUVW);
+		glBindBuffer(GL_ARRAY_BUFFER, bufUVW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* (data.size()), &data[0], GL_STATIC_DRAW);
 	}
 
 };

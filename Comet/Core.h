@@ -1,52 +1,68 @@
 #pragma once
 
 #include "Renderer.h"
-#include "Game.h"
+#include "Physics.h"
+#include "GUI.h"
+
+#include "Entity.h"
 
 #include "ResMan.h"
 
 #include "UserConsole.h"
 
+#include <sys/utime.h>
+
+#include <tinyxml.h>
+
+#include <stack>
+
 namespace Comet
 {
-	class Game;
-
 	class Core
 	{
 	public:
 		Core();
-		~Core();
+		virtual ~Core();
 
 		static Core* GetInstance(){ return instance; }
 
-		void Init();
+		virtual void Init();
+		virtual void PostInit(){}
+		virtual bool Update();
 		void Reset();
-		
-		template<class T>
-		void SetGame()
-		{
-			if (game)
-				delete game;
-			game = new T();
-			game->core = this;
-			game->Init();
-		}
+
+		Entity* CreateEntity();
+		Entity* CreateEntity(std::string resourcename);
+
+		void ReadGraphFile(std::string path, Node* node);
 
 		Renderer* GetRenderer(){ return renderer; }
-		Game* GetGame(){ return game; }
+		GUI* GetGUI(){ return gui; }
 
+		MeshData* GetMeshDataPrimitive(std::string name);
 		void LoadScene(std::string path);
+		double GetDt(){ return dt; }
+	protected:
+		void _preUpdate();
+		bool _postUpdate();
 
-		friend Game;
-	private:
-		void _loop();
+		double time0 = 0, time1 = 0;
+		double dt;			//Delta Time
 
 		static Core* instance;
 
-		Renderer* renderer;
-		Game* game;
+		Renderer*	renderer;
+		void*		audio;
+		Physics*	physics;
+
+		std::set<Entity*> entities;
+
+		GUI*		gui;
 
 		UserConsole* userConsole;
+	private:
+		void _digestXmlElement(TiXmlElement* elem);
+		std::stack<Entity*> entityStack;
 	};
 
 };

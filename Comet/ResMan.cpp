@@ -1,5 +1,8 @@
 #include "ResMan.h"
 
+#include "Material.h"
+#include "Shader.h"
+
 namespace Comet
 {
 	ResMan* ResMan::instance;
@@ -15,13 +18,15 @@ namespace Comet
 		std::map<std::string, Resource*>::iterator it;
 		for (it = resources.begin(); it != resources.end(); it++)
 		{
-			delete it->second;
+			delete (it->second);
 		}
 	}
 
 	void ResMan::Initialize()
 	{
 		instance = new ResMan();
+
+		
 
 		printf("[OK]Resource Manager init OK.\n");
 	}

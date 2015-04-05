@@ -1,12 +1,25 @@
+#include "Core.h"
 #include "Renderer.h"
+#include <algorithm>
 
 namespace Comet
 {
+	Renderer* Renderer::instance;
+
+	void window_resize_callback(GLFWwindow* wnd, int width, int height)
+	{
+		Renderer::instance->_updWindowSize(width, height);
+		
+	}
 
 	Renderer::Renderer()
 	{
+		instance = this;
 		rootNode = new Node();
 		fullscreen = false;
+
+		wWidth = 1280;
+		wHeight = 720;
 	}
 
 
@@ -28,26 +41,66 @@ namespace Comet
 		if (fullscreen)
 			monitor = glfwGetPrimaryMonitor();
 
-		window = glfwCreateWindow(1280, 720, "", monitor, 0);
+		window = glfwCreateWindow(wWidth, wHeight, "Rockit", monitor, 0);
+		glfwSetWindowSizeCallback(window, window_resize_callback);
 
 		glfwMakeContextCurrent(window);
+
+		//Контекст асинхронной загрузки
+		glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
+		loading_context = glfwCreateWindow(640, 480, "000", 0, window);
+		//
 
 		glewInit();
 
 		glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
 		
-		glEnable(GL_DEPTH_TEST);
-		//glEnable(GL_CULL_FACE);
-		glDepthFunc(GL_LESS);
-		glDepthMask(GL_TRUE);
+		
+
 		glEnable(GL_SCISSOR_TEST);
 
-		/*TEMPORARY*/
-		shaderProgramId = LoadShaders("TransformVertexShader.vertexshader", "ColorFragmentShader.fragmentshader");
+		glEnable(GL_CULL_FACE);
+		//glDisable(GL_CULL_FACE);	//TODO: Убрать, куллинг контролируется материалом
+		glFrontFace(GL_CCW);
+		glCullFace(GL_BACK);
+
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glPolygonMode(GL_FRONT, GL_FILL);
 		
+	}
+
+	void Renderer::_setZTest(bool val)
+	{
+		if (ztest == val)
+			return;
+
+		if (val)
+		{
+			glEnable(GL_DEPTH_TEST);
+			glDepthFunc(GL_LESS);
+		}
+		else
+		{
+			glDisable(GL_DEPTH_TEST);
+			glDepthFunc(GL_NEVER);
+		}
+
+		ztest = val;
+	}
+	void Renderer::_setZWrite(bool val)
+	{
+		if (zwrite == val)
+			return;
+
+		if (val)
+			glDepthMask(GL_TRUE);
+		else
+			glDepthMask(GL_FALSE);
+
+		zwrite = val;
 	}
 
 	bool Renderer::Update()
@@ -58,16 +111,26 @@ namespace Comet
 		std::set<Viewport*>::iterator vIt;
 		for (vIt = viewports.begin(); vIt != viewports.end(); vIt++)
 		{
-			glViewport(0, 0, 1280, 720);
-			glScissor(0, 0, 1280, 720);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glViewport(wWidth*(*vIt)->GetLeft(), wHeight*(*vIt)->GetBottom(), wWidth*((*vIt)->GetLeft() + (*vIt)->GetWidth()), wHeight*((*vIt)->GetBottom() + (*vIt)->GetHeight()));
+			glScissor(wWidth*(*vIt)->GetLeft(), wHeight*(*vIt)->GetBottom(), wWidth*((*vIt)->GetLeft() + (*vIt)->GetWidth()), wHeight*((*vIt)->GetBottom() + (*vIt)->GetHeight()));
 
-			if ((*vIt)->GetCamera())
+			_setZWrite(true);
+			glClearColor((*vIt)->r, (*vIt)->g, (*vIt)->b, (*vIt)->a);
+			glClear((*vIt)->clearFlags);
+
+			Camera* cam = (*vIt)->GetCamera();
+
+			if (cam)
 			{
-				std::set<Renderable*>::iterator rIt;
-				for (rIt = renderables.begin(); rIt != renderables.end(); rIt++)
+				cameraRendering = cam;
+				std::vector<Renderable*> sorted(renderables.begin(), renderables.end());
+				std::sort(sorted.begin(), sorted.end(), renderableCompare());
+
+				std::vector<Renderable*>::iterator rIt;
+				for (rIt = sorted.begin(); rIt != sorted.end(); rIt++)
 				{
-					_render((*vIt)->GetCamera(), *rIt);
+					(*rIt)->Update();
+					_render(cam, (*rIt));
 				}
 			}
 		}
@@ -84,152 +147,178 @@ namespace Comet
 
 	Viewport* Renderer::CreateViewport()
 	{
-		return new Viewport();
+		Viewport* vp = new Viewport();
+		vp->width = 1;
+		vp->height = 1;
+		vp->x = 0;
+		vp->y = 0;
+		vp->renderer = this;
+		return vp;
 	}
 
 	void Renderer::_render(Camera* cam, Renderable* r)
 	{
 		if (!r->GetNode())
 			return;
-		glUseProgram(shaderProgramId);
-		glm::mat4 mvp = cam->GetProjection() * cam->GetView() * r->GetNode()->GetTransform();
-		glUniformMatrix4fv(glGetUniformLocation(shaderProgramId, "_mvp"), 1, GL_FALSE, glm::value_ptr(mvp));
+		if (!r->GetMeshData())
+			return;
+		if (!r->GetMaterial())
+			return;
+		if (!r->GetMaterial()->GetShader())
+			return;
 
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		//Setting up data arrays (these are only one of each for a renderable) and for all its submeshes
+		////////////////////////////////////////////////////////////////////////////////////////////////
 		if (r->GetMeshData()->GetVertexAttribLayout() & VATTR_POS)
 		{
 			glEnableVertexAttribArray(0);	//координаты
 			glBindBuffer(GL_ARRAY_BUFFER, r->GetMeshData()->GetPosBuffer());
-			glVertexAttribPointer(glGetAttribLocation(shaderProgramId, "vertexPosition_modelspace"), 3, GL_FLOAT, GL_FALSE, sizeof(float)*3, 0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float)*3, 0);
 		}
 		
 		if (r->GetMeshData()->GetVertexAttribLayout() & VATTR_UVW)
 		{
 			glEnableVertexAttribArray(1);	//uvw
 			glBindBuffer(GL_ARRAY_BUFFER, r->GetMeshData()->GetUVWBuffer());
-			glVertexAttribPointer(glGetAttribLocation(shaderProgramId, "uvw"), 3, GL_FLOAT, GL_FALSE, 0, 0);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		}
 
 		if (r->GetMeshData()->GetVertexAttribLayout() & VATTR_NOR)
 		{
 			glEnableVertexAttribArray(2);	//нормали
 			glBindBuffer(GL_ARRAY_BUFFER, r->GetMeshData()->GetNormBuffer());
-			glVertexAttribPointer(glGetAttribLocation(shaderProgramId, "vertexNormal"), 3, GL_FLOAT, GL_FALSE, 0, 0);
+			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		}
 
 		if (r->GetMeshData()->GetVertexAttribLayout() & VATTR_COL)
 		{
 			glEnableVertexAttribArray(3);	//цвет
 			glBindBuffer(GL_ARRAY_BUFFER, r->GetMeshData()->GetColBuffer());
-			glVertexAttribPointer(glGetAttribLocation(shaderProgramId, "vertexColor"), 3, GL_FLOAT, GL_FALSE, 0, 0);
+			glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, 0);
 		}
+
+		//////////////////////////////////////////////////////////////////////////////////////////
+		//TODO: Iterate through MeshData's submeshes in most effective way and render each of them
+		//If a submesh has no material attached to it, fall back to MeshData's material
+		//If meshdata has only one big mesh it will be stored in the 0th submesh
+		//////////////////////////////////////////////////////////////////////////////////////////
+
+		for (int i = 0; i < r->GetMeshData()->GetNumSubMeshes(); i++)
+		{
+			SubMeshData* subMesh = r->GetMeshData()->GetSubMesh(i);
+
+			//Render now
+		}
+
+		_setZTest(r->GetMaterial()->ztest);
+		_setZWrite(r->GetMaterial()->zwrite);
+
+		glUseProgram(r->GetMaterial()->GetShader()->GetProgramId());
+		glUniformMatrix4fv(glGetUniformLocation(r->GetMaterial()->GetShader()->GetProgramId(), "_m"), 1, GL_FALSE, glm::value_ptr(r->GetNode()->GetTransform()));
+		glUniformMatrix4fv(glGetUniformLocation(r->GetMaterial()->GetShader()->GetProgramId(), "_v"), 1, GL_FALSE, glm::value_ptr(cam->GetView()));
+		glUniformMatrix4fv(glGetUniformLocation(r->GetMaterial()->GetShader()->GetProgramId(), "_p"), 1, GL_FALSE, glm::value_ptr(cam->GetProjection()));
 
 		//Текстурки
-		for (int i = 0; i < r->GetTextures().size(); i++)
+		for (int i = 0; i < r->GetMaterial()->GetTextures().size(); i++)
 		{
+			if (!(r->GetMaterial()->GetTextures()[i]->IsReady()))
+			{
+				glActiveTexture(GL_TEXTURE0 + i);
+				glBindTexture(GL_TEXTURE_2D, 0);
+				continue;
+			}
+
 			glActiveTexture(GL_TEXTURE0 + i);
-			glBindTexture(GL_TEXTURE_2D, r->GetTextures()[i]->GetTextureId());
+			glBindTexture(GL_TEXTURE_2D, r->GetMaterial()->GetTextures()[i]->GetTextureId());
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glUniform1i(glGetUniformLocation(shaderProgramId, "mainTexture"), i);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			glUniform1i(glGetUniformLocation(r->GetMaterial()->GetShader()->GetProgramId(), "mainTexture"), i);
 		}
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r->GetMeshData()->GetFaceBuffer());
-		
-		glDrawElements(GL_TRIANGLES, r->GetMeshData()->GetNumFaces()*3, GL_UNSIGNED_SHORT, 0);
+		r->GetMaterial()->glSetUniforms();
+
+		GLenum primType = 0;
+		unsigned long nv = 0;
+		switch (r->GetMeshData()->GetPrimitiveType())
+		{
+		case MeshData::POINT: primType = GL_POINTS; break;
+		case MeshData::LINE: primType = GL_LINES; break;
+		case MeshData::TRIANGLE: primType = GL_TRIANGLES; break;
+		case MeshData::TRISTRIP: primType = GL_TRIANGLE_STRIP; nv = r->GetMeshData()->GetNumVerts() + 1; break;
+		default: nv = r->GetMeshData()->GetNumVerts(); break;
+		}
+
+		if (r->GetMeshData()->GetFaceBuffer())
+		{
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r->GetMeshData()->GetFaceBuffer());
+
+			glDrawElements(primType, r->GetMeshData()->GetNumFaces() * 3, GL_UNSIGNED_SHORT, 0);
+		}
+		else
+		{
+			glDrawArrays(primType, 0, nv);
+		}
 	}
 
-	GLuint Renderer::LoadShaders(const char * vertex_file_path, const char * fragment_file_path)
+	void Renderer::_renderNodeUnsorted(Camera* cam, Node* node)
 	{
-		// Create the shaders
-		GLuint VertexShaderID = glCreateShader(GL_VERTEX_SHADER);
-		GLuint FragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
-
-		// Read the Vertex Shader code from the file
-		std::string VertexShaderCode;
-		std::ifstream VertexShaderStream(vertex_file_path, std::ios::in);
-		if (VertexShaderStream.is_open()){
-			std::string Line = "";
-			while (getline(VertexShaderStream, Line))
-				VertexShaderCode += "\n" + Line;
-			VertexShaderStream.close();
-		}
-		else{
-			printf("Impossible to open %s. Are you in the right directory ? Don't forget to read the FAQ !\n", vertex_file_path);
-			getchar();
-			return 0;
+		std::set<RenderObject*>::iterator nIt;
+		for (nIt = node->objects.begin(); nIt != node->objects.end(); nIt++)
+		{
+			if ((*nIt)->IsRenderable())
+			{
+				_render(cam, (Renderable*)(*nIt));
+			}
 		}
 
-		// Read the Fragment Shader code from the file
-		std::string FragmentShaderCode;
-		std::ifstream FragmentShaderStream(fragment_file_path, std::ios::in);
-		if (FragmentShaderStream.is_open()){
-			std::string Line = "";
-			while (getline(FragmentShaderStream, Line))
-				FragmentShaderCode += "\n" + Line;
-			FragmentShaderStream.close();
+		std::set<Node*> nodes = node->GetNodes();
+		std::set<Node*>::iterator it;
+		for (it = nodes.begin(); it != nodes.end(); it++)
+		{
+			_renderNodeUnsorted(cam, (*it));
 		}
+	}
 
+	//Переделать в будущем. Пусть метод берет примитивы из менеджера ресурсов, а когда их нет, то записывает их туда же и отдает.
+	MeshData* Renderer::GetMeshDataPrimitive(std::string name)
+	{
+		MeshData* data = 0;
 
+		std::map<std::string, MeshData*>::iterator it;
+		it = meshPrimitives.find(name);
 
-		GLint Result = GL_FALSE;
-		int InfoLogLength;
-
-
-
-		// Compile Vertex Shader
-		printf("Compiling shader : %s\n", vertex_file_path);
-		char const * VertexSourcePointer = VertexShaderCode.c_str();
-		glShaderSource(VertexShaderID, 1, &VertexSourcePointer, NULL);
-		glCompileShader(VertexShaderID);
-
-		// Check Vertex Shader
-		glGetShaderiv(VertexShaderID, GL_COMPILE_STATUS, &Result);
-		glGetShaderiv(VertexShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-		if (InfoLogLength > 0){
-			std::vector<char> VertexShaderErrorMessage(InfoLogLength + 1);
-			glGetShaderInfoLog(VertexShaderID, InfoLogLength, NULL, &VertexShaderErrorMessage[0]);
-			printf("%s\n", &VertexShaderErrorMessage[0]);
+		if (it != meshPrimitives.end())
+		{
+			data = it->second;
 		}
-
-
-
-		// Compile Fragment Shader
-		printf("Compiling shader : %s\n", fragment_file_path);
-		char const * FragmentSourcePointer = FragmentShaderCode.c_str();
-		glShaderSource(FragmentShaderID, 1, &FragmentSourcePointer, NULL);
-		glCompileShader(FragmentShaderID);
-
-		// Check Fragment Shader
-		glGetShaderiv(FragmentShaderID, GL_COMPILE_STATUS, &Result);
-		glGetShaderiv(FragmentShaderID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-		if (InfoLogLength > 0){
-			std::vector<char> FragmentShaderErrorMessage(InfoLogLength + 1);
-			glGetShaderInfoLog(FragmentShaderID, InfoLogLength, NULL, &FragmentShaderErrorMessage[0]);
-			printf("%s\n", &FragmentShaderErrorMessage[0]);
+		else
+		{//Примитив не нашелся, пытаемся создать
+			if (name == "plane")
+			{
+				data = new MeshData();
+				//Заполнить мешдату
+				std::vector<float> vertices;
+				vertices.push_back(-0.5f); vertices.push_back(-0.5f); vertices.push_back(0.0f);
+				vertices.push_back(0.5f); vertices.push_back(-0.5f); vertices.push_back(0.0f);
+				vertices.push_back(0.5f); vertices.push_back(0.5f); vertices.push_back(0.0f);
+				vertices.push_back(-0.5f); vertices.push_back(0.5f); vertices.push_back(0.0f);
+				data->FillPosition(vertices);
+				std::vector<float> uvw;
+				uvw.push_back(0.0f); uvw.push_back(0.0f); uvw.push_back(0.0f);
+				uvw.push_back(1.0f); uvw.push_back(0.0f); uvw.push_back(0.0f);
+				uvw.push_back(1.0f); uvw.push_back(1.0f); uvw.push_back(0.0f);
+				uvw.push_back(0.0f); uvw.push_back(1.0f); uvw.push_back(0.0f);
+				data->FillUVW(uvw);
+				std::vector<unsigned short> indices;
+				indices.push_back(0); indices.push_back(1); indices.push_back(3);
+				indices.push_back(1); indices.push_back(2); indices.push_back(3);
+				data->FillIndices(indices);
+			}
 		}
-
-
-
-		// Link the program
-		printf("Linking program\n");
-		GLuint ProgramID = glCreateProgram();
-		glAttachShader(ProgramID, VertexShaderID);
-		glAttachShader(ProgramID, FragmentShaderID);
-		glLinkProgram(ProgramID);
-
-		// Check the program
-		glGetProgramiv(ProgramID, GL_LINK_STATUS, &Result);
-		glGetProgramiv(ProgramID, GL_INFO_LOG_LENGTH, &InfoLogLength);
-		if (InfoLogLength > 0){
-			std::vector<char> ProgramErrorMessage(InfoLogLength + 1);
-			glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
-			printf("%s\n", &ProgramErrorMessage[0]);
-		}
-
-		glDeleteShader(VertexShaderID);
-		glDeleteShader(FragmentShaderID);
-
-		return ProgramID;
+		return data;
 	}
 
 	void Renderer::_regViewport(Viewport* vp)

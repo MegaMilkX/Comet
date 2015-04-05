@@ -10,13 +10,15 @@
 #include <set>
 #include <map>
 
+#include "Component.h"
+
 namespace Comet
 {
 	class RenderObject;
 	class Renderable;
 	class Renderer;
 
-	class Node
+	class Node : public Component
 	{
 	public:
 		Node();
@@ -36,10 +38,23 @@ namespace Comet
 		void Rotate(float angle, glm::vec3 vec, int space);
 		void Scale(glm::vec3 vec);
 
+		glm::vec3 GetPosition();
+		glm::vec3 GetLocalPos();
+		glm::quat GetRotation(){ return rotation; }
+		glm::vec3 GetScale(){ return scale; }
 		glm::mat4 GetTransform();
+		glm::mat4 GetLocalTransform();
+		glm::vec3 GetUp();
+		glm::vec3 GetBack();
+		glm::vec3 GetRight();
 
 		std::string GetName(){ return name; }
 		void SetName(std::string n){ name = n; }
+
+		void SetLayer(unsigned int l){ layer = l; }
+		unsigned int GetLayer(){ return layer; }
+
+		std::set<Node*> GetNodes(){ return nodes; }
 
 		void dirty();
 		bool IsDirty();
@@ -56,6 +71,8 @@ namespace Comet
 		Node* parent;
 		std::set<Node*> nodes;
 		std::set<RenderObject*> objects;
+
+		unsigned int layer;
 
 		bool drt;
 	};

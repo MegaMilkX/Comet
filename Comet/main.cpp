@@ -1,13 +1,17 @@
-#include "Core.h"
-#include "TestGame.h"
+#pragma strict_gs_check( on ) 
+
+#include "AdventureGame.h"
+#include "ShooterGame.h"
 
 int main()
 {
-	Comet::Core* comet = new Comet::Core();
-	comet->Init();
-	comet->SetGame<TestGame>();
-	comet->Reset();
+	ShooterGame * game = new ShooterGame();
+	game->Init();
 
-	delete comet;
+	while (game->Update())
+	{
+	}
+
+	delete game;
 	return 0;
 }

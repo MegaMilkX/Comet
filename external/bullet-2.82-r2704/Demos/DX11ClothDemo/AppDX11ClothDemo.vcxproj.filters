@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="Windows-1252"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Core\DXUT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Optional\DXUTcamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Core\DXUTDevice11.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Core\DXUTDevice9.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Optional\DXUTgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Core\DXUTmisc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Optional\DXUTres.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Optional\DXUTsettingsdlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Optional\SDKmesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Optional\SDKmisc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\cloth_renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Core\DXUT.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Optional\DXUTcamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Core\DXUTDevice11.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Core\DXUTDevice9.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Optional\DXUTgui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Core\DXUTmisc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Optional\DXUTres.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Optional\DXUTsettingsdlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Optional\SDKmesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\DXUT\Optional\SDKmisc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\btDirectComputeSupport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\cap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\cloth.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\cylinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\My_Documents\Comet\external\bullet-2.82-r2704\Demos\DX11ClothDemo\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{1DE34191-EED8-4919-86A8-202C7E2BA840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{E3C46393-DB27-47E8-9BB5-3F2738DF3E8C}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

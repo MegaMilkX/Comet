@@ -47,7 +47,7 @@ private:
 
 	void ProcessTriObjects();
 	void ProcessNode(INode* node, int depth);
-	std::vector<indexed_vertex> GetIndexedVerts(Mesh* mesh);
+	std::vector<indexed_vertex> GetIndexedVerts(Mesh* mesh, bool& hasTex, bool& hasCol);
 	std::vector<unsigned int> InitIndices(unsigned int sz);
 	TriObject* GetTriObjFromNode(INode* node, BOOL &deleteIt);
 	ISkin* FindSkinModifier(INode* node);
@@ -189,11 +189,12 @@ int	MaxExportPlugin::DoExport(const TCHAR* name, ExpInterface* /*ei*/, Interface
 	//file.open(name, std::ios::out | std::ios::binary);
 
 	INode* rootNode = ip->GetRootNode();
-
+	MessageBox(0, L"Processing nodes", 0, 0);
 	ProcessNode(rootNode, 0);
+	MessageBox(0, L"Processing TriObjects", 0, 0);
 	ProcessTriObjects();
 	
-
+	MessageBox(0, L"Writing", 0, 0);
 	//file.close();
 	meshFile->SwapYZ();
 	meshFile->Write(std::wstring(name), MeshIO::MSH_BIN);
@@ -207,13 +208,19 @@ void MaxExportPlugin::ProcessTriObjects()
 {
 	for (int i = 0; i < triObjects.size(); i++)
 	{
+		MessageBox(0, L"TriObj", 0, 0);
 		TriObject* TObj = triObjects[i];
 		INode* node = nodeList[i];
 
 		std::vector<indexed_vertex> indOut;		//Финальный набор вершин (индексированых)
-		std::vector<indexed_vertex> indVerts = GetIndexedVerts(&(TObj->mesh));
+		MessageBox(0, L"Here?", 0, 0);
+		bool hasColor = false, hasTex = false;
+		std::vector<indexed_vertex> indVerts = GetIndexedVerts(&(TObj->mesh), hasTex, hasColor);
+		MessageBox(0, L"or here?", 0, 0);
 		std::vector<unsigned int> indices = InitIndices(indVerts.size());
 		
+		MessageBox(0, L"Marking vert duplicates", 0, 0);
+
 		//Отмечаем дупликаты вершин
 		std::vector<bool> vertDupes;
 		vertDupes.resize(indVerts.size());
@@ -257,12 +264,16 @@ void MaxExportPlugin::ProcessTriObjects()
 		std::string cname(wname.begin(), wname.end());
 		mesh.name = cname;
 
+		MessageBox(0, L"Filling vertices", 0, 0);
+
 		//Вертексы
 		for (int i = 0; i < indOut.size(); i++)
 		{
 			Point3 v = TObj->mesh.verts[indOut[i].pos];
 			mesh.verts.insert(mesh.verts.end(), MeshIO::vec3(v.x, v.y, v.z));
 		}
+
+		MessageBox(0, L"Filling indices", 0, 0);
 
 		//Индексы
 		for (int i = 0; i < indices.size(); i++)
@@ -271,22 +282,28 @@ void MaxExportPlugin::ProcessTriObjects()
 		}
 
 		//Цвет
-		for (int i = 0; i < indOut.size(); i++)
+		if (hasColor)
 		{
-			Point3 v = TObj->mesh.vertCol[indOut[i].col];
-			mesh.color.insert(mesh.color.end(), MeshIO::vec3(v.x, v.y, v.z));
+			MessageBox(0, L"Filling color", 0, 0);
+			for (int i = 0; i < indOut.size(); i++)
+			{
+				Point3 v = TObj->mesh.vertCol[indOut[i].col];
+				mesh.color.insert(mesh.color.end(), MeshIO::vec3(v.x, v.y, v.z));
+			}
 		}
 
 		//Текстурные координаты
-		mesh.uvw.insert(mesh.uvw.end(), std::vector<MeshIO::vec3>());
-		for (int i = 0; i < indOut.size(); i++)
+		if (hasTex)
 		{
-			Point3 v = TObj->mesh.tVerts[indOut[i].tex];
-			mesh.uvw[0].insert(mesh.uvw[0].end(), MeshIO::vec3(v.x, v.y, v.z));
+			MessageBox(0, L"Filling uvws", 0, 0);
+			mesh.uvw.insert(mesh.uvw.end(), std::vector<MeshIO::vec3>());
+			for (int i = 0; i < indOut.size(); i++)
+			{
+				Point3 v = TObj->mesh.tVerts[indOut[i].tex];
+				mesh.uvw[0].insert(mesh.uvw[0].end(), MeshIO::vec3(v.x, v.y, v.z));
+			}
 		}
-
 		meshFile->meshes.insert(meshFile->meshes.end(), mesh);
-
 	}
 
 	for (int i = 0; i < triObjects.size(); i++)
@@ -310,141 +327,6 @@ void MaxExportPlugin::ProcessNode(INode* node, int depth)
 		triObjects.push_back(TObj);
 		nodeList.push_back(node);
 		deleteTriObj.push_back(deleteIt);
-
-		//Похоже все дерьмо ниже неверно. Спасибо аутодеск!
-		/*
-		MeshIO::Mesh mesh;
-		//Есть геометрия, есть что сохранить
-		//for (int i = 0; i < depth - 1; i++)
-		//	file << "\t";
-		//file << std::wstring(node->GetName()) << "\n";
-		std::wstring wname(node->GetName());
-		std::string cname(wname.begin(), wname.end());
-		mesh.name = cname;
-
-		unsigned int nFaces = TObj->mesh.numFaces;
-		unsigned int nVerts = TObj->mesh.numVerts;
-
-		//Соотношение вершин к костям, если они есть
-		ISkin* skin = FindSkinModifier(node);
-		if (skin)
-		{
-			ISkinContextData* contextData = skin->GetContextInterface(node);
-			if (contextData)
-			{
-				int nBones = skin->GetNumBones();
-
-				for (int i = 0; i < nBones; i++)
-				{
-					std::wstring widestr(skin->GetBone(i)->GetName());
-					std::string str(widestr.begin(), widestr.end());
-					mesh.bones.insert(mesh.bones.end(), str);
-				}
-
-				//file << "VERTICE CNT: " << std::to_wstring(nVerts) << "\n";
-				//file << "SKIN POINTS: " << std::to_wstring(contextData->GetNumPoints()) << "\n";
-				
-				for (int i = 0; i < contextData->GetNumPoints(); i++)
-				{
-					MeshIO::SkinVert skinVert;
-
-					//file << "VERT_ID: " << std::to_wstring(i) << "\n";
-					for (int j = 0; j < contextData->GetNumAssignedBones(i); j++)
-					{
-						int boneId = contextData->GetAssignedBone(i, j);
-						float weight = contextData->GetBoneWeight(i, j);
-
-						//Найти ИД кости по имени. Очевидно, что кости должны иметь уникальные имена (в пределах скелета)
-						std::wstring widestr(skin->GetBoneName(boneId));
-						std::string str(widestr.begin(), widestr.end());
-						std::vector<std::string>::iterator it = std::find(mesh.bones.begin(), mesh.bones.end(), str);
-						if (it != mesh.bones.end())
-						{
-							unsigned char bone = std::distance(mesh.bones.begin(), it);
-
-							//---
-							skinVert.bones.insert(skinVert.bones.end(), bone);
-							skinVert.weights.insert(skinVert.weights.end(), weight);
-						}
-
-						//std::wstring boneName = std::wstring(skin->GetBoneName(boneId));
-						//file << boneName << " " << std::to_wstring(weight) << "\n";
-					}
-
-					if (skinVert.bones.size() > 0)
-					{
-						mesh.skin.insert(mesh.skin.end(), skinVert);
-					}
-				}
-
-			}
-		}
-
-		TObj->mesh.buildNormals();
-		
-
-		//Вершины
-		for (int i = 0; i < nVerts; i++)
-		{
-			Point3 v = TObj->mesh.verts[i];
-			//file << std::to_wstring(v.x) << " ";
-			//file << std::to_wstring(v.y) << " ";
-			//file << std::to_wstring(v.z) << "\n";
-			mesh.verts.insert(mesh.verts.end(), MeshIO::vec3(v.x, v.y, v.z));
-		}
-
-		//Индексы
-		for (int i = 0; i < nFaces; i++)
-		{
-			Face f = TObj->mesh.faces[i];
-			//file << std::to_wstring(f.v[0]) << " ";
-			//file << std::to_wstring(f.v[1]) << " ";
-			//file << std::to_wstring(f.v[2]) << "\n";
-			mesh.faces.insert(mesh.faces.end(), f.v[0]);
-			mesh.faces.insert(mesh.faces.end(), f.v[1]);
-			mesh.faces.insert(mesh.faces.end(), f.v[2]);
-		}
-
-		//Нормали
-		file << "NORMAL" << "\n";
-		for (int i = 0; i < nVerts; i++)
-		{
-			//file << std::to_wstring(TObj->mesh.getNormal(i).x) << " ";
-			//file << std::to_wstring(TObj->mesh.getNormal(i).y) << " ";
-			//file << std::to_wstring(TObj->mesh.getNormal(i).z) << "\n";
-			mesh.normals.insert(mesh.normals.end(), MeshIO::vec3(TObj->mesh.getNormal(i).x, TObj->mesh.getNormal(i).y, TObj->mesh.getNormal(i).z));
-		}
-
-		//Цвет
-		file << "COLOR" << "\n";
-		int nCVrts = TObj->mesh.numCVerts;
-		for (int i = 0; i < nCVrts; i++)
-		{
-			//file << std::to_wstring(TObj->mesh.vertCol[i].x) << " ";
-			//file << std::to_wstring(TObj->mesh.vertCol[i].y) << " ";
-			//file << std::to_wstring(TObj->mesh.vertCol[i].z) << "\n";
-			mesh.color.insert(mesh.color.end(), MeshIO::vec3(TObj->mesh.vertCol[i].x, TObj->mesh.vertCol[i].y, TObj->mesh.vertCol[i].z));
-		}
-
-		//Текстурные координаты
-		int numMaps = TObj->mesh.getNumMaps();
-		for (int mapId = 0; mapId < numMaps; mapId++)
-		{
-			UVVert* uvs = TObj->mesh.mapVerts(mapId);
-
-			//file << "MAP_ID: " << std::to_wstring(mapId) << "\n";
-			mesh.uvw.insert(mesh.uvw.end(), std::vector<MeshIO::vec3>());
-
-			for (int vId = 0; vId < TObj->mesh.getNumMapVerts(mapId); vId++)
-			{
-				//file << std::to_wstring(uvs[vId].x) << " ";
-				//file << std::to_wstring(uvs[vId].y) << " ";
-				//file << std::to_wstring(uvs[vId].z) << "\n";
-				mesh.uvw[mapId].insert(mesh.uvw[mapId].end(), MeshIO::vec3(uvs[vId].x, uvs[vId].y, uvs[vId].z));
-			}
-		}
-
-		meshFile->meshes.insert(meshFile->meshes.end(), mesh);*/
 	}
 
 	for (int i = 0; i < node->NumberOfChildren(); i++)
@@ -464,24 +346,26 @@ std::vector<unsigned int> MaxExportPlugin::InitIndices(unsigned int sz)
 	return indices;
 }
 
-std::vector<indexed_vertex> MaxExportPlugin::GetIndexedVerts(Mesh* mesh)
+std::vector<indexed_vertex> MaxExportPlugin::GetIndexedVerts(Mesh* mesh, bool& hasTex, bool& hasCol)
 {
 	std::vector<indexed_vertex> indexedVertices;
 	indexed_vertex indVert;
-
+	//TODO: Цвета у модели может и не быть, так же как и текстурных координат (вроде сделал)
+	hasTex = mesh->numTVerts;
+	hasCol = mesh->numCVerts;
 	for (int faceId = 0; faceId < mesh->getNumFaces(); faceId++)
 	{
-		indVert.pos = mesh->faces[faceId].getVert(0);
-		indVert.tex = mesh->tvFace[faceId].getTVert(0);
-		indVert.col = mesh->vcFace[faceId].getTVert(0);
+					indVert.pos = mesh->faces[faceId].getVert(0);
+		if(hasTex) indVert.tex = mesh->tvFace[faceId].getTVert(0);
+		if(hasCol) indVert.col = mesh->vcFace[faceId].getTVert(0);
 		indexedVertices.push_back(indVert);
-		indVert.pos = mesh->faces[faceId].getVert(1);
-		indVert.tex = mesh->tvFace[faceId].getTVert(1);
-		indVert.col = mesh->vcFace[faceId].getTVert(1);
+					indVert.pos = mesh->faces[faceId].getVert(1);
+		if (hasTex) indVert.tex = mesh->tvFace[faceId].getTVert(1);
+		if (hasCol) indVert.col = mesh->vcFace[faceId].getTVert(1);
 		indexedVertices.push_back(indVert);
-		indVert.pos = mesh->faces[faceId].getVert(2);
-		indVert.tex = mesh->tvFace[faceId].getTVert(2);
-		indVert.col = mesh->vcFace[faceId].getTVert(2);
+					indVert.pos = mesh->faces[faceId].getVert(2);
+		if (hasTex) indVert.tex = mesh->tvFace[faceId].getTVert(2);
+		if (hasCol) indVert.col = mesh->vcFace[faceId].getTVert(2);
 		indexedVertices.push_back(indVert);
 	}
 

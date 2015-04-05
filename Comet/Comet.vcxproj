@@ -5,6 +5,10 @@
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseLibStatic|Win32">
+      <Configuration>ReleaseLibStatic</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -28,6 +32,13 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLibStatic|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
@@ -35,6 +46,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLibStatic|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -56,7 +70,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\My_Documents\Comet\external\libtga-1.0.1\src;C:\My_Documents\vcprojects\MeshWriteRead\MeshWriteRead;..\external\glew-1.10.0\include;..\external\glfw-3.0.4\include;..\external\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\external\tinyxml;..\external\bullet-2.82-r2704\src;..\external\libtga-1.0.1\src;..\external\MeshWriteRead\MeshWriteRead;..\external\glew-1.10.0\include;..\external\glfw-3.0.4\include;..\external\glm;..\external\SOIL\src;..\external\GlyphAtlasComposer\font_rasterizer;..\external\freetype-2.5.0.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -64,49 +78,123 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>..\external\libtga-1.0.1;..\external\glew-1.10.0\lib;..\external\glfw-3.0.4\src\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32s.lib;glfw3.lib;OpenGL32.lib;libtga.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\external\tinyxml\Releasetinyxml;..\external\bullet-2.82-r2704\lib\ReleaseMD;..\external\libtga-1.0.1;..\external\glew-1.10.0\lib;..\external\glfw-3.0.4\src\Release;..\external\SOIL\projects\VC9\Release;..\external\GlyphAtlasComposer\Release;..\external\freetype-2.5.0.1\objs\win32\vc2010;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32s.lib;glfw3.lib;OpenGL32.lib;libtga.lib;SOIL.lib;font_rasterizer.lib;freetype250.lib;BulletDynamics.lib;BulletCollision.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;LinearMath.lib;tinyxml.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLibStatic|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>..\external\libtga-1.0.1\src;..\external\MeshWriteRead\MeshWriteRead;..\external\glew-1.10.0\include;..\external\glfw-3.0.4\include;..\external\glm;..\external\SOIL\src;..\external\GlyphAtlasComposer\font_rasterizer;..\external\freetype-2.5.0.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>..\external\libtga-1.0.1;..\external\glew-1.10.0\lib;..\external\glfw-3.0.4\src\Release;..\external\SOIL\projects\VC9\Release;..\external\GlyphAtlasComposer\Release;..\external\freetype-2.5.0.1\objs\win32\vc2010;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32s.lib;glfw3.lib;OpenGL32.lib;libtga.lib;SOIL.lib;font_rasterizer.lib;freetype250.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\vcprojects\MeshWriteRead\MeshWriteRead\MeshIO.h" />
+    <ClInclude Include="..\external\MeshWriteRead\MeshWriteRead\MeshIO.h" />
+    <ClInclude Include="AdventureGame.h" />
+    <ClInclude Include="BaseGame.h" />
+    <ClInclude Include="BinTree.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Character.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="Core.h" />
-    <ClInclude Include="Game.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="Font.h" />
+    <ClInclude Include="GameScene.h" />
+    <ClInclude Include="GUI.h" />
+    <ClInclude Include="GUICursor.h" />
+    <ClInclude Include="GUIElement.h" />
+    <ClInclude Include="GUIRect.h" />
+    <ClInclude Include="GUISprite.h" />
+    <ClInclude Include="GUIText.h" />
+    <ClInclude Include="Landscape.h" />
+    <ClInclude Include="LandscapeTile.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshData.h" />
+    <ClInclude Include="MotionState.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="Party.h" />
+    <ClInclude Include="Physics.h" />
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderObject.h" />
     <ClInclude Include="ResMan.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="TestGame.h" />
+    <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShooterGame.h" />
+    <ClInclude Include="TextRenderable.h" />
     <ClInclude Include="Texture2D.h" />
+    <ClInclude Include="TypeInfo.h" />
     <ClInclude Include="UserConsole.h" />
     <ClInclude Include="Viewport.h" />
+    <ClInclude Include="WorldMapScene.h" />
+    <ClInclude Include="WorldMapTile.h" />
+    <ClInclude Include="WorldTileMap.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\vcprojects\MeshWriteRead\MeshWriteRead\MeshIO.cpp" />
+    <ClCompile Include="..\external\MeshWriteRead\MeshWriteRead\MeshIO.cpp" />
+    <ClCompile Include="AdventureGame.cpp" />
+    <ClCompile Include="BaseGame.cpp" />
+    <ClCompile Include="BinTree.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Character.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="Core.cpp" />
-    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="Font.cpp" />
+    <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="GUI.cpp" />
+    <ClCompile Include="GUICursor.cpp" />
+    <ClCompile Include="GUIElement.cpp" />
+    <ClCompile Include="GUIRect.cpp" />
+    <ClCompile Include="GUISprite.cpp" />
+    <ClCompile Include="GUIText.cpp" />
+    <ClCompile Include="Landscape.cpp" />
+    <ClCompile Include="LandscapeTile.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshData.cpp" />
+    <ClCompile Include="MotionState.cpp" />
     <ClCompile Include="Node.cpp" />
+    <ClCompile Include="Party.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Renderable.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderObject.cpp" />
     <ClCompile Include="ResMan.cpp" />
     <ClCompile Include="Resource.cpp" />
-    <ClCompile Include="TestGame.cpp" />
+    <ClCompile Include="RigidBody.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShooterGame.cpp" />
+    <ClCompile Include="TextRenderable.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="UserConsole.cpp" />
     <ClCompile Include="Viewport.cpp" />
+    <ClCompile Include="WorldMapScene.cpp" />
+    <ClCompile Include="WorldMapTile.cpp" />
+    <ClCompile Include="WorldTileMap.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\res.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

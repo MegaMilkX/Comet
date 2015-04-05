@@ -11,11 +11,11 @@ namespace Comet
 	{
 	public:
 		Mesh();
+		Mesh(std::string resname);
 		Mesh(MeshData* data);
 		Mesh(MeshData* data, std::string subMeshName);
 		~Mesh();
 
-		void SetMeshData(MeshData* md){ meshData = md; }
 		void SetSubMesh(std::string name){}
 	private:
 		

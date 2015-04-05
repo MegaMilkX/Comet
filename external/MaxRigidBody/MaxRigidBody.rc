@@ -1,0 +1,145 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#include <windows.h>
+#include <commctrl.h>
+#include <richedit.h>
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+IDD_PANEL DIALOG DISCARDABLE  0, 0, 108, 256
+STYLE WS_CHILD | WS_VISIBLE
+//FLOATING_DIALOG
+FONT 8, "MS Sans Serif"
+
+BEGIN
+	LTEXT           "Shape:", IDC_STATIC, 5, 5, 50, 16
+	COMBOBOX         IDC_COMBO, 29, 5, 70, 50, CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+	//CONTROL         "", IDC_SPIN, "SpinnerControl", 0x0, 65, 5, 7, 10
+
+	LTEXT           "X:", IDC_STATIC, 5, 20, 25, 8
+    CONTROL         "",IDC_EDIT,"CustEdit",WS_TABSTOP,29,20,35,10
+    CONTROL         "",IDC_SPIN,"SpinnerControl",0x0,65,20,7,10
+
+	LTEXT           "Y:", IDC_STATIC, 5, 35, 25, 8
+	CONTROL         "", IDC_EDITY, "CustEdit", WS_TABSTOP, 29, 35, 35, 10
+	CONTROL         "", IDC_SPINY, "SpinnerControl", 0x0, 65, 35, 7, 10
+
+	LTEXT           "Z:", IDC_STATIC, 5, 50, 25, 8
+	CONTROL         "", IDC_EDITZ, "CustEdit", WS_TABSTOP, 29, 50, 35, 10
+	CONTROL         "", IDC_SPINZ, "SpinnerControl", 0x0, 65, 50, 7, 10
+	
+	LTEXT           "Mass:", IDC_STATIC, 5, 65, 25, 8
+	CONTROL         "", IDC_MASSEDIT, "CustEdit", WS_TABSTOP, 29, 65, 35, 10
+	CONTROL         "", IDC_MASSSPIN, "SpinnerControl", 0x0, 65, 65, 7, 10
+
+	CHECKBOX		"Static", IDC_ISSTATIC, 5, 80, 50, 8, WS_TABSTOP | BS_CHECKBOX
+
+	LTEXT           "Friction:", IDC_STATIC, 5, 95, 25, 8
+	CONTROL         "", IDC_FRICEDIT, "CustEdit", WS_TABSTOP, 29, 95, 35, 10
+	CONTROL         "", IDC_FRICSPIN, "SpinnerControl", 0x0, 65, 95, 7, 10
+END
+
+
+ //IMAGE_FILTER_COMPOSITOR_TYPE
+
+//(!UI_BY_MAX)
+
+ //SHADER_TYPE
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE
+BEGIN
+    IDD_PANEL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 101
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 149
+    END
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+
+#endif    // APSTUDIO_INVOKED
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE
+BEGIN
+    IDS_LIBDESCRIPTION      "Rigid Body Modifier"
+    IDS_CATEGORY            "Comet Rigid Body Modifier"
+    IDS_CLASS_NAME          "CometRigidBody"
+    IDS_PARAMS              "Rigid Body Parameters"
+    IDS_SPIN                "Spin"
+
+	IDS_SPHERE				"Sphere"
+	IDS_BOX					"Box"
+	IDS_CYLLINDER			"Cyllinder"
+	IDS_CAPSULE				"Capsule"
+	IDS_CONE				"Cone"
+	IDS_TRIMESH				"Triangle Mesh"
+	IDS_CONVEX				"Convex Hull"
+	IDS_PLANE				"Infinite Plane"
+ //TEX_TYPE
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
+

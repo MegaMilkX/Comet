@@ -5,11 +5,18 @@ namespace Comet
 
 	Resource::Resource()
 	{
+		isReady = false;
 	}
 
 
 	Resource::~Resource()
 	{
+		Unload();
+	}
+
+	void Resource::Unload()
+	{
+
 	}
 
 };
