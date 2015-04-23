@@ -27,6 +27,12 @@ namespace Comet
 		Material(std::string shader, std::string texture0);
 		virtual ~Material();
 
+		enum POLYMODE
+		{
+			FILL,
+			WIRE
+		};
+
 		void Load(std::string path);
 		void Unload();
 
@@ -38,6 +44,7 @@ namespace Comet
 		void SetShader(Shader* shad);
 		void SetZWrite(bool val){ zwrite = val; }
 		void SetZTest(bool val){ ztest = val; }
+		void SetPolygonMode(POLYMODE mode){ polyMode = mode; }
 		void SetSubViewportRect(float left, float bottom, float right, float top);
 		void SetOrder(int o){ order = o; }
 		void IgnoreParentScale(bool val){ ignoreParentScale = val; }
@@ -78,6 +85,7 @@ namespace Comet
 		glm::vec4 subViewportRect;
 		bool ignoreParentPos;
 		bool ignoreParentScale;
+		POLYMODE polyMode;
 	};
 
 }

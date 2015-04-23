@@ -20,10 +20,14 @@ void ShooterGame::Init()
 
 void ShooterGame::PostInit()
 {
+	//Rendering pipeline setup?
+	//TODO
+
+
 	//моделька персонажа
 	Node* node = renderer->GetRoot()->CreateNode();
 	node->SetPosition(glm::vec3(0, 3.1f, 0));
-	Mesh* mesh = new Mesh("data\\models\\test2.xyz");
+	Mesh* mesh = new Mesh("data\\models\\girl.xyz");
 	node->Attach(mesh);
 
 	Material* mat = new Material();
@@ -64,6 +68,17 @@ void ShooterGame::PostInit()
 
 	//
 	this->ReadGraphFile("data\\test.graph", renderer->GetRoot());
+
+	//Marching stars
+	Material* LandMaterial = new Material("data\\shaders\\marchingstar.glsl", "data\\textures\\Die-Sargprinzessin-1-4_.png");
+
+	Entity* tetra = CreateEntity();
+	tetra->AddComponent(renderer->GetRoot()->CreateNode());
+	tetra->AddComponent(new VoxelVolumeMesh(16, 16, 16));
+	tetra->GetComponent<VoxelVolumeMesh>()->SetMaterial(LandMaterial);
+	//tetra->GetComponent<VoxelVolumeMesh>()->GetMaterial()->SetPolygonMode(Material::WIRE);
+	//tetra->GetComponent<VoxelVolumeMesh>()->GetMeshData()->SetPrimitiveType(MeshData::POINT);
+	volumeMesh = tetra->GetComponent<VoxelVolumeMesh>();
 }
 
 void ShooterGame::Start()
@@ -109,7 +124,7 @@ bool ShooterGame::Update()
 	{
 		Entity* sphere = CreateEntity();
 		sphere->AddComponent(renderer->GetRoot()->CreateNode());
-		sphere->AddComponent(new Mesh("data\\models\\cyllinder.xyz"));
+		sphere->AddComponent(new Mesh("data\\models\\sphere.xyz"));
 		sphere->GetComponent<Mesh>()->SetMaterial(new Material("data\\shaders\\sphere.glsl", "data\\textures\\2014-11-20-688057.jpeg"));
 		btCollisionShape* shape = new btSphereShape(1);
 		btCollisionShape* cyllinder = new btCylinderShape(btVector3(1, 1, 1.5f));
@@ -118,6 +133,9 @@ bool ShooterGame::Update()
 		sphere->GetComponent<RigidBody>()->SetPosition(camera_->GetComponent<Node>()->GetPosition() - camera_->GetComponent<Node>()->GetBack()*2.0f);
 		sphere->GetComponent<RigidBody>()->GetBody()->applyCentralImpulse(btVector3(-camera_->GetComponent<Node>()->GetBack().x, -camera_->GetComponent<Node>()->GetBack().y, -camera_->GetComponent<Node>()->GetBack().z)*20.0f);
 	}
+
+	disp += 1.0f * GetDt();
+	volumeMesh->_MoveNoise(disp, 0, 0);
 
 	return Core::_postUpdate();
 }

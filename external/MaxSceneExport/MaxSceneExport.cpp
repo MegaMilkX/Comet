@@ -12,6 +12,9 @@
 // AUTHOR: 
 //***************************************************************************/
 
+#include <map>
+#include <vector>
+
 #include "MaxSceneExport.h"
 
 #define GLM_FORCE_RADIANS
@@ -57,7 +60,7 @@ public:
 	void _fillMaterials(Mtl* mtl, TiXmlElement* e);
 
 	TriObject* _getTriObjFromNode(INode* node, BOOL &deleteIt);
-	void _exportMeshNode(INode* node, MeshIO::MeshIO* meshfile);
+	void _exportMeshNode(INode* node);
 
 	TiXmlDocument doc;
 
@@ -395,9 +398,8 @@ void MaxSceneExport::ProcessNode(INode* node, TiXmlNode* xmlNode)
 				}
 				//Теперь нужно сохранить меш в отдельный файл
 				#pragma message(TODO("Save this mesh to separate .xyz file"))
-				MeshIO::MeshIO* meshfile = new MeshIO::MeshIO();
-				_exportMeshNode(node, meshfile);
-				meshfile->Write(std::wstring(L"test.xyz"), MeshIO::MSH_BIN);
+				
+				_exportMeshNode(node);
 			}
 		}
 	}
@@ -414,12 +416,10 @@ TriObject* MaxSceneExport::_getTriObjFromNode(INode* node, BOOL &deleteIt)
 		return 0;
 	deleteIt = FALSE;
 	Object *obj;
-	//obj = node->GetObjectRef();
 	obj = node->EvalWorldState(0).obj;
 
 	if (obj->ClassID() == BONE_OBJ_CLASSID)
 		return 0;
-	//file << "OBJCLASS: " << std::to_wstring(obj->ClassID().PartA()) << " " << std::to_wstring(obj->ClassID().PartB()) << "\n";
 
 	if (obj->CanConvertToType(Class_ID(TRIOBJ_CLASS_ID, 0)))
 	{
@@ -438,21 +438,120 @@ TriObject* MaxSceneExport::_getTriObjFromNode(INode* node, BOOL &deleteIt)
 	}
 }
 
-void MaxSceneExport::_exportMeshNode(INode* node, MeshIO::MeshIO* meshfile)
+//////////////////////////////////////////////////////////
+//Export mesh from node, taking materials into account.
+//////////////////////////////////////////////////////////
+
+std::map<unsigned int, MeshIO::Mesh> meshesToSave;
+std::map<unsigned int, std::vector<indexed_vertex>> indexedVertexArrays;
+std::vector<indexed_vertex>* GetIndexedVertexArray(unsigned int id)
+{
+	std::map<unsigned int, std::vector<indexed_vertex>>::iterator it;
+	it = indexedVertexArrays.find(id);
+	if (it != indexedVertexArrays.end())
+	{
+		return &(it->second);
+	}
+	else
+	{
+		std::vector<indexed_vertex> indvertarray;
+		indexedVertexArrays.insert(std::make_pair(id, indvertarray));
+		return &(indexedVertexArrays.find(id)->second);
+	}
+}
+void MaxSceneExport::_exportMeshNode(INode* node)
 {
 	if (node->IsRootNode())
 		return;
+	MeshIO::MeshIO* meshfile = new MeshIO::MeshIO();
 
 	BOOL deleteIt = false;
-
 	TriObject* TObj;
 	TObj = _getTriObjFromNode(node, deleteIt);
+	Mesh* m = &(TObj->mesh);
+	MeshIO::Mesh mesh;
+	
+	//Get all the vertices
+	std::vector<indexed_vertex> indOut;
+	std::vector<indexed_vertex> indVerts;
+	indexed_vertex indVert;
+	bool hasTex = m->numTVerts;
+	bool hasCol = m->numCVerts;
+	for (int faceId = 0; faceId < m->getNumFaces(); faceId++)
+	{
+		unsigned int matId = m->faces[faceId].getMatID();
+		std::vector<indexed_vertex>* indexedVertices = GetIndexedVertexArray(matId);
+		//Get vertices
+
+		indexed_vertex vert;
+		vert.pos = m->faces[faceId].getVert(0);
+		indexedVertices->push_back(vert);
+		vert.pos = m->faces[faceId].getVert(1);
+		indexedVertices->push_back(vert);
+		vert.pos = m->faces[faceId].getVert(2);
+		indexedVertices->push_back(vert);
+	}
+
+	//Init index array
+	std::vector<unsigned int> indices;
+	indices.resize(indVerts.size());
+	for (int i = 0; i < indices.size(); i++)
+	{
+		indices[i] = i;
+	}
+
+	//Отмечаем дупликаты вершин
+	std::vector<bool> vertDupes;
+	vertDupes.resize(indVerts.size());
+	std::fill(vertDupes.begin(), vertDupes.end(), false);
+	for (int i = 0; i < indVerts.size(); i++)
+	{
+		if (!vertDupes[i])
+		{
+			for (int j = i + 1; j < indVerts.size(); j++)
+			{
+				if (indVerts[i].pos == indVerts[j].pos
+					&& indVerts[i].col == indVerts[j].col
+					&& indVerts[i].tex == indVerts[j].tex)
+				{
+					vertDupes[j] = true;
+					indices[j] = i;
+				}
+			}
+		}
+	}
+
+	std::vector<unsigned int> newVertPos;
+	newVertPos.resize(indVerts.size());
+
+	for (int i = 0; i < indVerts.size(); i++)
+	{
+		if (!vertDupes[i])
+		{
+			newVertPos[i] = indOut.size();
+			indOut.push_back(indVerts[i]);
+		}
+	}
+
+	for (int i = 0; i < indices.size(); i++)
+	{
+		indices[i] = newVertPos[indices[i]];
+	}
+
+	//Fix indices accordingly
 
 
-
-
+	//Add all the meshes
+	std::map<unsigned int, MeshIO::Mesh>::iterator meshesIt;
+	for (meshesIt = meshesToSave.begin(); meshesIt != meshesToSave.end(); meshesIt++)
+	{
+		meshfile->AddMesh(meshesIt->second);
+	}
 	if (deleteIt)
 		delete TObj;
+
+	//done
+	meshfile->Write(std::wstring(L"test.xyz"), MeshIO::MSH_BIN);
 }
 
 void MaxSceneExport::_fillMaterials(Mtl* mtl, TiXmlElement* e)

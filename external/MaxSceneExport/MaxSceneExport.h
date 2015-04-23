@@ -28,7 +28,7 @@
 
 #include <impexp.h>
 
-
+#include <triobj.h>
 
 struct quat
 {
@@ -44,3 +44,9 @@ extern TCHAR *GetString(int id);
 
 extern HINSTANCE hInstance;
 
+struct indexed_vertex
+{
+	indexed_vertex() : pos(0), nrm(0), tex(0), col(0)
+	{}
+	unsigned int pos, nrm, tex, col;
+};

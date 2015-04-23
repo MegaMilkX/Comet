@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BaseGame.h"
+#include "VoxelVolumeMesh.h"
 
 class ShooterGame : public Comet::BaseGame
 {
@@ -17,5 +18,8 @@ private:
 	double px, py;
 
 	Comet::Entity* camera_;
+
+	Comet::VoxelVolumeMesh* volumeMesh;
+	float disp;
 };
 

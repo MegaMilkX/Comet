@@ -28,6 +28,7 @@ namespace Comet
 
 		ignoreParentPos = false;
 		ignoreParentScale = false;
+		polyMode = FILL;
 	}
 
 	Material::Material(std::string shader, std::string texture0) : Material()

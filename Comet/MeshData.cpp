@@ -20,6 +20,30 @@ namespace Comet
 	{
 		Unload();
 	}
+	/*
+	void Load(std::string path) //fbx load method
+	{
+		FbxManager* sdkManager = FbxManager::Create();
+		FbxIOSettings* ios = FbxIOSettings::Create(sdkManager, IOSROOT);
+		sdkManager->SetIOSettings(ios);
+
+		FbxImporter* importer = FbxImporter::Create(sdkManager, "");
+
+		bool importOk = importer->Initialize(path.c_str(), -1, sdkManager->GetIOSettings());
+
+		if (!importOk)
+		{
+			printf("FbxImporter::Initialize() failed.\n");
+			printf("Error desc: %s\n\n", importer->GetStatus().GetErrorString());
+			return;
+		}
+
+		FbxScene* scene = FbxScene::Create(sdkManager, "scene");
+		importer->Import(scene);
+		importer->Destroy();
+		
+		scene->
+	}*/
 
 	void MeshData::Load(std::string path)
 	{
@@ -44,6 +68,7 @@ namespace Comet
 					meshIO.meshes[i].faces[j] += (vertexPool.size()/3);
 				}
 				vertexPool.insert(vertexPool.end(), meshIO.meshes[i].vertsRAW.begin(), meshIO.meshes[i].vertsRAW.end());
+				subMeshes.insert(subMeshes.end(), new SubMeshData(facePool.size(), meshIO.meshes[i].faces.size() / 3));
 				facePool.insert(facePool.end(), meshIO.meshes[i].faces.begin(), meshIO.meshes[i].faces.end());
 
 				//ƒоделать дл€ нескольких слоев текстур																				!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -97,61 +122,18 @@ namespace Comet
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short)*(facePool.size()), face_data, GL_STATIC_DRAW);
 			delete face_data;
 		}
-		else
-		{
-			vertexAttribLayout = VATTR_POS | VATTR_COL;
-
-			float pos_data[] = {
-				0.0f, 0.0f, 0.0f,
-				1.0f, 0.0f, 0.0f,
-				0.0f, 1.0f, 0.0f,
-				0.0f, 0.0f, 1.0f,
-				1.0f, 0.0f, 1.0f,
-				0.0f, 1.0f, 1.0f,
-				1.0f, 1.0f, 0.0f
-			};
-
-			glGenBuffers(1, &bufPos);
-			glBindBuffer(GL_ARRAY_BUFFER, bufPos);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(pos_data), pos_data, GL_STATIC_DRAW);
-
-			float col_data[] = {
-				0.0f, 0.0f, 0.0f,
-				1.0f, 0.0f, 0.0f,
-				0.0f, 1.0f, 0.0f,
-				0.0f, 0.0f, 1.0f,
-				1.0f, 0.0f, 1.0f,
-				0.0f, 1.0f, 1.0f,
-				1.0f, 1.0f, 0.0f
-			};
-
-			glGenBuffers(1, &bufCol);
-			glBindBuffer(GL_ARRAY_BUFFER, bufCol);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(col_data), col_data, GL_STATIC_DRAW);
-
-			unsigned short face_data[] = {
-				0, 1, 2,
-				0, 1, 3,
-				0, 2, 3,
-				1, 3, 4,
-				2, 5, 3,
-				2, 1, 6
-			};
-
-			glGenBuffers(1, &bufFace);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufFace);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(face_data), face_data, GL_STATIC_DRAW);
-
-
-			nFaces = 6;
-			nVerts = 7;
-		}
 
 		isReady = true;
 	}
 
 	void MeshData::Unload()
 	{
+		for (int i = 0; i < subMeshes.size(); i++)
+		{
+			delete subMeshes[i];
+		}
+		subMeshes.clear();
+
 		glDeleteBuffers(1, &bufPos);
 		glDeleteBuffers(1, &bufCol);
 		glDeleteBuffers(1, &bufFace);
@@ -175,12 +157,18 @@ namespace Comet
 		glDeleteBuffers(1, &bufNorm);
 
 		vertexAttribLayout |= VATTR_NOR;
+		glGenBuffers(1, &bufNorm);
+		glBindBuffer(GL_ARRAY_BUFFER, bufNorm);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* (data.size()), &data[0], GL_STATIC_DRAW);
 	}
 	void MeshData::FillColor(std::vector<float> data)
 	{
 		glDeleteBuffers(1, &bufCol);
 
 		vertexAttribLayout |= VATTR_COL;
+		glGenBuffers(1, &bufCol);
+		glBindBuffer(GL_ARRAY_BUFFER, bufCol);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* (data.size()), &data[0], GL_STATIC_DRAW);
 	}
 	void MeshData::FillIndices(std::vector<unsigned short> data)
 	{
@@ -200,6 +188,11 @@ namespace Comet
 		glGenBuffers(1, &bufUVW);
 		glBindBuffer(GL_ARRAY_BUFFER, bufUVW);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* (data.size()), &data[0], GL_STATIC_DRAW);
+	}
+
+	void MeshData::RebuildNormals()
+	{
+		//TODO
 	}
 
 };

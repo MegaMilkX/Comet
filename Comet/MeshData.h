@@ -3,16 +3,22 @@
 #include <MeshIO.h>
 #include <vector>
 
+#include <fbxsdk.h>
+#include <fbxsdk\fileio\fbxiosettings.h>
+
 namespace Comet
 {
 	class SubMeshData
 	{
 	public:
-		SubMeshData();
-		~SubMeshData();
+		SubMeshData(unsigned int ofst, unsigned int fcs){ ioffset = ofst; nfaces = fcs; }
+		~SubMeshData(){}
 		unsigned int faces(){ return nfaces; }
+		unsigned int offset(){ return ioffset; }
+		void faces(unsigned int n){ nfaces = n; }
+		void offset(unsigned int n){ ioffset = n; }
 	private:
-
+		unsigned int ioffset;
 		unsigned int nfaces;
 	};
 
@@ -51,6 +57,8 @@ namespace Comet
 		void FillColor(std::vector<float> data);//three per vertex
 		void FillIndices(std::vector<unsigned short> data);//three per face
 		void FillUVW(std::vector<float> data);		//three per vertex
+
+		void RebuildNormals();
 
 		void SetPrimitiveType(PrimitiveType type){ primitiveType = type; }
 	private:

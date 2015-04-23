@@ -105,6 +105,14 @@ namespace Comet
 		glDeleteShader(VertexShaderID);
 		glDeleteShader(FragmentShaderID);
 
+		attrloc[0] = glGetAttribLocation(ProgramID, "vertexPosition_modelspace");
+		attrloc[1] = glGetAttribLocation(ProgramID, "uvw");
+		attrloc[2] = glGetAttribLocation(ProgramID, "vertexNormal");
+		attrloc[3] = glGetAttribLocation(ProgramID, "vertexColor");
+		attrloc[4] = glGetUniformLocation(ProgramID, "_m");
+		attrloc[5] = glGetUniformLocation(ProgramID, "_v");
+		attrloc[6] = glGetUniformLocation(ProgramID, "_p");
+
 		shaderProgramId = ProgramID;
 	}
 

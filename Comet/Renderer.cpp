@@ -69,6 +69,8 @@ namespace Comet
 
 		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		glPolygonMode(GL_FRONT, GL_FILL);
+
+		glPointSize(3);
 		
 	}
 
@@ -101,6 +103,18 @@ namespace Comet
 			glDepthMask(GL_FALSE);
 
 		zwrite = val;
+	}
+
+	void Renderer::_setPolyMode(int m)
+	{
+		if (m == 0)
+		{
+			glPolygonMode(GL_FRONT, GL_FILL);
+		}
+		else if (m == 1)
+		{
+			glPolygonMode(GL_FRONT, GL_LINE);
+		}
 	}
 
 	bool Renderer::Update()
@@ -167,57 +181,72 @@ namespace Comet
 		if (!r->GetMaterial()->GetShader())
 			return;
 
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		//Setting up data arrays (these are only one of each for a renderable) and for all its submeshes
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		if (r->GetMeshData()->GetVertexAttribLayout() & VATTR_POS)
-		{
-			glEnableVertexAttribArray(0);	//координаты
-			glBindBuffer(GL_ARRAY_BUFFER, r->GetMeshData()->GetPosBuffer());
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float)*3, 0);
-		}
-		
-		if (r->GetMeshData()->GetVertexAttribLayout() & VATTR_UVW)
-		{
-			glEnableVertexAttribArray(1);	//uvw
-			glBindBuffer(GL_ARRAY_BUFFER, r->GetMeshData()->GetUVWBuffer());
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
-		}
-
-		if (r->GetMeshData()->GetVertexAttribLayout() & VATTR_NOR)
-		{
-			glEnableVertexAttribArray(2);	//нормали
-			glBindBuffer(GL_ARRAY_BUFFER, r->GetMeshData()->GetNormBuffer());
-			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);
-		}
-
-		if (r->GetMeshData()->GetVertexAttribLayout() & VATTR_COL)
-		{
-			glEnableVertexAttribArray(3);	//цвет
-			glBindBuffer(GL_ARRAY_BUFFER, r->GetMeshData()->GetColBuffer());
-			glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 0, 0);
-		}
-
 		//////////////////////////////////////////////////////////////////////////////////////////
+		//Rendering
 		//TODO: Iterate through MeshData's submeshes in most effective way and render each of them
 		//If a submesh has no material attached to it, fall back to MeshData's material
 		//If meshdata has only one big mesh it will be stored in the 0th submesh
 		//////////////////////////////////////////////////////////////////////////////////////////
 
-		for (int i = 0; i < r->GetMeshData()->GetNumSubMeshes(); i++)
-		{
-			SubMeshData* subMesh = r->GetMeshData()->GetSubMesh(i);
 
-			//Render now
+
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		//Setting up data arrays (these are only one of each for a renderable) and for all its submeshes
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		Shader* shader = r->GetMaterial()->GetShader();
+		if (r->GetMeshData()->GetVertexAttribLayout() & VATTR_POS)
+		{
+			glGetAttribLocation(0, "vertexPosition_modelspace");
+			glEnableVertexAttribArray(shader->GetAttribLocation(Shader::POS));	//координаты
+			glBindBuffer(GL_ARRAY_BUFFER, r->GetMeshData()->GetPosBuffer());
+			glVertexAttribPointer(shader->GetAttribLocation(Shader::POS), 3, GL_FLOAT, GL_FALSE, sizeof(float)* 3, 0);
 		}
+		
+		if (r->GetMeshData()->GetVertexAttribLayout() & VATTR_UVW)
+		{
+			glEnableVertexAttribArray(shader->GetAttribLocation(Shader::UVW));	//uvw
+			glBindBuffer(GL_ARRAY_BUFFER, r->GetMeshData()->GetUVWBuffer());
+			glVertexAttribPointer(shader->GetAttribLocation(Shader::UVW), 3, GL_FLOAT, GL_FALSE, 0, 0);
+		}
+
+		if (r->GetMeshData()->GetVertexAttribLayout() & VATTR_NOR)
+		{
+			glEnableVertexAttribArray(shader->GetAttribLocation(Shader::NRM));	//нормали
+			glBindBuffer(GL_ARRAY_BUFFER, r->GetMeshData()->GetNormBuffer());
+			glVertexAttribPointer(shader->GetAttribLocation(Shader::NRM), 3, GL_FLOAT, GL_FALSE, 0, 0);
+		}
+
+		if (r->GetMeshData()->GetVertexAttribLayout() & VATTR_COL)
+		{
+			glEnableVertexAttribArray(shader->GetAttribLocation(Shader::COL));	//цвет
+			glBindBuffer(GL_ARRAY_BUFFER, r->GetMeshData()->GetColBuffer());
+			glVertexAttribPointer(shader->GetAttribLocation(Shader::COL), 3, GL_FLOAT, GL_FALSE, 0, 0);
+		}
+
+		//Setting Render primitive type for the whole mesh
+		GLenum primType = 0;
+		unsigned long nv = 0;
+		switch (r->GetMeshData()->GetPrimitiveType())
+		{
+		case MeshData::POINT: primType = GL_POINTS; break;
+		case MeshData::LINE: primType = GL_LINES; break;
+		case MeshData::TRIANGLE: primType = GL_TRIANGLES; break;
+		case MeshData::TRISTRIP: primType = GL_TRIANGLE_STRIP; nv = r->GetMeshData()->GetNumVerts() + 1; break;
+		default:  break;
+		}
+
+		nv = r->GetMeshData()->GetNumVerts();
 
 		_setZTest(r->GetMaterial()->ztest);
 		_setZWrite(r->GetMaterial()->zwrite);
+		_setPolyMode(r->GetMaterial()->polyMode);
 
 		glUseProgram(r->GetMaterial()->GetShader()->GetProgramId());
-		glUniformMatrix4fv(glGetUniformLocation(r->GetMaterial()->GetShader()->GetProgramId(), "_m"), 1, GL_FALSE, glm::value_ptr(r->GetNode()->GetTransform()));
-		glUniformMatrix4fv(glGetUniformLocation(r->GetMaterial()->GetShader()->GetProgramId(), "_v"), 1, GL_FALSE, glm::value_ptr(cam->GetView()));
-		glUniformMatrix4fv(glGetUniformLocation(r->GetMaterial()->GetShader()->GetProgramId(), "_p"), 1, GL_FALSE, glm::value_ptr(cam->GetProjection()));
+		glUniformMatrix4fv(shader->GetAttribLocation(Shader::M), 1, GL_FALSE, glm::value_ptr(r->GetNode()->GetTransform()));
+		glUniformMatrix4fv(shader->GetAttribLocation(Shader::V), 1, GL_FALSE, glm::value_ptr(cam->GetView()));
+		glUniformMatrix4fv(shader->GetAttribLocation(Shader::P), 1, GL_FALSE, glm::value_ptr(cam->GetProjection()));
 
 		//Текстурки
 		for (int i = 0; i < r->GetMaterial()->GetTextures().size(); i++)
@@ -240,24 +269,26 @@ namespace Comet
 
 		r->GetMaterial()->glSetUniforms();
 
-		GLenum primType = 0;
-		unsigned long nv = 0;
-		switch (r->GetMeshData()->GetPrimitiveType())
-		{
-		case MeshData::POINT: primType = GL_POINTS; break;
-		case MeshData::LINE: primType = GL_LINES; break;
-		case MeshData::TRIANGLE: primType = GL_TRIANGLES; break;
-		case MeshData::TRISTRIP: primType = GL_TRIANGLE_STRIP; nv = r->GetMeshData()->GetNumVerts() + 1; break;
-		default: nv = r->GetMeshData()->GetNumVerts(); break;
-		}
-
 		if (r->GetMeshData()->GetFaceBuffer())
 		{
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r->GetMeshData()->GetFaceBuffer());
+			if (r->GetMeshData()->GetNumSubMeshes() > 0)
+			{
+				for (int i = 0; i < r->GetMeshData()->GetNumSubMeshes(); i++)
+				{
+					SubMeshData* subMesh = r->GetMeshData()->GetSubMesh(i);
 
-			glDrawElements(primType, r->GetMeshData()->GetNumFaces() * 3, GL_UNSIGNED_SHORT, 0);
+					//Render now
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r->GetMeshData()->GetFaceBuffer());
+					glDrawElements(primType, subMesh->faces() * 3, GL_UNSIGNED_SHORT, (void*)(subMesh->offset()));
+				}
+			}
+			else
+			{
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r->GetMeshData()->GetFaceBuffer());
+				glDrawElements(primType, r->GetMeshData()->GetNumFaces() * 3, GL_UNSIGNED_SHORT, 0);
+			}
 		}
-		else
+		else // No indices - no submeshes. TODO At least for now
 		{
 			glDrawArrays(primType, 0, nv);
 		}

@@ -208,18 +208,13 @@ void MaxExportPlugin::ProcessTriObjects()
 {
 	for (int i = 0; i < triObjects.size(); i++)
 	{
-		MessageBox(0, L"TriObj", 0, 0);
 		TriObject* TObj = triObjects[i];
 		INode* node = nodeList[i];
 
 		std::vector<indexed_vertex> indOut;		//Финальный набор вершин (индексированых)
-		MessageBox(0, L"Here?", 0, 0);
 		bool hasColor = false, hasTex = false;
 		std::vector<indexed_vertex> indVerts = GetIndexedVerts(&(TObj->mesh), hasTex, hasColor);
-		MessageBox(0, L"or here?", 0, 0);
 		std::vector<unsigned int> indices = InitIndices(indVerts.size());
-		
-		MessageBox(0, L"Marking vert duplicates", 0, 0);
 
 		//Отмечаем дупликаты вершин
 		std::vector<bool> vertDupes;
@@ -264,16 +259,12 @@ void MaxExportPlugin::ProcessTriObjects()
 		std::string cname(wname.begin(), wname.end());
 		mesh.name = cname;
 
-		MessageBox(0, L"Filling vertices", 0, 0);
-
 		//Вертексы
 		for (int i = 0; i < indOut.size(); i++)
 		{
 			Point3 v = TObj->mesh.verts[indOut[i].pos];
 			mesh.verts.insert(mesh.verts.end(), MeshIO::vec3(v.x, v.y, v.z));
 		}
-
-		MessageBox(0, L"Filling indices", 0, 0);
 
 		//Индексы
 		for (int i = 0; i < indices.size(); i++)
@@ -284,7 +275,6 @@ void MaxExportPlugin::ProcessTriObjects()
 		//Цвет
 		if (hasColor)
 		{
-			MessageBox(0, L"Filling color", 0, 0);
 			for (int i = 0; i < indOut.size(); i++)
 			{
 				Point3 v = TObj->mesh.vertCol[indOut[i].col];
@@ -295,7 +285,6 @@ void MaxExportPlugin::ProcessTriObjects()
 		//Текстурные координаты
 		if (hasTex)
 		{
-			MessageBox(0, L"Filling uvws", 0, 0);
 			mesh.uvw.insert(mesh.uvw.end(), std::vector<MeshIO::vec3>());
 			for (int i = 0; i < indOut.size(); i++)
 			{

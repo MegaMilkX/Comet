@@ -26,9 +26,13 @@ namespace Comet
 		void Unload();
 
 		unsigned int GetProgramId(){ return shaderProgramId; }
+		enum ATTR
+		{	POS, UVW, NRM, COL, M, V, P	};
+		int GetAttribLocation(ATTR attr){ return attrloc[attr]; }
 
 	private:
 		unsigned int shaderProgramId;
+		int attrloc[7];							//Attribute locations
 	};
 
 }

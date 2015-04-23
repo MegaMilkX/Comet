@@ -11,11 +11,15 @@
 #define GLEW_STATIC
 #include <gl/glew.h>
 #include <GLFW/glfw3.h>
+
 #include "Viewport.h"
 #include "Renderable.h"
+
 #include "Mesh.h"
+#include "VoxelVolumeMesh.h"
 #include "Landscape.h"
 #include "TextRenderable.h"
+
 #include "Camera.h"
 #include "Light.h"
 #include "Node.h"
@@ -96,6 +100,7 @@ namespace Comet
 
 		void _setZTest(bool val);
 		void _setZWrite(bool val);
+		void _setPolyMode(int m);
 
 		void _regViewport(Viewport* vp);
 		void _regRenderable(Renderable* r);
