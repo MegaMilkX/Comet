@@ -27,6 +27,8 @@ namespace Comet
 
 		void SetViewport(Viewport* vp);
 		Viewport* GetViewport(){ return viewport; }
+
+		friend Viewport;
 	private:
 		glm::mat4 projection;
 		glm::mat4 view;

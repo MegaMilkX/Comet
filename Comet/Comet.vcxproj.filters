@@ -58,12 +58,6 @@
     <Filter Include="Comet\Source Files\GUI">
       <UniqueIdentifier>{74bd168b-b25d-4c11-8fb7-be7adc6aafa5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Comet\Header Files\Renderer\Landscape">
-      <UniqueIdentifier>{56aed124-33d0-4d07-a1a9-8ef2d6ed6f5c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Comet\Source Files\Renderer\Landscape">
-      <UniqueIdentifier>{deea376d-f9d5-4326-b59f-cdb4b4f910a9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ShooterGame">
       <UniqueIdentifier>{9b3ba1b3-3df1-4584-b2b3-46ce318c96c8}</UniqueIdentifier>
     </Filter>
@@ -79,6 +73,18 @@
     <Filter Include="Comet\Header Files\Physics">
       <UniqueIdentifier>{1fd98646-f742-4332-b4d3-6f9e4646044a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Comet\Source Files\Renderer\Components">
+      <UniqueIdentifier>{78bc4052-306d-4e2a-8c76-c2205a3eb1c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Comet\Header Files\Renderer\Components">
+      <UniqueIdentifier>{10960cac-c6c4-45a6-933c-cc8d4f71855e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Comet\Header Files\Renderer\Components\Landscape">
+      <UniqueIdentifier>{56aed124-33d0-4d07-a1a9-8ef2d6ed6f5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Comet\Source Files\Renderer\Components\Landscape">
+      <UniqueIdentifier>{deea376d-f9d5-4326-b59f-cdb4b4f910a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.h">
@@ -87,25 +93,7 @@
     <ClInclude Include="Renderer.h">
       <Filter>Comet\Header Files\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Node.h">
-      <Filter>Comet\Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderable.h">
-      <Filter>Comet\Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Comet\Header Files\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="Viewport.h">
-      <Filter>Comet\Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Comet\Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>Comet\Header Files\Renderer</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderObject.h">
       <Filter>Comet\Header Files\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="MeshData.h">
@@ -150,9 +138,6 @@
     <ClInclude Include="WorldMapTile.h">
       <Filter>AdventureGame\h</Filter>
     </ClInclude>
-    <ClInclude Include="TextRenderable.h">
-      <Filter>Comet\Header Files\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Comet\Header Files\Resources</Filter>
     </ClInclude>
@@ -184,10 +169,10 @@
       <Filter>Comet\Header Files\external</Filter>
     </ClInclude>
     <ClInclude Include="Landscape.h">
-      <Filter>Comet\Header Files\Renderer\Landscape</Filter>
+      <Filter>Comet\Header Files\Renderer\Components\Landscape</Filter>
     </ClInclude>
     <ClInclude Include="LandscapeTile.h">
-      <Filter>Comet\Header Files\Renderer\Landscape</Filter>
+      <Filter>Comet\Header Files\Renderer\Components\Landscape</Filter>
     </ClInclude>
     <ClInclude Include="ShooterGame.h">
       <Filter>ShooterGame\h</Filter>
@@ -210,7 +195,34 @@
     <ClInclude Include="TypeInfo.h">
       <Filter>Comet\Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RenderPass.h">
+      <Filter>Comet\Header Files\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="VoxelVolumeMesh.h">
+      <Filter>Comet\Header Files\Renderer\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="TextRenderable.h">
+      <Filter>Comet\Header Files\Renderer\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderObject.h">
+      <Filter>Comet\Header Files\Renderer\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderable.h">
+      <Filter>Comet\Header Files\Renderer\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Comet\Header Files\Renderer\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Comet\Header Files\Renderer\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Comet\Header Files\Renderer\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Comet\Header Files\Renderer\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTarget.h">
       <Filter>Comet\Header Files\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
@@ -221,25 +233,7 @@
     <ClCompile Include="Renderer.cpp">
       <Filter>Comet\Source Files\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Node.cpp">
-      <Filter>Comet\Source Files\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderable.cpp">
-      <Filter>Comet\Source Files\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Comet\Source Files\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="Viewport.cpp">
-      <Filter>Comet\Source Files\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Comet\Source Files\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="Light.cpp">
-      <Filter>Comet\Source Files\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderObject.cpp">
       <Filter>Comet\Source Files\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="ResMan.cpp">
@@ -285,9 +279,6 @@
     <ClCompile Include="WorldMapTile.cpp">
       <Filter>AdventureGame\src</Filter>
     </ClCompile>
-    <ClCompile Include="TextRenderable.cpp">
-      <Filter>Comet\Source Files\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>Comet\Source Files\Resources</Filter>
     </ClCompile>
@@ -319,10 +310,10 @@
       <Filter>Comet\Header Files\external</Filter>
     </ClCompile>
     <ClCompile Include="Landscape.cpp">
-      <Filter>Comet\Source Files\Renderer\Landscape</Filter>
+      <Filter>Comet\Source Files\Renderer\Components\Landscape</Filter>
     </ClCompile>
     <ClCompile Include="LandscapeTile.cpp">
-      <Filter>Comet\Source Files\Renderer\Landscape</Filter>
+      <Filter>Comet\Source Files\Renderer\Components\Landscape</Filter>
     </ClCompile>
     <ClCompile Include="ShooterGame.cpp">
       <Filter>ShooterGame\src</Filter>
@@ -342,7 +333,34 @@
     <ClCompile Include="MotionState.cpp">
       <Filter>Comet\Source Files\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="RenderPass.cpp">
+      <Filter>Comet\Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Comet\Source Files\Renderer\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Comet\Source Files\Renderer\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Comet\Source Files\Renderer\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Node.cpp">
+      <Filter>Comet\Source Files\Renderer\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderable.cpp">
+      <Filter>Comet\Source Files\Renderer\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderObject.cpp">
+      <Filter>Comet\Source Files\Renderer\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TextRenderable.cpp">
+      <Filter>Comet\Source Files\Renderer\Components</Filter>
+    </ClCompile>
     <ClCompile Include="VoxelVolumeMesh.cpp">
+      <Filter>Comet\Source Files\Renderer\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTarget.cpp">
       <Filter>Comet\Source Files\Renderer</Filter>
     </ClCompile>
   </ItemGroup>

@@ -10,7 +10,16 @@ namespace Comet
 	class Texture2D : public Resource
 	{
 	public:
+		enum TEXFMT
+		{
+			RGBA,
+			RGB,
+			DEPTH16,
+			DEPTH24,
+			DEPTH32
+		};
 		Texture2D();
+		Texture2D(unsigned int w, unsigned int h, TEXFMT fmt);
 		~Texture2D();
 
 		void Load(std::string path);

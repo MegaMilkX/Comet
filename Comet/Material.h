@@ -24,7 +24,7 @@ namespace Comet
 	{
 	public:
 		Material();
-		Material(std::string shader, std::string texture0);
+		Material(std::string shader, std::string texture0 = "");
 		virtual ~Material();
 
 		enum POLYMODE

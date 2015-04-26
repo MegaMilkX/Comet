@@ -22,7 +22,32 @@ void ShooterGame::PostInit()
 {
 	//Rendering pipeline setup?
 	//TODO
+	//screenMat = new Material("data\\shaders\\screen.glsl");
+	//renderer->GetRootRenderPass()->SetMaterial(screenMat);
+	//RenderPass* pass = renderer->GetRootRenderPass()->CreatePass();
+	//pass->CreateImageBuffer("normals");
 
+	//Render pipeline with render targets
+	renderer->GetRenderTarget();
+	RenderTarget* renderTarget = new RenderTarget(1280, 720);
+	renderTarget->CreateImageBuffer("diffuse");
+	
+	//Viewport
+	Viewport* viewport = renderer->DefaultViewport();
+	viewport->SetColor(0.3f, 0.1f, 0.2f);
+	Viewport* vp0 = renderer->CreateViewport();
+	Viewport* vp = renderer->CreateViewport();
+	vp->SetRect(0, 0, 0.3f, 0.3f);
+	vp->SetColor(0.0f, 0.0f, 0.0f);
+
+	//Камера
+	camera_ = CreateEntity();
+	camera_->AddComponent(renderer->GetRoot()->CreateNode());
+	camera_->AddComponent(new Camera());
+	camera_->GetComponent<Camera>()->Perspective(95.0f, 1280.0f / 720.0f, 0.01f, 1000.0f);
+	camera_->GetComponent<Camera>()->SetViewport(vp);
+	//camera_->GetComponent<Camera>()->SetRenderTarget(renderTarget);
+	camera_->AddComponent(physics->CreateRigidBody(new btSphereShape(1), 0, true));
 
 	//моделька персонажа
 	Node* node = renderer->GetRoot()->CreateNode();
@@ -38,24 +63,8 @@ void ShooterGame::PostInit()
 
 
 	
-	Viewport* viewport = *(renderer->GetViewports().begin());
-	viewport->SetRect(0, 0, 1, 1);
-	viewport->SetColor(0.2f, 0.2f, 0.2f);
-	Viewport* vp = renderer->CreateViewport();
-	vp->SetRect(0, 0, 1, 1);
-	viewport->SetClearColor(true);
-	viewport->SetClearDepth(true);
+	
 
-
-
-
-	//Камера
-	camera_ = CreateEntity();
-	camera_->AddComponent(renderer->GetRoot()->CreateNode());
-	camera_->AddComponent(new Camera());
-	camera_->GetComponent<Camera>()->Perspective(95.0f, 1280.0f / 720.0f, 0.01f, 1000.0f);
-	camera_->GetComponent<Camera>()->SetViewport(vp);
-	camera_->AddComponent(physics->CreateRigidBody(new btSphereShape(1), 0, true));
 
 	//Пол
 	Entity* ground = CreateEntity();

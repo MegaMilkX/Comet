@@ -10,14 +10,14 @@ namespace Comet
 	Camera::Camera()
 	{
 		Core::GetInstance()->GetRenderer()->_regCamera(this);
+		//Default viewport should be always available
+		SetViewport(Core::GetInstance()->GetRenderer()->DefaultViewport());
 
 		fov = 95.0f;
 		zNear = 0.1f;
 		zFar = 10000.0f;
 		aspectW = 4;
 		aspectH = 3;
-
-		viewport = 0;
 	}
 
 
@@ -27,6 +27,8 @@ namespace Comet
 
 	void Camera::SetViewport(Viewport* vp)
 	{
+		if (viewport)
+			viewport->camera = 0;
 		viewport = vp;
 		vp->SetCamera(this);
 	}

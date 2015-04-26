@@ -40,9 +40,8 @@ namespace Comet
 	void Core::Init()											//Инициализация здесь ---------------------------------------------------
 	{
 		renderer->Init();
-		Viewport* vp = renderer->CreateViewport();
 
-		gui = new GUI(vp);
+		gui = new GUI(renderer->DefaultViewport());
 		gui->core = this;
 
 		//Loading and/or creating default resources
@@ -274,6 +273,7 @@ namespace Comet
 	bool Core::_postUpdate()
 	{
 		bool val = renderer->Update();
+		//bool val = renderer->UpdateMultipass();
 		time1 = glfwGetTime();
 		dt = time1 - time0;
 

@@ -32,8 +32,36 @@ namespace Comet
 
 	Texture2D::Texture2D()
 	{
+		texId = 0;
 	}
 
+	////////////////
+	//TODO
+	Texture2D::Texture2D(unsigned int w, unsigned int h, TEXFMT fmt)
+	{
+		GLint internalFormat;
+		GLenum format;
+		GLenum type;
+
+		switch (fmt)
+		{
+		case RGBA:
+			internalFormat = GL_RGBA;
+			format = GL_RGBA;
+			type = GL_UNSIGNED_BYTE;
+			break;
+		case DEPTH24:
+			internalFormat = GL_DEPTH_COMPONENT24;
+			format = GL_DEPTH_COMPONENT;
+			type = GL_FLOAT;
+			break;
+		}
+
+		glGenTextures(1, &texId);
+		glBindTexture(GL_TEXTURE_2D, texId);
+		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, w, h, 0, format, type, 0);
+	}
+	//////////////////
 
 	Texture2D::~Texture2D()
 	{
@@ -42,6 +70,8 @@ namespace Comet
 
 	void Texture2D::Load(std::string path)
 	{
+		if (texId != 0)
+			return;
 		/*
 		texId = SOIL_load_OGL_texture(path.c_str(), SOIL_LOAD_RGBA, SOIL_CREATE_NEW_ID, SOIL_FLAG_MIPMAPS|SOIL_FLAG_INVERT_Y);
 		if (0 == texId)
@@ -59,6 +89,8 @@ namespace Comet
 	//TODO: Сейчас метод принимает только текстуры с ОДНИМ каналом
 	void Texture2D::LoadFromMemory(unsigned char* data, unsigned int w, unsigned int h)	//С разными форматами надо подрочить
 	{
+		if (texId != 0)
+			return;
 		glGenBuffers(1, &texId);
 		glBindTexture(GL_TEXTURE_2D, texId);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, data);

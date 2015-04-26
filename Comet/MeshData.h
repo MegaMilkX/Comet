@@ -58,7 +58,7 @@ namespace Comet
 		void FillIndices(std::vector<unsigned short> data);//three per face
 		void FillUVW(std::vector<float> data);		//three per vertex
 
-		void RebuildNormals();
+		void RebuildNormals(std::vector<float>& posdata, std::vector<unsigned short>& faces);
 
 		void SetPrimitiveType(PrimitiveType type){ primitiveType = type; }
 	private:

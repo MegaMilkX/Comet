@@ -10,10 +10,10 @@ namespace Comet
 	class Viewport
 	{
 	public:
-		Viewport();
+		Viewport(Renderer* r);
 		~Viewport();
 
-		void SetCamera(Camera* cam){ camera = cam; }
+		void SetCamera(Camera* cam);
 		Camera* GetCamera(){ return camera; }
 
 		float GetWidth(){ return width; }
@@ -32,6 +32,7 @@ namespace Comet
 
 		Renderer* GetRenderer(){return renderer;}
 
+		friend Camera;
 		friend Renderer;
 	private:
 		Renderer* renderer;

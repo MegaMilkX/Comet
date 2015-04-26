@@ -34,7 +34,8 @@ namespace Comet
 	Material::Material(std::string shader, std::string texture0) : Material()
 	{
 		SetShader(shader);
-		SetTexture2D(texture0, 0);
+		if (texture0 != "")
+			SetTexture2D(texture0, 0);
 	}
 
 
@@ -95,6 +96,13 @@ namespace Comet
 		}
 
 		textures[layer] = tex;
+
+		std::vector<unsigned int> smpl;
+		for (int i = 0; i < textures.size(); i++)
+		{
+			smpl.push_back(i);
+		}
+		glUniform1iv(glGetUniformLocation(GetShader()->GetProgramId(), "textures"), smpl.size(), (GLint*)(smpl.data()));
 	}
 
 	void Material::SetShader(std::string resname)

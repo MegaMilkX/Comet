@@ -24,6 +24,9 @@
 #include "Light.h"
 #include "Node.h"
 
+#include "RenderPass.h"
+#include "RenderTarget.h"
+
 namespace Comet
 {
 	class Node;
@@ -55,6 +58,7 @@ namespace Comet
 
 		void Init();
 		bool Update();
+		bool UpdateMultipass();
 
 		Viewport* CreateViewport();
 
@@ -65,6 +69,11 @@ namespace Comet
 		unsigned int GetWindowWidth(){ return wWidth; }
 		unsigned int GetWindowHeight(){ return wHeight; }
 		void _updWindowSize(int width, int height){ wWidth = width; wHeight = height; }
+
+		RenderPass* GetRootRenderPass(){ return rootPass; }
+		//Returns default render target (the window target)
+		RenderTarget* GetRenderTarget(){ return renderTarget; }
+		Viewport* DefaultViewport(){ return *(viewports.begin()); }
 
 		Camera* GetCurrentCamera(){ return cameraRendering; }
 
@@ -78,6 +87,7 @@ namespace Comet
 		friend Viewport;
 		friend Light;
 		friend Renderable;
+		friend RenderPass;
 	private:
 		Core* core;
 
@@ -87,6 +97,10 @@ namespace Comet
 		std::set<Camera*> cameras;
 		Camera* cameraRendering;
 		std::set<Light*> lights;
+
+		RenderPass* rootPass;
+		Texture2D* depthTexture;
+		RenderTarget* renderTarget;
 
 		std::map<std::string, MeshData*> meshPrimitives;
 
@@ -108,7 +122,12 @@ namespace Comet
 		void _regLight(Light* l);
 
 		void _render(Camera* cam, Renderable* r);
+		void _renderViewport(Viewport* vp);
+		void _renderCamera(Camera* cam);
+		void _renderMultipass(RenderPass* pass);
 		void _renderNodeUnsorted(Camera* cam, Node* node);
+
+		void _renderFullscreenQuad(Material* mat);
 	};
 
 };

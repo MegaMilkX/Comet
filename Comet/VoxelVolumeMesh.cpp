@@ -365,7 +365,7 @@ namespace Comet
 		meshData->FillColor(color);
 		meshData->FillIndices(indices);
 
-		meshData->RebuildNormals();
+		meshData->RebuildNormals(vertices, indices);
 	}
 
 	VoxelVolumeMesh::~VoxelVolumeMesh()
@@ -464,5 +464,7 @@ namespace Comet
 		meshData->FillPosition(vertices);
 		meshData->FillColor(color);
 		meshData->FillIndices(indices);
+
+		meshData->RebuildNormals(vertices, indices);
 	}
 }

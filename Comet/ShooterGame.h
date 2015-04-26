@@ -21,5 +21,8 @@ private:
 
 	Comet::VoxelVolumeMesh* volumeMesh;
 	float disp;
+
+	Comet::Material* screenMat;
+	float sTime;
 };
 
