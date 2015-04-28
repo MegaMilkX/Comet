@@ -8,10 +8,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "RenderTarget.h"
+
 namespace Comet
 {
-
-	class Viewport;
 
 	class Camera : public RenderObject
 	{
@@ -25,10 +25,10 @@ namespace Comet
 		glm::mat4 GetProjection();
 		glm::mat4 GetView();
 
-		void SetViewport(Viewport* vp);
-		Viewport* GetViewport(){ return viewport; }
+		void SetRenderTarget(RenderTarget* rt);
+		RenderTarget* GetRenderTarget(){ return renderTarget; }
 
-		friend Viewport;
+		friend RenderTarget;
 	private:
 		glm::mat4 projection;
 		glm::mat4 view;
@@ -38,7 +38,7 @@ namespace Comet
 		float aspectW, aspectH;
 		bool dirty;
 
-		Viewport* viewport;
+		RenderTarget* renderTarget;
 	};
 
 };

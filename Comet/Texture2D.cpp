@@ -22,6 +22,9 @@ namespace Comet
 		glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, (GLint*)&width);
 		glGetTexLevelParameteriv(GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, (GLint*)&height);
 
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
 		texture2D->SetDimensions(width, height);
 		texture2D->SetTextureId(texId);
 		texture2D->IsReady(true);
@@ -37,22 +40,25 @@ namespace Comet
 
 	////////////////
 	//TODO
-	Texture2D::Texture2D(unsigned int w, unsigned int h, TEXFMT fmt)
+	Texture2D::Texture2D(unsigned int w, unsigned int h, TEXFMT fmt, unsigned int type)
 	{
 		GLint internalFormat;
 		GLenum format;
-		GLenum type;
 
 		switch (fmt)
 		{
 		case RGBA:
 			internalFormat = GL_RGBA;
 			format = GL_RGBA;
-			type = GL_UNSIGNED_BYTE;
 			break;
 		case DEPTH24:
 			internalFormat = GL_DEPTH_COMPONENT24;
 			format = GL_DEPTH_COMPONENT;
+			type = GL_FLOAT; //Force GL_FLOAT
+			break;
+		case NORM:
+			internalFormat = GL_RGB8_SNORM;
+			format = GL_RGB;
 			type = GL_FLOAT;
 			break;
 		}
@@ -60,6 +66,11 @@ namespace Comet
 		glGenTextures(1, &texId);
 		glBindTexture(GL_TEXTURE_2D, texId);
 		glTexImage2D(GL_TEXTURE_2D, 0, internalFormat, w, h, 0, format, type, 0);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		IsReady(true);
 	}
 	//////////////////
 
@@ -94,6 +105,10 @@ namespace Comet
 		glGenBuffers(1, &texId);
 		glBindTexture(GL_TEXTURE_2D, texId);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_ALPHA, GL_UNSIGNED_BYTE, data);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		width = w;
 		height = h;
 

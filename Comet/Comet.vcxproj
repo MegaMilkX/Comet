@@ -134,7 +134,7 @@
     <ClInclude Include="Renderable.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="RenderObject.h" />
-    <ClInclude Include="RenderPass.h" />
+    <ClInclude Include="PostProcess.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="ResMan.h" />
     <ClInclude Include="Resource.h" />
@@ -183,7 +183,7 @@
     <ClCompile Include="Renderable.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderObject.cpp" />
-    <ClCompile Include="RenderPass.cpp" />
+    <ClCompile Include="PostProcess.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="ResMan.cpp" />
     <ClCompile Include="Resource.cpp" />

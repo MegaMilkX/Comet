@@ -37,7 +37,6 @@ namespace Comet
 		void ReadGraphFile(std::string path, Node* node);
 
 		Renderer* GetRenderer(){ return renderer; }
-		GUI* GetGUI(){ return gui; }
 
 		MeshData* GetMeshDataPrimitive(std::string name);
 		void LoadScene(std::string path);
@@ -56,8 +55,6 @@ namespace Comet
 		Physics*	physics;
 
 		std::set<Entity*> entities;
-
-		GUI*		gui;
 
 		UserConsole* userConsole;
 	private:

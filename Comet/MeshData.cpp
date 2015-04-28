@@ -60,6 +60,7 @@ namespace Comet
 			vertexPool.clear();
 			uvwPool.clear();
 
+			//TODO?
 			std::vector<unsigned int> facePool;
 			for (unsigned int i = 0; i < meshIO.meshes.size(); i++)
 			{
@@ -81,9 +82,8 @@ namespace Comet
 			nFaces = facePool.size() / 3;
 			nVerts = vertexPool.size() / 3;
 
-			vertexAttribLayout = 0;
-			//TODO
 			vertexAttribLayout = VATTR_POS | VATTR_UVW;
+			RebuildNormals(vertexPool, std::vector<unsigned short>(facePool.begin(), facePool.end()));
 
 			glGenBuffers(1, &bufPos);
 			glBindBuffer(GL_ARRAY_BUFFER, bufPos);

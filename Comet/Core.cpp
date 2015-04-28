@@ -41,9 +41,6 @@ namespace Comet
 	{
 		renderer->Init();
 
-		gui = new GUI(renderer->DefaultViewport());
-		gui->core = this;
-
 		//Loading and/or creating default resources
 		//Such as font shader and placeholder textures
 
@@ -266,7 +263,6 @@ namespace Comet
 	void Core::_preUpdate()
 	{
 		time0 = glfwGetTime();
-		gui->Update();
 		physics->Update();
 	}
 

@@ -102,6 +102,7 @@ namespace Comet
 		{
 			smpl.push_back(i);
 		}
+		glUseProgram(GetShader()->GetProgramId());
 		glUniform1iv(glGetUniformLocation(GetShader()->GetProgramId(), "textures"), smpl.size(), (GLint*)(smpl.data()));
 	}
 
@@ -113,6 +114,23 @@ namespace Comet
 	void Material::SetShader(Shader* shad)
 	{
 		shaderProgram = shad;
+	}
+
+	void Material::BindTextures()
+	{
+		for (int i = 0; i < GetTextures().size(); i++)
+		{
+			if (!(GetTextures()[i]->IsReady()))
+			{
+				glActiveTexture(GL_TEXTURE0 + i);
+				glBindTexture(GL_TEXTURE_2D, 0);
+				continue;
+			}
+
+			glActiveTexture(GL_TEXTURE0 + i);
+			glBindTexture(GL_TEXTURE_2D, GetTextures()[i]->GetTextureId());
+			
+		}
 	}
 
 	void Material::glSetUniforms()

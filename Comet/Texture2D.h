@@ -14,12 +14,14 @@ namespace Comet
 		{
 			RGBA,
 			RGB,
+			NORM,
 			DEPTH16,
 			DEPTH24,
 			DEPTH32
 		};
 		Texture2D();
-		Texture2D(unsigned int w, unsigned int h, TEXFMT fmt);
+		//Default type is GL_UNSIGNED_BYTE
+		Texture2D(unsigned int w, unsigned int h, TEXFMT fmt, unsigned int type = 0x1401);
 		~Texture2D();
 
 		void Load(std::string path);

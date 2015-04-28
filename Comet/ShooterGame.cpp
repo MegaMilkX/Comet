@@ -20,35 +20,24 @@ void ShooterGame::Init()
 
 void ShooterGame::PostInit()
 {
-	//Rendering pipeline setup?
-	//TODO
-	//screenMat = new Material("data\\shaders\\screen.glsl");
-	//renderer->GetRootRenderPass()->SetMaterial(screenMat);
-	//RenderPass* pass = renderer->GetRootRenderPass()->CreatePass();
-	//pass->CreateImageBuffer("normals");
-
 	//Render pipeline with render targets
-	renderer->GetRenderTarget();
 	RenderTarget* renderTarget = new RenderTarget(1280, 720);
 	renderTarget->CreateImageBuffer("diffuse");
-	
-	//Viewport
-	Viewport* viewport = renderer->DefaultViewport();
-	viewport->SetColor(0.3f, 0.1f, 0.2f);
-	Viewport* vp0 = renderer->CreateViewport();
-	Viewport* vp = renderer->CreateViewport();
-	vp->SetRect(0, 0, 0.3f, 0.3f);
-	vp->SetColor(0.0f, 0.0f, 0.0f);
+	renderTarget->CreateImageBuffer("position");
+	renderTarget->CreateImageBuffer("normal", Texture2D::NORM);
+
+	pp = renderTarget->CreatePostProcess(new Material("data\\shaders\\screen.glsl"));
+	pp->SetOutput(renderer->GetRenderTarget());
 
 	//Камера
+	
 	camera_ = CreateEntity();
 	camera_->AddComponent(renderer->GetRoot()->CreateNode());
 	camera_->AddComponent(new Camera());
 	camera_->GetComponent<Camera>()->Perspective(95.0f, 1280.0f / 720.0f, 0.01f, 1000.0f);
-	camera_->GetComponent<Camera>()->SetViewport(vp);
-	//camera_->GetComponent<Camera>()->SetRenderTarget(renderTarget);
 	camera_->AddComponent(physics->CreateRigidBody(new btSphereShape(1), 0, true));
-
+	camera_->GetComponent<Camera>()->SetRenderTarget(renderTarget);
+	
 	//моделька персонажа
 	Node* node = renderer->GetRoot()->CreateNode();
 	node->SetPosition(glm::vec3(0, 3.1f, 0));
@@ -56,8 +45,10 @@ void ShooterGame::PostInit()
 	node->Attach(mesh);
 
 	Material* mat = new Material();
-	mat->SetShader("data\\shaders\\terrain.glsl");
+	mat->SetShader("data\\shaders\\deferred.glsl");
 	mat->SetTexture2D("data\\textures\\test2.tga", 0);
+	//mat->SetTexture2D(renderTarget->GetImageBuffer("diffuse"), 0);
+	//mat->SetTexture2D(renderTarget->GetDepthBuffer(), 0);
 	mesh->SetMaterial(mat);
 	//-------------------
 
@@ -70,23 +61,23 @@ void ShooterGame::PostInit()
 	Entity* ground = CreateEntity();
 	ground->AddComponent(renderer->GetRoot()->CreateNode());
 	ground->AddComponent(new Mesh(renderer->GetMeshDataPrimitive("plane")));
-	ground->GetComponent<Mesh>()->SetMaterial(new Material("data\\shaders\\sphere.glsl", "data\\textures\\WoodFine0007_M.jpg"));
+	ground->GetComponent<Mesh>()->SetMaterial(new Material("data\\shaders\\deferrednormal.glsl", "data\\textures\\177.tga"));
+	ground->GetComponent<Mesh>()->GetMaterial()->SetTexture2D("data\\textures\\177_norm.tga", 1);
 	ground->AddComponent(physics->CreateRigidBody(new btBoxShape(btVector3(25, 0, 25)), 0));
 	ground->GetComponent<Node>()->Scale(glm::vec3(50, 50, 1));
 	ground->GetComponent<Node>()->Rotate(-3.14f / 2.0f, glm::vec3(1, 0, 0), 0);
 
 	//
-	this->ReadGraphFile("data\\test.graph", renderer->GetRoot());
+	//this->ReadGraphFile("data\\test.graph", renderer->GetRoot());
 
 	//Marching stars
-	Material* LandMaterial = new Material("data\\shaders\\marchingstar.glsl", "data\\textures\\Die-Sargprinzessin-1-4_.png");
+	Material* LandMaterial = new Material("data\\shaders\\deferredmarchingcubes.glsl", "data\\textures\\GrassDead0102_1_S.jpg");
+	LandMaterial->SetTexture2D("data\\textures\\Grass0026_1_S.jpg", 1);
 
 	Entity* tetra = CreateEntity();
 	tetra->AddComponent(renderer->GetRoot()->CreateNode());
 	tetra->AddComponent(new VoxelVolumeMesh(16, 16, 16));
 	tetra->GetComponent<VoxelVolumeMesh>()->SetMaterial(LandMaterial);
-	//tetra->GetComponent<VoxelVolumeMesh>()->GetMaterial()->SetPolygonMode(Material::WIRE);
-	//tetra->GetComponent<VoxelVolumeMesh>()->GetMeshData()->SetPrimitiveType(MeshData::POINT);
 	volumeMesh = tetra->GetComponent<VoxelVolumeMesh>();
 }
 
@@ -134,7 +125,7 @@ bool ShooterGame::Update()
 		Entity* sphere = CreateEntity();
 		sphere->AddComponent(renderer->GetRoot()->CreateNode());
 		sphere->AddComponent(new Mesh("data\\models\\sphere.xyz"));
-		sphere->GetComponent<Mesh>()->SetMaterial(new Material("data\\shaders\\sphere.glsl", "data\\textures\\2014-11-20-688057.jpeg"));
+		sphere->GetComponent<Mesh>()->SetMaterial(new Material("data\\shaders\\deferred.glsl", "data\\textures\\2014-11-20-688057.jpeg"));
 		btCollisionShape* shape = new btSphereShape(1);
 		btCollisionShape* cyllinder = new btCylinderShape(btVector3(1, 1, 1.5f));
 		btCollisionShape* capsule = new btCapsuleShape(1, 0);
@@ -144,7 +135,9 @@ bool ShooterGame::Update()
 	}
 
 	disp += 1.0f * GetDt();
-	volumeMesh->_MoveNoise(disp, 0, 0);
+	//volumeMesh->_MoveNoise(disp, 0, 0);
+
+	pp->GetMaterial()->SetParameter("cameraPos", camera_->GetComponent<Camera>()->GetNode()->GetBack());
 
 	return Core::_postUpdate();
 }

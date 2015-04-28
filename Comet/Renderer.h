@@ -12,7 +12,6 @@
 #include <gl/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "Viewport.h"
 #include "Renderable.h"
 
 #include "Mesh.h"
@@ -24,7 +23,7 @@
 #include "Light.h"
 #include "Node.h"
 
-#include "RenderPass.h"
+#include "PostProcess.h"
 #include "RenderTarget.h"
 
 namespace Comet
@@ -58,22 +57,18 @@ namespace Comet
 
 		void Init();
 		bool Update();
+		//Remove this one
 		bool UpdateMultipass();
 
-		Viewport* CreateViewport();
-
 		Node* GetRoot(){ return rootNode; }
-		std::set<Viewport*> GetViewports(){ return viewports; }
 		GLFWwindow* GetWindow(){ return window; }
 		GLFWwindow* GetSecondContext(){ return loading_context; }
 		unsigned int GetWindowWidth(){ return wWidth; }
 		unsigned int GetWindowHeight(){ return wHeight; }
 		void _updWindowSize(int width, int height){ wWidth = width; wHeight = height; }
 
-		RenderPass* GetRootRenderPass(){ return rootPass; }
 		//Returns default render target (the window target)
 		RenderTarget* GetRenderTarget(){ return renderTarget; }
-		Viewport* DefaultViewport(){ return *(viewports.begin()); }
 
 		Camera* GetCurrentCamera(){ return cameraRendering; }
 
@@ -84,22 +79,18 @@ namespace Comet
 
 		friend Core;
 		friend Camera;
-		friend Viewport;
 		friend Light;
 		friend Renderable;
-		friend RenderPass;
+		friend PostProcess;
 	private:
 		Core* core;
 
 		Node* rootNode;
-		std::set<Viewport*> viewports;
 		std::set<Renderable*> renderables;
 		std::set<Camera*> cameras;
 		Camera* cameraRendering;
 		std::set<Light*> lights;
 
-		RenderPass* rootPass;
-		Texture2D* depthTexture;
 		RenderTarget* renderTarget;
 
 		std::map<std::string, MeshData*> meshPrimitives;
@@ -116,17 +107,16 @@ namespace Comet
 		void _setZWrite(bool val);
 		void _setPolyMode(int m);
 
-		void _regViewport(Viewport* vp);
 		void _regRenderable(Renderable* r);
 		void _regCamera(Camera* cam);
 		void _regLight(Light* l);
 
 		void _render(Camera* cam, Renderable* r);
-		void _renderViewport(Viewport* vp);
 		void _renderCamera(Camera* cam);
-		void _renderMultipass(RenderPass* pass);
+		void _renderMultipass(PostProcess* pass);
 		void _renderNodeUnsorted(Camera* cam, Node* node);
 
+		void _renderPostProcess(PostProcess* pp);
 		void _renderFullscreenQuad(Material* mat);
 	};
 

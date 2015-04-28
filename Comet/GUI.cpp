@@ -30,7 +30,7 @@ namespace Comet
 		//Следим за курсором здесь
 		cursor->Reset();
 
-		glfwGetCursorPos(viewport->GetRenderer()->GetWindow(), &(cursor->x), &(cursor->y));
+		//glfwGetCursorPos(viewport->GetRenderer()->GetWindow(), &(cursor->x), &(cursor->y));
 		rootElement->Update(cursor);
 
 		cursor->Update();

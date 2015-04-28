@@ -35,7 +35,7 @@ void AdventureGame::PostInit()
 	//textNode->Attach(text);
 	
 
-	
+	/*
 	Comet::GUIElement* charFrameContainer = gui->GetRoot()->CreateElement<Comet::GUIElement>();
 	charFrameContainer->SetRect(8, 8, 168, 72);
 	charFrameContainer->SetName("characterFrame");
@@ -67,7 +67,7 @@ void AdventureGame::PostInit()
 				Comet::GUISprite* portraitFrame = portraitSprite->CreateElement<Comet::GUISprite>();
 				portraitFrame->SetTexture("data\\textures\\portrait_frame.tga");
 				portraitFrame->SetRect(-2, -2, 68, 68);
-				portraitFrame->SetName("portraitFrame");
+				portraitFrame->SetName("portraitFrame");*/
 }
 
 bool AdventureGame::Update()
@@ -80,7 +80,7 @@ bool AdventureGame::Update()
 	ss.clear();
 	//ss << "Magic>: " << glfwGetTime() << " " << gui->GetCursor()->Y();
 	//ss << "Magic>: " << gui->GetCursor()->X() << " " << gui->GetCursor()->Y();
-
+	/*
 	if (gui->GetCursor()->GetFocusElement())
 	{
 		ss << gui->GetCursor()->GetFocusElement()->GetName();
@@ -88,7 +88,7 @@ bool AdventureGame::Update()
 	else
 	{
 		ss << "empty";
-	}
+	}*/
 	//text->GetMaterial()->SetParameter("time", (float)glfwGetTime());
 	//text->SetText(ss.str());
 

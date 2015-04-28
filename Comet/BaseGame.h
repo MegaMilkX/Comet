@@ -19,6 +19,7 @@ namespace Comet
 		double px, py;
 
 		Node* node2;
+		Camera* cam;
 	};
 
 }

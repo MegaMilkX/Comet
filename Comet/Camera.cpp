@@ -1,7 +1,5 @@
 #include "Camera.h"
 
-#include "Viewport.h"
-
 #include "Core.h"
 
 namespace Comet
@@ -10,27 +8,26 @@ namespace Comet
 	Camera::Camera()
 	{
 		Core::GetInstance()->GetRenderer()->_regCamera(this);
-		//Default viewport should be always available
-		SetViewport(Core::GetInstance()->GetRenderer()->DefaultViewport());
+		RenderTarget* rt = Core::GetInstance()->GetRenderer()->GetRenderTarget();
+		if (rt->camera == 0)
+			SetRenderTarget(Core::GetInstance()->GetRenderer()->GetRenderTarget());
 
-		fov = 95.0f;
-		zNear = 0.1f;
-		zFar = 10000.0f;
-		aspectW = 4;
-		aspectH = 3;
+		Perspective(95.0f, 1280.0f / 720.0f, 0.01f, 1000.0f);
 	}
 
 
 	Camera::~Camera()
 	{
+		if (renderTarget)
+			renderTarget->camera = 0;
 	}
 
-	void Camera::SetViewport(Viewport* vp)
+	void Camera::SetRenderTarget(RenderTarget* rt)
 	{
-		if (viewport)
-			viewport->camera = 0;
-		viewport = vp;
-		vp->SetCamera(this);
+		if (renderTarget)
+			renderTarget->camera = 0;
+		renderTarget = rt;
+		renderTarget->camera = this;
 	}
 
 	glm::mat4 Camera::GetProjection()

@@ -24,5 +24,7 @@ private:
 
 	Comet::Material* screenMat;
 	float sTime;
+
+	Comet::PostProcess* pp;
 };
 

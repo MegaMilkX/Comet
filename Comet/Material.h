@@ -66,8 +66,12 @@ namespace Comet
 			{
 				((T*)(it->second.val))[0] = value;
 			}
+
+			glUseProgram(shaderProgram->GetProgramId());
+			glSetUniforms();
 		}
 
+		void BindTextures();
 		void glSetUniforms();
 
 		int GetOrder(){ return order; }

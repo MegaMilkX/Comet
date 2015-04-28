@@ -36,10 +36,10 @@ void WorldMapScene::Init()
 	//Êàìåðà è ëè÷íûé âüþïîðò äëÿ ñöåíû êàðòû
 	//viewport = game->GetRenderer()->CreateViewport();
 	//ÑÎÇÄÀÍÈÅ ÂÜÞÏÎÐÒÎÂ ÏÎÊÀ ÍÅ ÐÀÁÎÒÀÅÒ, ÁÅÐÈ ÄÅÔÎËÒÍÛÉ
-	viewport = *(game->GetRenderer()->GetViewports().begin());
+	//viewport = *(game->GetRenderer()->GetViewports().begin());
 	camera = new Comet::Camera();
 	camera->Perspective(95.0f, 1280.0f / 720.0f, 0.001f, 1000.0f);
-	camera->SetViewport(viewport);
+	//camera->SetViewport(viewport);
 
 	nodeCamera = game->GetRenderer()->GetRoot()->CreateNode();
 	nodeCamera->SetPosition(glm::vec3(0.0f, 0.0f, 270.0f));

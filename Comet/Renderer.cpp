@@ -18,8 +18,6 @@ namespace Comet
 		rootNode = new Node();
 		fullscreen = false;
 
-		depthTexture = 0;
-		rootPass = 0;
 		renderTarget = 0;
 
 		wWidth = 1280;
@@ -31,10 +29,6 @@ namespace Comet
 	{
 		if (renderTarget)
 			delete renderTarget;
-		if (depthTexture)
-			delete depthTexture;
-		if (rootPass)
-			delete rootPass;
 		delete rootNode;
 	}
 
@@ -80,16 +74,9 @@ namespace Comet
 
 		glPointSize(3);
 
-		////////////////////////////
-		//Mandatory default viewport
-		CreateViewport();
 		//////////////////////////////////////////
-		//Depth buffer texture
-		depthTexture = new Texture2D(1280, 720, Texture2D::DEPTH24);
-		//////////////////////////////////////////
-		rootPass = new RenderPass(this, 0);
-
 		renderTarget = new RenderTarget();
+		renderTarget->Resize(1280, 720);
 	}
 
 	void Renderer::_setZTest(bool val)
@@ -139,66 +126,17 @@ namespace Comet
 	{
 		if (glfwWindowShouldClose(window))
 			return false;
-		renderTarget->Bind();
 
-		std::set<Viewport*>::iterator vIt;
-		for (vIt = viewports.begin(); vIt != viewports.end(); vIt++)
-			_renderViewport(*vIt);
+		//Render cameras
+		std::set<Camera*>::iterator camIt;
+		for (camIt = cameras.begin(); camIt != cameras.end(); camIt++)
+			_renderCamera(*camIt);
+
 
 		glfwSwapBuffers(window);
-		glfwPollEvents();
-
-		return true;
-	}
-
-	bool Renderer::UpdateMultipass()
-	{
-		if (glfwWindowShouldClose(window))
-			return false;
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		_renderMultipass(rootPass);
 
 		glfwPollEvents();
 		return true;
-	}
-
-	void Renderer::_renderMultipass(RenderPass* pass)
-	{
-		
-		if (pass->passes.size() > 0)
-		{
-			std::vector<RenderPass*>::iterator it;
-			for (it = pass->passes.begin(); it != pass->passes.end(); it++)
-			{
-				_renderMultipass(*it);
-			}
-
-			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, pass->frameBuffer);
-			for (int i = 0; i < pass->material->GetTextures().size(); i++)
-			{
-				glActiveTexture(GL_TEXTURE0 + i);
-				glBindTexture(GL_TEXTURE_2D, pass->material->GetTextures()[i]->GetTextureId());
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-			}
-			_renderFullscreenQuad(pass->material);
-		}
-		else
-		{
-			glBindFramebuffer(GL_DRAW_FRAMEBUFFER, pass->frameBuffer);
-
-			//Здесь, если материал указан, следует установить его как FORCED, чтобы все объекты в этот проход были отрисованы именно с ним
-
-			std::set<Viewport*>::iterator vIt;
-			for (vIt = viewports.begin(); vIt != viewports.end(); vIt++)
-				_renderViewport(*vIt);
-		}
-		
-		if (!pass->parent)
-			glfwSwapBuffers(window);
 	}
 
 	void Renderer::_renderFullscreenQuad(Material* mat)
@@ -207,6 +145,7 @@ namespace Comet
 		_setZWrite(false);
 		_setPolyMode(0);
 		glUseProgram(mat->GetShader()->GetProgramId());
+		mat->BindTextures();
 		mat->glSetUniforms();
 
 		glBegin(GL_TRIANGLES);
@@ -219,46 +158,42 @@ namespace Comet
 		glEnd();
 	}
 
-	Viewport* Renderer::CreateViewport()
-	{
-		Viewport* vp = new Viewport(this);
-		vp->SetRect(0, 0, 1, 1);
-		vp->SetClearColor(true);
-		vp->SetClearDepth(true);
-		vp->SetColor(0.0f, 0.0f, 0.0f, 1.0f);
-
-		printf("[VP] Viewport created.\n");
-		return vp;
-	}
-
-	//Render the scene through one viewport
-	void Renderer::_renderViewport(Viewport* vp)
-	{
-		glViewport(wWidth*vp->GetLeft(), wHeight*vp->GetBottom(), wWidth*(vp->GetLeft() + vp->GetWidth()), wHeight*(vp->GetBottom() + vp->GetHeight()));
-		glScissor(wWidth*vp->GetLeft(), wHeight*vp->GetBottom(), wWidth*(vp->GetLeft() + vp->GetWidth()), wHeight*(vp->GetBottom() + vp->GetHeight()));
-
-		_setZWrite(true);
-		glClearColor(vp->r, vp->g, vp->b, vp->a);
-		glClear(vp->clearFlags);
-
-		_renderCamera(vp->GetCamera());
-	}
-
 	void Renderer::_renderCamera(Camera* cam)
 	{
-		if (!cam)
+		RenderTarget* rt = cam->GetRenderTarget();
+		if (!rt)
 			return;
-		
 		cameraRendering = cam;
+
+		rt->Bind();
+
+		_setZWrite(true);
+		_setZTest(true);
+		glClearColor(0, 0, 0, 1);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		std::vector<Renderable*> sorted(renderables.begin(), renderables.end());
 		std::sort(sorted.begin(), sorted.end(), renderableCompare());
-
 		std::vector<Renderable*>::iterator rIt;
 		for (rIt = sorted.begin(); rIt != sorted.end(); rIt++)
 		{
 			(*rIt)->Update();
 			_render(cam, (*rIt));
 		}
+
+		//Go through post-processes
+		_renderPostProcess(rt->GetPostProcess());
+
+		//_renderFullscreenQuad(0);
+	}
+
+	void Renderer::_renderPostProcess(PostProcess* pp)
+	{
+		if (!pp)
+			return;
+
+		pp->GetOutput()->Bind();
+		_renderFullscreenQuad(pp->GetMaterial());
 	}
 
 	void Renderer::_render(Camera* cam, Renderable* r)
@@ -339,25 +274,7 @@ namespace Comet
 		glUniformMatrix4fv(shader->GetAttribLocation(Shader::V), 1, GL_FALSE, glm::value_ptr(cam->GetView()));
 		glUniformMatrix4fv(shader->GetAttribLocation(Shader::P), 1, GL_FALSE, glm::value_ptr(cam->GetProjection()));
 
-		//Текстурки
-		for (int i = 0; i < r->GetMaterial()->GetTextures().size(); i++)
-		{
-			if (!(r->GetMaterial()->GetTextures()[i]->IsReady()))
-			{
-				glActiveTexture(GL_TEXTURE0 + i);
-				glBindTexture(GL_TEXTURE_2D, 0);
-				continue;
-			}
-
-			glActiveTexture(GL_TEXTURE0 + i);
-			glBindTexture(GL_TEXTURE_2D, r->GetMaterial()->GetTextures()[i]->GetTextureId());
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		}
-
-		r->GetMaterial()->glSetUniforms();
+		r->GetMaterial()->BindTextures();
 
 		if (r->GetMeshData()->GetFaceBuffer())
 		{
@@ -442,10 +359,6 @@ namespace Comet
 		return data;
 	}
 
-	void Renderer::_regViewport(Viewport* vp)
-	{
-		viewports.insert(vp);
-	}
 	void Renderer::_regRenderable(Renderable* r)
 	{
 		renderables.insert(r);

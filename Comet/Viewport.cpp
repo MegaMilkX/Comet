@@ -8,7 +8,7 @@ namespace Comet
 
 	Viewport::Viewport(Renderer* r)
 	{
-		Core::GetInstance()->GetRenderer()->_regViewport(this);
+		//Core::GetInstance()->GetRenderer()->_regViewport(this);
 
 		camera = 0;
 
@@ -43,8 +43,8 @@ namespace Comet
 
 	void Viewport::SetCamera(Camera* cam)
 	{
-		if (camera)
-			camera->viewport = 0;
+		//if (camera)
+		//	camera->viewport = 0;
 		camera = cam; 
 	}
 };

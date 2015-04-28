@@ -195,9 +195,6 @@
     <ClInclude Include="TypeInfo.h">
       <Filter>Comet\Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RenderPass.h">
-      <Filter>Comet\Header Files\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="VoxelVolumeMesh.h">
       <Filter>Comet\Header Files\Renderer\Components</Filter>
     </ClInclude>
@@ -223,6 +220,9 @@
       <Filter>Comet\Header Files\Renderer\Components</Filter>
     </ClInclude>
     <ClInclude Include="RenderTarget.h">
+      <Filter>Comet\Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcess.h">
       <Filter>Comet\Header Files\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
@@ -333,9 +333,6 @@
     <ClCompile Include="MotionState.cpp">
       <Filter>Comet\Source Files\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="RenderPass.cpp">
-      <Filter>Comet\Source Files\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Comet\Source Files\Renderer\Components</Filter>
     </ClCompile>
@@ -361,6 +358,9 @@
       <Filter>Comet\Source Files\Renderer\Components</Filter>
     </ClCompile>
     <ClCompile Include="RenderTarget.cpp">
+      <Filter>Comet\Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="PostProcess.cpp">
       <Filter>Comet\Source Files\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
