@@ -1,7 +1,8 @@
 #pragma once
 
 #include "BaseGame.h"
-#include "VoxelVolumeMesh.h"
+#include "Player.h"
+#include "VoxelWorld.h"
 
 class ShooterGame : public Comet::BaseGame
 {
@@ -14,6 +15,9 @@ public:
 	void Start();
 	bool Update();
 private:
+	VoxelWorld* world;
+
+	//temporary
 	double mx, my;
 	double px, py;
 

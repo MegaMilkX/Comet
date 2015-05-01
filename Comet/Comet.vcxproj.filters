@@ -192,9 +192,6 @@
     <ClInclude Include="MotionState.h">
       <Filter>Comet\Header Files\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="TypeInfo.h">
-      <Filter>Comet\Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="VoxelVolumeMesh.h">
       <Filter>Comet\Header Files\Renderer\Components</Filter>
     </ClInclude>
@@ -224,6 +221,15 @@
     </ClInclude>
     <ClInclude Include="PostProcess.h">
       <Filter>Comet\Header Files\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="VoxelWorld.h">
+      <Filter>ShooterGame\h</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldBlock.h">
+      <Filter>ShooterGame\h</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>ShooterGame\h</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -362,6 +368,15 @@
     </ClCompile>
     <ClCompile Include="PostProcess.cpp">
       <Filter>Comet\Source Files\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="VoxelWorld.cpp">
+      <Filter>ShooterGame\src</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldBlock.cpp">
+      <Filter>ShooterGame\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>ShooterGame\src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

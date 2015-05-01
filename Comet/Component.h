@@ -6,12 +6,12 @@ namespace Comet
 	class Component
 	{
 	public:
-		Component();
-		virtual ~Component();
+						Component();
+		virtual			~Component();
 
-		virtual void SetEntity(Entity* e);
+		virtual void	SetEntity(Entity* e);
 	protected:
-		Entity* entity;
+		Entity*			entity;
 	};
 
 }

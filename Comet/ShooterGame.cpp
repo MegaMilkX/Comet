@@ -4,12 +4,14 @@ using namespace Comet;
 
 ShooterGame::ShooterGame()
 {
-	
+	world = 0;
 }
 
 
 ShooterGame::~ShooterGame()
 {
+	if (world)
+		delete world;
 }
 
 void ShooterGame::Init()
@@ -30,13 +32,20 @@ void ShooterGame::PostInit()
 	pp->SetOutput(renderer->GetRenderTarget());
 
 	//Камера
-	
 	camera_ = CreateEntity();
 	camera_->AddComponent(renderer->GetRoot()->CreateNode());
 	camera_->AddComponent(new Camera());
-	camera_->GetComponent<Camera>()->Perspective(95.0f, 1280.0f / 720.0f, 0.01f, 1000.0f);
+	camera_->GetComponent<Camera>()->Perspective(95.0f, 1280.0f / 720.0f, 0.01f, 100.0f);
 	camera_->AddComponent(physics->CreateRigidBody(new btSphereShape(1), 0, true));
 	camera_->GetComponent<Camera>()->SetRenderTarget(renderTarget);
+
+	
+	/////////////////////////////////////
+	//TODO: Initialize the game here
+	world = new VoxelWorld(this);
+
+	/////////////////////////////////////
+
 	
 	//моделька персонажа
 	Node* node = renderer->GetRoot()->CreateNode();
@@ -52,11 +61,6 @@ void ShooterGame::PostInit()
 	mesh->SetMaterial(mat);
 	//-------------------
 
-
-	
-	
-
-
 	//Пол
 	Entity* ground = CreateEntity();
 	ground->AddComponent(renderer->GetRoot()->CreateNode());
@@ -67,10 +71,11 @@ void ShooterGame::PostInit()
 	ground->GetComponent<Node>()->Scale(glm::vec3(50, 50, 1));
 	ground->GetComponent<Node>()->Rotate(-3.14f / 2.0f, glm::vec3(1, 0, 0), 0);
 
-	//
+	//Hierarchy loading
 	//this->ReadGraphFile("data\\test.graph", renderer->GetRoot());
 
-	//Marching stars
+	//Marching cubes
+	/*
 	Material* LandMaterial = new Material("data\\shaders\\deferredmarchingcubes.glsl", "data\\textures\\GrassDead0102_1_S.jpg");
 	LandMaterial->SetTexture2D("data\\textures\\Grass0026_1_S.jpg", 1);
 
@@ -79,6 +84,7 @@ void ShooterGame::PostInit()
 	tetra->AddComponent(new VoxelVolumeMesh(16, 16, 16));
 	tetra->GetComponent<VoxelVolumeMesh>()->SetMaterial(LandMaterial);
 	volumeMesh = tetra->GetComponent<VoxelVolumeMesh>();
+	*/
 }
 
 void ShooterGame::Start()
@@ -134,10 +140,20 @@ bool ShooterGame::Update()
 		sphere->GetComponent<RigidBody>()->GetBody()->applyCentralImpulse(btVector3(-camera_->GetComponent<Node>()->GetBack().x, -camera_->GetComponent<Node>()->GetBack().y, -camera_->GetComponent<Node>()->GetBack().z)*20.0f);
 	}
 
+	if (glfwGetKey(renderer->GetWindow(), GLFW_KEY_1) == GLFW_PRESS)
+		pp->GetMaterial()->SetParameter("output", 0);
+	if (glfwGetKey(renderer->GetWindow(), GLFW_KEY_2) == GLFW_PRESS)
+		pp->GetMaterial()->SetParameter("output", 1);
+	if (glfwGetKey(renderer->GetWindow(), GLFW_KEY_3) == GLFW_PRESS)
+		pp->GetMaterial()->SetParameter("output", 2);
+	if (glfwGetKey(renderer->GetWindow(), GLFW_KEY_4) == GLFW_PRESS)
+		pp->GetMaterial()->SetParameter("output", 3);
+
 	disp += 1.0f * GetDt();
 	//volumeMesh->_MoveNoise(disp, 0, 0);
-
 	pp->GetMaterial()->SetParameter("cameraPos", camera_->GetComponent<Camera>()->GetNode()->GetBack());
+
+	world->Update(camera_->GetComponent<Node>()->GetPosition());
 
 	return Core::_postUpdate();
 }

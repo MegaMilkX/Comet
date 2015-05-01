@@ -13,41 +13,61 @@ namespace Comet
 	class Entity
 	{
 	public:
-		Entity();
-		~Entity();
+						Entity();
+						~Entity();
 
+		//TODO: Maybe this doesn't need to be template method
 		template<typename T>
-		void AddComponent(T* comp)
-		{
-			//TODO What do if a component of this type already exists?
-			components.insert(std::make_pair(std::type_index(typeid(T)), comp));
-			comp->SetEntity(this); 
-		}
-
+		T*				AddComponent(T* comp);
+		//But this certainly does
 		template<typename T>
-		T* GetComponent()
-		{
-			std::map<std::type_index, Component*>::iterator it;
-			it = components.find(std::type_index(typeid(T)));
-			if (it != components.end())
-				return (T*)(it->second);
-			else
-				return 0;
-		}
+		T*				GetComponent() const;
 
-		Node* GetTransform();
-		Renderable* GetRenderable();
-		RigidBody* GetRigidBody();
+		//TODO: Change these when components change
+		Node*			GetTransform() const { return transform; }
+		Renderable*		GetRenderable() const { return renderable; }
+		RigidBody*		GetRigidBody() const { return rigidBody; }
 
-		void SetTransform(Node* n){ transform = n; }
-		void SetRenderable(Renderable* r){ renderable = r; }
-		void SetRigidBody(RigidBody* rb){ rigidBody = rb; }
+		void			SetTransform(Node* n);
+		void			SetRenderable(Renderable* r);
+		void			SetRigidBody(RigidBody* rb);
 	private:
-		//std::set<Component*> components;
 		std::map<std::type_index, Component*> components;
-		Node* transform;
-		RigidBody* rigidBody;
-		Renderable* renderable;
+		Node*			transform;
+		RigidBody*		rigidBody;
+		Renderable*		renderable;
 	};
 
+	//TODO: Maybe this doesn't need to be template method
+	template<typename T>
+	T* Entity::AddComponent(T* comp)
+	{
+		//TODO What do if a component of this type already exists?
+
+		if (dynamic_cast<Component*>(comp) == 0) //Not a component, abort
+		{
+			printf("That's not a component you're trying to add\n");
+			return 0;
+		}
+
+		//TODO: Instead of type_index should use some sort of COMPID
+		//Like comp->GetID(); So all Renderable components will be of one type
+		//therefore it wont be possible to add multiple renderables to one entity.
+		//Or use dynamic_cast<Renderable*>
+
+		components.insert(std::make_pair(std::type_index(typeid(T)), comp));
+		comp->SetEntity(this);
+		return comp;
+	}
+
+	template<typename T>
+	T* Entity::GetComponent() const
+	{
+		std::map<std::type_index, Component*>::const_iterator it
+			= components.find(std::type_index(typeid(T)));
+		if (it != components.end())
+			return (T*)(it->second);
+		else
+			return 0;
+	}
 }

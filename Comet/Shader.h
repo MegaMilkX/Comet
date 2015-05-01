@@ -17,22 +17,22 @@ namespace Comet
 	class Shader : public Resource
 	{
 	public:
-		Shader();
-		virtual ~Shader();
+		enum ATTR { POS, UVW, NRM, COL, M, V, P };
 
-		void Load(std::string path);
+						Shader();
+		virtual			~Shader();
+
+		void			Load(std::string path);
 		//
-		void Load(std::string fp, std::string vp);
-		void Unload();
+		void			Load(std::string fp, std::string vp);
+		void			Unload();
 
-		unsigned int GetProgramId(){ return shaderProgramId; }
-		enum ATTR
-		{	POS, UVW, NRM, COL, M, V, P	};
-		int GetAttribLocation(ATTR attr){ return attrloc[attr]; }
+		unsigned int	GetProgramId() const { return shaderProgramId; }
+		int				GetAttribLocation(ATTR attr){ return attrloc[attr]; }
 
 	private:
-		unsigned int shaderProgramId;
-		int attrloc[7];							//Attribute locations
+		unsigned int	shaderProgramId;
+		int				attrloc[7];	//Attribute locations
 	};
 
 }

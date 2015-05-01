@@ -276,11 +276,6 @@ namespace Comet
 		return val;
 	}
 
-	void Core::LoadScene(std::string path)
-	{
-		
-	}
-
 	
 	Entity* Core::CreateEntity()
 	{

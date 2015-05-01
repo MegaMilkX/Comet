@@ -16,19 +16,7 @@ namespace Comet
 	{
 	}
 
-	Node* Entity::GetTransform()
-	{
-		return 0;
-	}
-
-	Renderable* Entity::GetRenderable()
-	{
-		return 0;
-	}
-
-	RigidBody* Entity::GetRigidBody()
-	{
-		return 0;
-	}
-
+	void Entity::SetTransform(Node* n){ transform = AddComponent(n); }
+	void Entity::SetRenderable(Renderable* r){ renderable = AddComponent(r); }
+	void Entity::SetRigidBody(RigidBody* rb){ rigidBody = AddComponent(rb); }
 }

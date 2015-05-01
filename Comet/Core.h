@@ -18,47 +18,50 @@
 
 namespace Comet
 {
+
 	class Core
 	{
 	public:
-		Core();
-		virtual ~Core();
+						Core();
+		virtual			~Core();
 
-		static Core* GetInstance(){ return instance; }
+		static Core*	GetInstance(){ return instance; }
 
-		virtual void Init();
-		virtual void PostInit(){}
-		virtual bool Update();
-		void Reset();
+		virtual void	Init();
+		virtual void	PostInit(){}
+		virtual bool	Update();
+		void			Reset();
 
-		Entity* CreateEntity();
-		Entity* CreateEntity(std::string resourcename);
+		Entity*			CreateEntity();
+		Entity*			CreateEntity(std::string resourcename);
 
-		void ReadGraphFile(std::string path, Node* node);
+		void			ReadGraphFile(std::string path, Node* node);
 
-		Renderer* GetRenderer(){ return renderer; }
+		Renderer*		GetRenderer() const { return renderer; }
+		Physics*		GetPhysics() const { return physics; }
 
-		MeshData* GetMeshDataPrimitive(std::string name);
-		void LoadScene(std::string path);
-		double GetDt(){ return dt; }
+		MeshData*		GetMeshDataPrimitive(std::string name);
+		double			GetDt() const { return dt; }
+	
 	protected:
-		void _preUpdate();
-		bool _postUpdate();
+		void				_preUpdate();
+		bool				_postUpdate();
 
-		double time0 = 0, time1 = 0;
-		double dt;			//Delta Time
+		double				time0 = 0,
+							time1 = 0;
+		double				dt;			//Delta Time
 
-		static Core* instance;
+		static Core*		instance;
 
-		Renderer*	renderer;
-		void*		audio;
-		Physics*	physics;
+		Renderer*			renderer;
+		void*				audio;
+		Physics*			physics;
 
-		std::set<Entity*> entities;
+		std::set<Entity*>	entities;
 
-		UserConsole* userConsole;
+		UserConsole*		userConsole;
 	private:
-		void _digestXmlElement(TiXmlElement* elem);
+		void				_digestXmlElement(TiXmlElement* elem);
 		std::stack<Entity*> entityStack;
 	};
 

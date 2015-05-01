@@ -5,7 +5,7 @@
 namespace Comet
 {
 
-	MeshData::MeshData()
+	MeshData::MeshData(BufferUsage usage)
 	{
 		bufPos = 0;
 		bufUVW = 0;
@@ -13,6 +13,7 @@ namespace Comet
 		bufCol = 0;
 		bufFace = 0;
 		primitiveType = TRIANGLE;
+		bufferUsage = usage;
 	}
 
 
@@ -61,7 +62,7 @@ namespace Comet
 			uvwPool.clear();
 
 			//TODO?
-			std::vector<unsigned int> facePool;
+			std::vector<unsigned short> facePool;
 			for (unsigned int i = 0; i < meshIO.meshes.size(); i++)
 			{
 				for (unsigned int j = 0; j < meshIO.meshes[i].faces.size(); j++)
@@ -82,45 +83,13 @@ namespace Comet
 			nFaces = facePool.size() / 3;
 			nVerts = vertexPool.size() / 3;
 
-			vertexAttribLayout = VATTR_POS | VATTR_UVW;
-			RebuildNormals(vertexPool, std::vector<unsigned short>(facePool.begin(), facePool.end()));
-
-			glGenBuffers(1, &bufPos);
-			glBindBuffer(GL_ARRAY_BUFFER, bufPos);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * (vertexPool.size()), &vertexPool[0], GL_STATIC_DRAW);
-
-			float col_data[] = {
-				0.0f, 0.0f, 0.0f,
-				1.0f, 0.0f, 0.0f,
-				0.0f, 1.0f, 0.0f,
-				0.0f, 0.0f, 1.0f,
-				1.0f, 0.0f, 1.0f,
-				0.0f, 1.0f, 1.0f,
-				1.0f, 1.0f, 0.0f
-			};
-
-			glGenBuffers(1, &bufCol);
-			glBindBuffer(GL_ARRAY_BUFFER, bufCol);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(col_data), col_data, GL_STATIC_DRAW);
-
-			unsigned short *face_data = new unsigned short[facePool.size()];
-
-			for (int i = 0; i < facePool.size(); i++)
-			{
-				face_data[i] = facePool[i];
-			}
+			vertexAttribLayout = 0;
 			
-			if (uvwPool.size()>0)
-			{
-				glGenBuffers(1, &bufUVW);
-				glBindBuffer(GL_ARRAY_BUFFER, bufUVW);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(float)* (uvwPool.size()), &uvwPool[0], GL_STATIC_DRAW);
-			}
-
-			glGenBuffers(1, &bufFace);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufFace);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short)*(facePool.size()), face_data, GL_STATIC_DRAW);
-			delete face_data;
+			FillPosition(vertexPool);		
+			FillUVW(uvwPool);
+			FillIndices(facePool);
+			///////////////////////////////////////
+			RebuildNormals(vertexPool, std::vector<unsigned short>(facePool.begin(), facePool.end()));
 		}
 
 		isReady = true;
@@ -148,7 +117,7 @@ namespace Comet
 		vertexAttribLayout |= VATTR_POS;
 		glGenBuffers(1, &bufPos);
 		glBindBuffer(GL_ARRAY_BUFFER, bufPos);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* (data.size()), &data[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* (data.size()), &data[0], bufferUsage);
 
 		nVerts = data.size()/3;
 	}
@@ -159,7 +128,7 @@ namespace Comet
 		vertexAttribLayout |= VATTR_NOR;
 		glGenBuffers(1, &bufNorm);
 		glBindBuffer(GL_ARRAY_BUFFER, bufNorm);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* (data.size()), &data[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* (data.size()), &data[0], bufferUsage);
 	}
 	void MeshData::FillColor(std::vector<float> data)
 	{
@@ -168,7 +137,7 @@ namespace Comet
 		vertexAttribLayout |= VATTR_COL;
 		glGenBuffers(1, &bufCol);
 		glBindBuffer(GL_ARRAY_BUFFER, bufCol);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* (data.size()), &data[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* (data.size()), &data[0], bufferUsage);
 	}
 	void MeshData::FillIndices(std::vector<unsigned short> data)
 	{
@@ -176,7 +145,7 @@ namespace Comet
 
 		glGenBuffers(1, &bufFace);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufFace);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short)*(data.size()), &data[0], GL_STATIC_DRAW);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short)*(data.size()), &data[0], bufferUsage);
 
 		nFaces = data.size()/3;
 	}
@@ -187,7 +156,7 @@ namespace Comet
 		vertexAttribLayout |= VATTR_UVW;
 		glGenBuffers(1, &bufUVW);
 		glBindBuffer(GL_ARRAY_BUFFER, bufUVW);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* (data.size()), &data[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* (data.size()), &data[0], bufferUsage);
 	}
 
 	void MeshData::RebuildNormals(std::vector<float>& posdata, std::vector<unsigned short>& faces)

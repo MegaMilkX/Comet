@@ -59,11 +59,11 @@ void MeshIO::Read(std::string name)
 			currentMesh++;
 			currentUVW = 0;
 
-			printf(mesh.name.c_str());
-			printf("\n");
+			//printf(mesh.name.c_str());
+			//printf("\n");
 			break;
 		case CHUNK_VERT:
-			printf("CHUNK_VERT reading... \n");
+			//printf("CHUNK_VERT reading... \n");
 			meshes.at(currentMesh).vertsRAW.resize(sz * 3);
 			//meshes.at(currentMesh).verts.resize(sz);
 			for (int i = 0; i < sz*3; i+=3)
@@ -72,19 +72,19 @@ void MeshIO::Read(std::string name)
 				fread((void*)&(meshes.at(currentMesh).vertsRAW.at(i+1)), 4, 1, file);
 				fread((void*)&(meshes.at(currentMesh).vertsRAW.at(i+2)), 4, 1, file);
 			}
-			printf("CHUNK_VERT read complete \n");
+			//printf("CHUNK_VERT read complete \n");
 			break;
 		case CHUNK_FACE:
-			printf("CHUNK_FACE reading... \n");
+			//printf("CHUNK_FACE reading... \n");
 			meshes.at(currentMesh).faces.resize(sz);
 			for (int i = 0; i < sz; i++)
 			{
 				fread((void*)&(meshes.at(currentMesh).faces.at(i)), 4, 1, file);
 			}
-			printf("CHUNK_FACE read complete \n");
+			//printf("CHUNK_FACE read complete \n");
 			break;
 		case CHUNK_NORM:
-			printf("CHUNK_NORM reading... \n");
+			//printf("CHUNK_NORM reading... \n");
 			meshes.at(currentMesh).normals.resize(sz);
 			for (int i = 0; i < sz; i++)
 			{
@@ -92,10 +92,10 @@ void MeshIO::Read(std::string name)
 				fread((void*)&(meshes.at(currentMesh).normals.at(i).y), 4, 1, file);
 				fread((void*)&(meshes.at(currentMesh).normals.at(i).z), 4, 1, file);
 			}
-			printf("CHUNK_NORM read complete \n");
+			//printf("CHUNK_NORM read complete \n");
 			break;
 		case CHUNK_COL:
-			printf("CHUNK_COL reading... \n");
+			//printf("CHUNK_COL reading... \n");
 			meshes.at(currentMesh).color.resize(sz);
 			for (int i = 0; i < sz; i++)
 			{
@@ -103,10 +103,10 @@ void MeshIO::Read(std::string name)
 				fread((void*)&(meshes.at(currentMesh).color.at(i).y), 4, 1, file);
 				fread((void*)&(meshes.at(currentMesh).color.at(i).z), 4, 1, file);
 			}
-			printf("CHUNK_COL read complete \n");
+			//printf("CHUNK_COL read complete \n");
 			break;
 		case CHUNK_UVW:
-			printf("CHUNK_UVW reading... \n");
+			//printf("CHUNK_UVW reading... \n");
 			uvwset.clear(); 
 			meshes.at(currentMesh).uvwRAW.push_back(uvwset);
 			meshes.at(currentMesh).uvwRAW[currentUVW].resize(sz*3);
@@ -117,10 +117,10 @@ void MeshIO::Read(std::string name)
 				fread((void*)&(meshes.at(currentMesh).uvwRAW[currentUVW].at(i + 2)), 4, 1, file);
 			}
 			currentUVW++;
-			printf("CHUNK_UVW read complete \n");
+			//printf("CHUNK_UVW read complete \n");
 			break;
 		case CHUNK_BONE:
-			printf("CHUNK_BONE reading... \n");
+			//printf("CHUNK_BONE reading... \n");
 			meshes.at(currentMesh).bones.resize(sz);
 			for (int i = 0; i < sz; i++)
 			{
@@ -128,10 +128,10 @@ void MeshIO::Read(std::string name)
 				meshes.at(currentMesh).bones[i].resize(subsz);
 				fread((void*)&(meshes.at(currentMesh).bones[i])[0], sizeof(char), subsz, file);
 			}
-			printf("CHUNK_BONE read complete \n");
+			//printf("CHUNK_BONE read complete \n");
 			break;
 		case CHUNK_SKIN:
-			printf("CHUNK_SKIN reading... \n");
+			//printf("CHUNK_SKIN reading... \n");
 			meshes.at(currentMesh).skin.resize(sz);
 			for (int i = 0; i < sz; i++)
 			{
@@ -144,7 +144,7 @@ void MeshIO::Read(std::string name)
 					fread((void*)&(meshes.at(currentMesh).skin[i].weights[j]), 4, 1, file);
 				}
 			}
-			printf("CHUNK_SKIN read complete \n");
+			//printf("CHUNK_SKIN read complete \n");
 			break;
 		}
 	} while (chunk != 0);

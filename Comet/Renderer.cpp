@@ -43,10 +43,12 @@ namespace Comet
 		if (fullscreen)
 			monitor = glfwGetPrimaryMonitor();
 
-		window = glfwCreateWindow(wWidth, wHeight, "Rockit", monitor, 0);
+		window = glfwCreateWindow(wWidth, wHeight, "Super Peppermint", monitor, 0);
 		glfwSetWindowSizeCallback(window, window_resize_callback);
 
 		glfwMakeContextCurrent(window);
+
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
 		//Контекст асинхронной загрузки
 		glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
