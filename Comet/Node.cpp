@@ -99,6 +99,7 @@ namespace Comet
 		dirty();
 	}
 	void Node::Rotate(float angle, glm::vec3 vec, int space)	//Обязательно проверить и скорее всего убедиться в том что оно не работает правильно
+																//Да вроде нормально все
 	{
 		if (space == 0)					//Local
 		{

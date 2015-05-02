@@ -21,8 +21,16 @@ int main()
 	r = r / 2;
 	r /= 2;
 	r = -r;
-	//normalize(r);
+	normalize(r);
 	r.length();
+
+	mat3f mat3;
+	mat4f mat4;
+	quat q;
+
+	printf("%f, %f, %f, sizeof=%i\n", a.x, a.y, a.z, sizeof(a));
+	a[0] = 100.0f;
+	printf("%f, %f, %f, sizeof=%i\n", a[0], a[1], a[2], sizeof(a));
 
 	while (game->Update())
 	{
