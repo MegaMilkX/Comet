@@ -272,9 +272,9 @@ namespace Comet
 		_setPolyMode(r->GetMaterial()->polyMode);
 
 		glUseProgram(r->GetMaterial()->GetShader()->GetProgramId());
-		glUniformMatrix4fv(shader->GetAttribLocation(Shader::M), 1, GL_FALSE, glm::value_ptr(r->GetNode()->GetTransform()));
-		glUniformMatrix4fv(shader->GetAttribLocation(Shader::V), 1, GL_FALSE, glm::value_ptr(cam->GetView()));
-		glUniformMatrix4fv(shader->GetAttribLocation(Shader::P), 1, GL_FALSE, glm::value_ptr(cam->GetProjection()));
+		glUniformMatrix4fv(shader->GetAttribLocation(Shader::M), 1, GL_FALSE, (GLfloat*)&(r->GetNode()->GetTransform()));
+		glUniformMatrix4fv(shader->GetAttribLocation(Shader::V), 1, GL_FALSE, (GLfloat*)&(cam->GetView()));
+		glUniformMatrix4fv(shader->GetAttribLocation(Shader::P), 1, GL_FALSE, (GLfloat*)&(cam->GetProjection()));
 
 		r->GetMaterial()->BindTextures();
 

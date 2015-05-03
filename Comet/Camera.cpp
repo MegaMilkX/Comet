@@ -30,29 +30,29 @@ namespace Comet
 		renderTarget->camera = this;
 	}
 
-	glm::mat4 Camera::GetProjection()
+	mat4f Camera::GetProjection()
 	{
 		return projection;
 	}
-	glm::mat4 Camera::GetView()
+	mat4f Camera::GetView()
 	{
 		if (node)
 		{
-			return glm::inverse(node->GetTransform());
+			return inverse(node->GetTransform());
 		}
 		else
 		{
-			return glm::inverse(glm::mat4(1.0f));
+			return inverse(mat4f(1.0f));
 		}
 	}
 
 	void Camera::Perspective(float fov, float aspect, float zNear, float zFar)
 	{
-		projection = glm::perspective(fov, aspect, zNear, zFar);
+		projection = perspective(fov, aspect, zNear, zFar);
 	}
 	void Camera::Ortho(float left, float right, float bottom, float top, float zNear, float zFar)
 	{
-		projection = glm::ortho(left, right, bottom, top, zNear, zFar);
+		projection = ortho(left, right, bottom, top, zNear, zFar);
 	}
 
 };

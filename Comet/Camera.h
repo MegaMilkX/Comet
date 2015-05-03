@@ -1,13 +1,7 @@
 #pragma once
 
 #include "RenderObject.h"
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
-#include <glm/gtc/quaternion.hpp>
-#include <glm/gtx/quaternion.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
+#include <math3f.h>
 #include "RenderTarget.h"
 
 namespace Comet
@@ -22,16 +16,16 @@ namespace Comet
 		void Perspective(float fov, float aspect, float zNear, float zFar);
 		void Ortho(float left, float right, float bottom, float top, float zNear, float zFar);
 
-		glm::mat4 GetProjection();
-		glm::mat4 GetView();
+		mat4f GetProjection();
+		mat4f GetView();
 
 		void SetRenderTarget(RenderTarget* rt);
 		RenderTarget* GetRenderTarget(){ return renderTarget; }
 
 		friend RenderTarget;
 	private:
-		glm::mat4 projection;
-		glm::mat4 view;
+		mat4f projection;
+		mat4f view;
 
 		float fov;
 		float zNear, zFar;

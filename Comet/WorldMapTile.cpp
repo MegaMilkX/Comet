@@ -12,8 +12,8 @@ WorldMapTile::WorldMapTile(AdventureGame* game, int x, int y)
 
 	//TODO: Дырки между тайлами
 	Comet::Node* tileNode = game->GetRenderer()->GetRoot()->CreateNode();
-	tileNode->SetPosition(glm::vec3(x*25.0f, y*25.0f, 0));
-	tileNode->Scale(glm::vec3(25.0f, 25.0f, 0));
+	tileNode->SetPosition(vec3f(x*25.0f, y*25.0f, 0));
+	tileNode->Scale(vec3f(25.0f, 25.0f, 0));
 	//Comet::Mesh* mesh = new Comet::Mesh(Comet::ResMan::GetInstance()->GetResource<Comet::MeshData>("plane"));
 	Comet::Mesh* mesh = new Comet::Mesh(game->GetRenderer()->GetMeshDataPrimitive("plane"));
 	tileNode->Attach(mesh);

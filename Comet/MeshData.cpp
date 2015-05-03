@@ -166,7 +166,7 @@ namespace Comet
 		normals.resize(nVerts * 3);
 			
 		//Calculare normals using indices
-		glm::vec3 a(0, 0, 0), b(0, 0, 0), c(0, 0, 0);
+		vec3f a(0, 0, 0), b(0, 0, 0), c(0, 0, 0);
 		for (int i = 0; i < nFaces*3; i+=3)
 		{
 			//faces[i];//v0
@@ -174,13 +174,13 @@ namespace Comet
 			//faces[i+2];//v2
 				
 			//Fill a, b and c
-			a = glm::vec3(posdata[faces[i] * 3], posdata[faces[i] * 3 + 1], posdata[faces[i] * 3 + 2]);
-			b = glm::vec3(posdata[faces[i + 1] * 3], posdata[faces[i + 1] * 3 + 1], posdata[faces[i + 1] * 3 + 2]);
-			c = glm::vec3(posdata[faces[i + 2] * 3], posdata[faces[i + 2] * 3 + 1], posdata[faces[i + 2] * 3 + 2]);
+			a = vec3f(posdata[faces[i] * 3], posdata[faces[i] * 3 + 1], posdata[faces[i] * 3 + 2]);
+			b = vec3f(posdata[faces[i + 1] * 3], posdata[faces[i + 1] * 3 + 1], posdata[faces[i + 1] * 3 + 2]);
+			c = vec3f(posdata[faces[i + 2] * 3], posdata[faces[i + 2] * 3 + 1], posdata[faces[i + 2] * 3 + 2]);
 
 			b = b - a;
 			c = c - a;
-			a = glm::cross(b, c);
+			a = cross(b, c);
 
 			normals[faces[i] * 3] += a.x;
 			normals[faces[i] * 3 + 1] += a.y;
@@ -197,8 +197,8 @@ namespace Comet
 
 		for (int i = 0; i < normals.size(); i+=3)
 		{
-			glm::vec3 norm(normals[i], normals[i + 1], normals[i + 2]);
-			float len = glm::length(norm);
+			vec3f norm(normals[i], normals[i + 1], normals[i + 2]);
+			float len = norm.length();
 			normals[i] = norm.x / len;
 			normals[i + 1] = norm.y / len;
 			normals[i + 2] = norm.z / len;

@@ -27,7 +27,7 @@ namespace Comet
 		if (node == 0)
 			return;
 
-		node->SetRotation(glm::quat(trans.getRotation().getW(), trans.getRotation().getX(), trans.getRotation().getY(), trans.getRotation().getZ()));
-		node->SetPosition(glm::vec3(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ()));
+		node->SetRotation(quat(trans.getRotation().getX(), trans.getRotation().getY(), trans.getRotation().getZ(), trans.getRotation().getW()));
+		node->SetPosition(vec3f(trans.getOrigin().getX(), trans.getOrigin().getY(), trans.getOrigin().getZ()));
 	}
 }

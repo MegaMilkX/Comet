@@ -151,7 +151,7 @@ namespace Comet
 		bndRect.w = font->LineHeight();
 	}
 
-	glm::vec4 TextRenderable::GetBoundingRect()
+	vec4f TextRenderable::GetBoundingRect()
 	{
 		return bndRect;
 	}

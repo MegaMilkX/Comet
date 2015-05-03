@@ -3,12 +3,7 @@
 #include <btBulletDynamicsCommon.h>
 #include "Component.h"
 
-#define GLM_FORCE_RADIANS
-#include <glm/glm.hpp>
-#include <glm/gtc/quaternion.hpp>
-#include <glm/gtx/quaternion.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <math3f.h>
 
 namespace Comet
 {
@@ -20,7 +15,7 @@ namespace Comet
 		RigidBody(Physics* physics, btCollisionShape* shape, float mass = 1, bool isKinematic = false);
 		~RigidBody();
 
-		void SetPosition(glm::vec3 pos);
+		void SetPosition(vec3f pos);
 		void SetMass(float val);
 		void SetKinematic(bool val);
 

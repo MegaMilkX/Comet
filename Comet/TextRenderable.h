@@ -18,13 +18,13 @@ namespace Comet
 
 		void SetText(std::string str);
 
-		glm::vec4 GetBoundingRect();
+		vec4f GetBoundingRect();
 
 		friend Font;
 	private:
 		std::string text;
 		Comet::Font* font;
-		glm::vec4 bndRect;
+		vec4f bndRect;
 	};
 
 }

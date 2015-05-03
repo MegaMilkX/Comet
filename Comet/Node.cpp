@@ -9,11 +9,8 @@ namespace Comet
 	{
 		parent = 0;
 		dirty();
-
-		position = glm::vec3(0.0f, 0.0f, 0.0f);
-		rotation = glm::quat(glm::vec3(0, 0, 0));
-		scale = glm::vec3(1.0f, 1.0f, 1.0f);
-
+		scale = vec3f(1.0f, 1.0f, 1.0f);
+		rotation = quat(0, 0, 0, 1.0f); //That's really important
 		layer = 1;	//Default rendering group
 	}
 
@@ -26,6 +23,7 @@ namespace Comet
 		}
 		nodes.clear();
 
+		//TODO
 		//Удаляем все объекты привязаные к ноде. (Может не стоит ей давать столько власти?)
 		//(Но что тогда будет с объектами чьи ноды были удалены? Будут болтаться до полной очистки?)
 		std::set<RenderObject*>::iterator ito;
@@ -75,103 +73,112 @@ namespace Comet
 		parent = n;
 	}
 
-	void Node::SetPosition(glm::vec3 pos)
+	//Math stuff
+	void Node::SetPosition(vec3f pos)
 	{
 		position = pos;
 		dirty();
 	}
-	void Node::SetRotation(glm::quat rot)
+	void Node::SetRotation(quat rot)
 	{
 		rotation = rot;
 		dirty();
 	}
-	void Node::Translate(glm::vec3 vec, int space) //Должно работать правильно, хорошо бы проверить
+
+	//TODO
+	void Node::Translate(vec3f vec, TSPACE space) //Должно работать правильно, хорошо бы проверить
 	{
-		if (space == 0)					//Local
+		if (space == LOCAL)
 		{
-			vec = glm::toMat3(rotation) * vec;
+			vec = toMat3(rotation) * vec;
 			position = position + vec;
 		}
-		else							//World
+		else if(space == PARENT)
+		{
+			if (parent)
+				vec = parent->GetTransform() * vec; //This silently takes vec3 as vec4 for multiplication with mat4x4
+			position = position + vec;
+		}
+		else if (space == WORLD)
 		{
 			position = position + vec;
 		}
+
 		dirty();
 	}
-	void Node::Rotate(float angle, glm::vec3 vec, int space)	//Обязательно проверить и скорее всего убедиться в том что оно не работает правильно
+
+	void Node::Rotate(float angle, vec3f vec, TSPACE space)	//Обязательно проверить и скорее всего убедиться в том что оно не работает правильно
 																//Да вроде нормально все
 	{
-		if (space == 0)					//Local
+		if (space == LOCAL)
 		{
-			glm::quat q = glm::angleAxis(angle, vec);
-			rotation = glm::cross(q, rotation);
-			rotation = glm::normalize(rotation);
+			quat q = angleAxis(angle, vec);
+			rotation = q * rotation;
+			//rotation = normalize(rotation);
 		}
-		else							//World
+		else if (space == PARENT)
 		{
-			glm::quat q = glm::angleAxis(angle, vec);
-			rotation = glm::cross(rotation, q);
-			rotation = glm::normalize(rotation);
+			//TODO	
+		}
+		else if (space == WORLD)
+		{
+			quat q = angleAxis(angle, vec);
+			rotation = rotation * q;
+			//rotation = normalize(rotation);
 		}
 		dirty();
 	}
-	void Node::Scale(glm::vec3 vec)
+	void Node::Scale(vec3f vec)
 	{
 		scale = vec;
 		dirty();
 	}
 
-	glm::vec3 Node::GetPosition()
+	vec3f Node::GetPosition()
 	{ 
-		glm::mat4 transform = GetTransform();
-
-		glm::vec3 pos;
-		pos.x = transform[3][0];
-		pos.y = transform[3][1];
-		pos.z = transform[3][2];
-
-		return pos; 
+		mat4f transform = GetTransform();
+		return transform[3];
 	}
 
-	glm::vec3 Node::GetLocalPos()
+	vec3f Node::GetLocalPos()
 	{
 		return position;
 	}
 
-	glm::mat4 Node::GetTransform() //Нужно проверить
+	//TODO
+	mat4f Node::GetTransform() //Нужно проверить
 	{
 		if (IsDirty())
 		{
 			if (parent)
-			{
-				transform = parent->GetTransform() * ((glm::translate(glm::mat4(), this->position)*glm::toMat4(rotation)*glm::scale(glm::mat4(), this->scale)));
-			}
+				transform = parent->GetTransform() * ((translate(mat4f(1.0f), this->position) * toMat4(rotation) * ::scale(mat4f(1.0f), this->scale)));
 			else
-				transform = glm::translate(glm::mat4(), this->position)*glm::toMat4(rotation)*glm::scale(glm::mat4(), this->scale);
+				transform = translate(mat4f(1), this->position)*toMat4(rotation)*::scale(mat4f(1), this->scale);
 			drt = false;
 		}
 		return transform;
 	}
 
-	glm::mat4 Node::GetLocalTransform()
+	//TODO
+	mat4f Node::GetLocalTransform()
 	{
-		return (glm::translate(glm::mat4(), this->position)*glm::toMat4(rotation)*glm::scale(glm::mat4(), this->scale));
+		return (translate(mat4f(1), this->position) * toMat4(rotation) * ::scale(mat4f(1), this->scale));
 	}
 
-	glm::vec3 Node::GetUp()
+	vec3f Node::GetUp()
 	{
-		glm::mat4x4 t = GetTransform();
-		return glm::vec3(t[1][0], t[1][1], t[1][2]);
+		mat4f t = GetTransform();
+		return vec3f(t[1][0], t[1][1], t[1][2]);
 	}
-	glm::vec3 Node::GetBack()
+	vec3f Node::GetBack()
 	{
-		glm::mat4x4 t = GetTransform();
-		return glm::vec3(t[2][0], t[2][1], t[2][2]);
+		mat4f t = GetTransform();
+		return vec3f(t[2][0], t[2][1], t[2][2]);
 	}
-	glm::vec3 Node::GetRight()
+	vec3f Node::GetRight()
 	{
-		glm::mat4x4 t = GetTransform();
-		return glm::vec3(t[0][0], t[0][1], t[0][2]);
+		mat4f t = GetTransform();
+		return vec3f(t[0][0], t[0][1], t[0][2]);
 	}
 
 	void Node::dirty()

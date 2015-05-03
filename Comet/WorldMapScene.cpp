@@ -42,7 +42,7 @@ void WorldMapScene::Init()
 	//camera->SetViewport(viewport);
 
 	nodeCamera = game->GetRenderer()->GetRoot()->CreateNode();
-	nodeCamera->SetPosition(glm::vec3(0.0f, 0.0f, 270.0f));
+	nodeCamera->SetPosition(vec3f(0.0f, 0.0f, 270.0f));
 	//nodeCamera->Rotate(0.8f, glm::vec3(1, 0, 0), 0);
 	nodeCamera->Attach(camera);
 }
@@ -63,21 +63,21 @@ void WorldMapScene::Update()
 {
 	if (glfwGetKey(game->GetRenderer()->GetWindow(), GLFW_KEY_W))
 	{
-		nodeCamera->Translate(glm::vec3(0, 50.0f*game->GetDt(), 0.0f), 1);
+		nodeCamera->Translate(vec3f(0, 50.0f*game->GetDt(), 0.0f), Comet::Node::WORLD);
 	}
 
 	if (glfwGetKey(game->GetRenderer()->GetWindow(), GLFW_KEY_A))
 	{
-		nodeCamera->Translate(glm::vec3(-50.0f*game->GetDt(), 0.0f, 0.0f), 0);
+		nodeCamera->Translate(vec3f(-50.0f*game->GetDt(), 0.0f, 0.0f), Comet::Node::LOCAL);
 	}
 
 	if (glfwGetKey(game->GetRenderer()->GetWindow(), GLFW_KEY_S))
 	{
-		nodeCamera->Translate(glm::vec3(0, -50.0f*game->GetDt(), 0.0f), 1);
+		nodeCamera->Translate(vec3f(0, -50.0f*game->GetDt(), 0.0f), Comet::Node::WORLD);
 	}
 
 	if (glfwGetKey(game->GetRenderer()->GetWindow(), GLFW_KEY_D))
 	{
-		nodeCamera->Translate(glm::vec3(50.0f*game->GetDt(), 0.0f, 0.0f), 0);
+		nodeCamera->Translate(vec3f(50.0f*game->GetDt(), 0.0f, 0.0f), Comet::Node::LOCAL);
 	}
 }

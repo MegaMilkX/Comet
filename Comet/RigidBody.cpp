@@ -42,7 +42,7 @@ namespace Comet
 		delete rigidBody;
 	}
 
-	void RigidBody::SetPosition(glm::vec3 pos)
+	void RigidBody::SetPosition(vec3f pos)
 	{
 		rigidBody->setCenterOfMassTransform(btTransform(btQuaternion(), btVector3(pos.x, pos.y, pos.z)));
 	}

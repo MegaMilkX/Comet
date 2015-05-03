@@ -49,7 +49,7 @@ void ShooterGame::PostInit()
 	
 	//моделька персонажа
 	Node* node = renderer->GetRoot()->CreateNode();
-	node->SetPosition(glm::vec3(0, 3.1f, 0));
+	node->SetPosition(vec3f(0, 3.1f, 0));
 	Mesh* mesh = new Mesh("data\\models\\girl.xyz");
 	node->Attach(mesh);
 
@@ -68,8 +68,8 @@ void ShooterGame::PostInit()
 	ground->GetComponent<Mesh>()->SetMaterial(new Material("data\\shaders\\deferrednormal.glsl", "data\\textures\\177.tga"));
 	ground->GetComponent<Mesh>()->GetMaterial()->SetTexture2D("data\\textures\\177_norm.tga", 1);
 	ground->AddComponent(physics->CreateRigidBody(new btBoxShape(btVector3(25, 0, 25)), 0));
-	ground->GetComponent<Node>()->Scale(glm::vec3(50, 50, 1));
-	ground->GetComponent<Node>()->Rotate(-3.14f / 2.0f, glm::vec3(1, 0, 0), 0);
+	ground->GetComponent<Node>()->Scale(vec3f(50, 50, 1));
+	ground->GetComponent<Node>()->Rotate(-3.14f / 2.0f, vec3f(1, 0, 0), Node::LOCAL);
 
 	//Hierarchy loading
 	//this->ReadGraphFile("data\\test.graph", renderer->GetRoot());
@@ -96,34 +96,34 @@ bool ShooterGame::Update()
 	Core::_preUpdate();
 
 	glfwGetCursorPos(renderer->GetWindow(), &mx, &my);
-	camera_->GetComponent<Node>()->Rotate((1280 / 2 - mx)*0.003f, glm::vec3(0.0f, 1.0f, 0.0f), 0);
-	camera_->GetComponent<Node>()->Rotate((720 / 2 - my)*0.003f, glm::vec3(1.0f, 0.0f, 0.0f), 1);
+	camera_->GetComponent<Node>()->Rotate((1280 / 2 - mx)*0.003f, vec3f(0.0f, 1.0f, 0.0f), Node::LOCAL);
+	camera_->GetComponent<Node>()->Rotate((720 / 2 - my)*0.003f, vec3f(1.0f, 0.0f, 0.0f), Node::WORLD);
 	
 	glfwSetCursorPos(renderer->GetWindow(), 1280 / 2, 720 / 2);
 
 	if (glfwGetKey(renderer->GetWindow(), GLFW_KEY_W) == GLFW_PRESS)
 	{
-		camera_->GetComponent<Node>()->Translate(glm::vec3(0.0f, 0.0f, -5.03f*dt), 0);
+		camera_->GetComponent<Node>()->Translate(vec3f(0.0f, 0.0f, -5.03f*dt), Node::LOCAL);
 	}
 	if (glfwGetKey(renderer->GetWindow(), GLFW_KEY_S) == GLFW_PRESS)
 	{
-		camera_->GetComponent<Node>()->Translate(glm::vec3(0.0f, 0.0f, 5.03f*dt), 0);
+		camera_->GetComponent<Node>()->Translate(vec3f(0.0f, 0.0f, 5.03f*dt), Node::LOCAL);
 	}
 	if (glfwGetKey(renderer->GetWindow(), GLFW_KEY_A) == GLFW_PRESS)
 	{
-		camera_->GetComponent<Node>()->Translate(glm::vec3(-5.03f*dt, 0.0f, 0.0f), 0);
+		camera_->GetComponent<Node>()->Translate(vec3f(-5.03f*dt, 0.0f, 0.0f), Node::LOCAL);
 	}
 	if (glfwGetKey(renderer->GetWindow(), GLFW_KEY_D) == GLFW_PRESS)
 	{
-		camera_->GetComponent<Node>()->Translate(glm::vec3(5.03f*dt, 0.0f, 0.0f), 0);
+		camera_->GetComponent<Node>()->Translate(vec3f(5.03f*dt, 0.0f, 0.0f), Node::LOCAL);
 	}
 	if (glfwGetKey(renderer->GetWindow(), GLFW_KEY_SPACE) == GLFW_PRESS)
 	{
-		camera_->GetComponent<Node>()->Translate(glm::vec3(0.0f, 5.03f*dt, 0.0f), 1);
+		camera_->GetComponent<Node>()->Translate(vec3f(0.0f, 5.03f*dt, 0.0f), Node::WORLD);
 	}
 	if (glfwGetKey(renderer->GetWindow(), GLFW_KEY_C) == GLFW_PRESS)
 	{
-		camera_->GetComponent<Node>()->Translate(glm::vec3(0.0f, -5.03f*dt, 0.0f), 1);
+		camera_->GetComponent<Node>()->Translate(vec3f(0.0f, -5.03f*dt, 0.0f), Node::WORLD);
 	}
 
 	if (glfwGetMouseButton(renderer->GetWindow(), GLFW_MOUSE_BUTTON_1) == GLFW_PRESS)

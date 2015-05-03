@@ -64,7 +64,7 @@ namespace Comet
 		bool					zwrite;
 		bool					ztest;
 		int						order;
-		glm::vec4				subViewportRect;
+		vec4f					subViewportRect;
 		bool					ignoreParentPos;
 		bool					ignoreParentScale;
 		POLYMODE				polyMode;

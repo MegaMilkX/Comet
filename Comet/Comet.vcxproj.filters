@@ -168,12 +168,6 @@
     <ClInclude Include="BinTree.h">
       <Filter>Comet\Header Files\external</Filter>
     </ClInclude>
-    <ClInclude Include="Landscape.h">
-      <Filter>Comet\Header Files\Renderer\Components\Landscape</Filter>
-    </ClInclude>
-    <ClInclude Include="LandscapeTile.h">
-      <Filter>Comet\Header Files\Renderer\Components\Landscape</Filter>
-    </ClInclude>
     <ClInclude Include="ShooterGame.h">
       <Filter>ShooterGame\h</Filter>
     </ClInclude>
@@ -230,6 +224,9 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>ShooterGame\h</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleEmitter.h">
+      <Filter>Comet\Header Files\Renderer\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -315,12 +312,6 @@
     <ClCompile Include="BinTree.cpp">
       <Filter>Comet\Header Files\external</Filter>
     </ClCompile>
-    <ClCompile Include="Landscape.cpp">
-      <Filter>Comet\Source Files\Renderer\Components\Landscape</Filter>
-    </ClCompile>
-    <ClCompile Include="LandscapeTile.cpp">
-      <Filter>Comet\Source Files\Renderer\Components\Landscape</Filter>
-    </ClCompile>
     <ClCompile Include="ShooterGame.cpp">
       <Filter>ShooterGame\src</Filter>
     </ClCompile>
@@ -377,6 +368,9 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>ShooterGame\src</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleEmitter.cpp">
+      <Filter>Comet\Source Files\Renderer\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

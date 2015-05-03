@@ -31,7 +31,7 @@ void AdventureGame::PostInit()
 
 	//text = new Comet::TextRenderable("What's with the upper case?", "data\\fonts\\Magic.ttf", 100);
 	Comet::Node* textNode = renderer->GetRoot()->CreateNode();
-	textNode->SetPosition(glm::vec3(0, 150.0f, 0));
+	textNode->SetPosition(vec3f(0, 150.0f, 0));
 	//textNode->Attach(text);
 	
 

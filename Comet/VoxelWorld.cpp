@@ -36,7 +36,7 @@ VoxelWorld::~VoxelWorld()
 	delete landMaterial;
 }
 
-void VoxelWorld::Update(glm::vec3 viewPoint)
+void VoxelWorld::Update(vec3f viewPoint)
 {
 	glm::ivec3 centerBlock = glm::ivec3(viewPoint.x / 16, viewPoint.y / 16, viewPoint.z / 16);
 }

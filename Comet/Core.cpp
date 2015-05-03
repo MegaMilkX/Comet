@@ -336,7 +336,7 @@ namespace Comet
 					if (attr) fy = std::stof(std::string(attr));
 					attr = pos->Attribute("z");
 					if (attr) fz = std::stof(std::string(attr));
-					ent->GetComponent<Node>()->SetPosition(glm::vec3(fx, fy, fz));
+					ent->GetComponent<Node>()->SetPosition(vec3f(fx, fy, fz));
 				}
 				TiXmlElement* rot = e->FirstChildElement("rotation");
 				if (rot)
@@ -349,7 +349,7 @@ namespace Comet
 					if (attr) fz = std::stof(std::string(attr));
 					attr = rot->Attribute("w");
 					if (attr) fw = std::stof(std::string(attr));
-					ent->GetComponent<Node>()->SetRotation(glm::quat(fx, fy, fz, fw));
+					ent->GetComponent<Node>()->SetRotation(quat(fx, fy, fz, fw));
 				}
 				TiXmlElement* scale = e->FirstChildElement("scale");
 				if (scale)
@@ -360,7 +360,7 @@ namespace Comet
 					if (attr) fy = std::stof(std::string(attr));
 					attr = scale->Attribute("z");
 					if (attr) fz = std::stof(std::string(attr));
-					ent->GetComponent<Node>()->Scale(glm::vec3(fx, fy, fz));
+					ent->GetComponent<Node>()->Scale(vec3f(fx, fy, fz));
 				}
 			}
 			else if (std::string(e->Value()) == "mesh")

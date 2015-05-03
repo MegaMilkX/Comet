@@ -402,13 +402,13 @@ namespace Comet
 			//////////////////////////////////////
 			//TODO
 
-			glm::vec3 a(iToValues[localIndex][0] + x, iToValues[localIndex][1] + y, iToValues[localIndex][2] + z);
-			glm::vec3 b(iToValues[localIndex][3] + x, iToValues[localIndex][4] + y, iToValues[localIndex][5] + z);
+			vec3f a(iToValues[localIndex][0] + x, iToValues[localIndex][1] + y, iToValues[localIndex][2] + z);
+			vec3f b(iToValues[localIndex][3] + x, iToValues[localIndex][4] + y, iToValues[localIndex][5] + z);
 			int vId0 = (a.x) + (a.y)*cloudW + (a.z)*cloudW*cloudH;
 			int vId1 = (b.x) + (b.y)*cloudW + (b.z)*cloudW*cloudH;
 			float v0 = voxelCloud[vId0];
 			float v1 = voxelCloud[vId1];
-			glm::vec3 vecRes(0, 0, 0);
+			vec3f vecRes(0, 0, 0);
 			
 			//vecRes = (a + b) / 2.0f;
 

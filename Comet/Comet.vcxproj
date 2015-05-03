@@ -121,14 +121,13 @@
     <ClInclude Include="GUIRect.h" />
     <ClInclude Include="GUISprite.h" />
     <ClInclude Include="GUIText.h" />
-    <ClInclude Include="Landscape.h" />
-    <ClInclude Include="LandscapeTile.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshData.h" />
     <ClInclude Include="MotionState.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="ParticleEmitter.h" />
     <ClInclude Include="Party.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="Player.h" />
@@ -171,8 +170,6 @@
     <ClCompile Include="GUIRect.cpp" />
     <ClCompile Include="GUISprite.cpp" />
     <ClCompile Include="GUIText.cpp" />
-    <ClCompile Include="Landscape.cpp" />
-    <ClCompile Include="LandscapeTile.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
@@ -180,6 +177,7 @@
     <ClCompile Include="MeshData.cpp" />
     <ClCompile Include="MotionState.cpp" />
     <ClCompile Include="Node.cpp" />
+    <ClCompile Include="ParticleEmitter.cpp" />
     <ClCompile Include="Party.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Player.cpp" />

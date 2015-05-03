@@ -10,7 +10,7 @@ public:
 	VoxelWorld(Comet::Core* core);
 	~VoxelWorld();
 
-	void Update(glm::vec3 viewPoint);
+	void Update(vec3f viewPoint);
 private:
 	WorldBlock blocks[3 * 3 * 3];
 	Comet::Material* landMaterial;

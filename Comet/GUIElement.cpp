@@ -82,7 +82,7 @@ namespace Comet
 
 		
 
-		node->SetPosition(glm::vec3(x, y, 0));
+		node->SetPosition(vec3f(x, y, 0));
 	}
 
 	void GUIElement::SetRect(float x, float y, float w, float h)
@@ -92,7 +92,7 @@ namespace Comet
 		rect.z = w;
 		rect.w = h;
 
-		node->SetPosition(glm::vec3(x, y, 0));
+		node->SetPosition(vec3f(x, y, 0));
 
 		std::set<GUIElement*>::iterator it;
 		for (it = elements.begin(); it != elements.end(); it++)

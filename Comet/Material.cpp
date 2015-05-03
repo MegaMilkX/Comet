@@ -24,7 +24,7 @@ namespace Comet
 		ztest = true;
 		order = 0;
 
-		subViewportRect = glm::vec4(0, 0, 0, 0);
+		subViewportRect = vec4f(0, 0, 0, 0);
 
 		ignoreParentPos = false;
 		ignoreParentScale = false;
@@ -146,23 +146,24 @@ namespace Comet
 			{
 				glUniform1f(glGetUniformLocation(GetShader()->GetProgramId(), it->first.c_str()), *(float*)(it->second.val));
 			}
-			else if (it->second.typeId == typeid(glm::vec3).hash_code())
+			else if (it->second.typeId == typeid(vec3f).hash_code())
 			{
-				glUniform3f(glGetUniformLocation(GetShader()->GetProgramId(), it->first.c_str()), (*(glm::vec3*)(it->second.val)).x, (*(glm::vec3*)(it->second.val)).y, (*(glm::vec3*)(it->second.val)).z);
+				glUniform3f(glGetUniformLocation(GetShader()->GetProgramId(), it->first.c_str()), (*(vec3f*)(it->second.val)).x, (*(vec3f*)(it->second.val)).y, (*(vec3f*)(it->second.val)).z);
 			}
-			else if (it->second.typeId == typeid(glm::vec4).hash_code())
+			else if (it->second.typeId == typeid(vec4f).hash_code())
 			{
-				glUniform4f(glGetUniformLocation(GetShader()->GetProgramId(), it->first.c_str()), (*(glm::vec4*)(it->second.val)).x, (*(glm::vec4*)(it->second.val)).y, (*(glm::vec4*)(it->second.val)).z, (*(glm::vec4*)(it->second.val)).w);
+				glUniform4f(glGetUniformLocation(GetShader()->GetProgramId(), it->first.c_str()), (*(vec4f*)(it->second.val)).x, (*(vec4f*)(it->second.val)).y, (*(vec4f*)(it->second.val)).z, (*(vec4f*)(it->second.val)).w);
 			}
-			else if (it->second.typeId == typeid(glm::mat4).hash_code())
+			else if (it->second.typeId == typeid(mat4f).hash_code())
 			{
-				glUniformMatrix4fv(glGetUniformLocation(GetShader()->GetProgramId(), it->first.c_str()), 1, GL_FALSE, glm::value_ptr(*(glm::mat4*)(it->second.val)));
+				//TODO: Check
+				glUniformMatrix4fv(glGetUniformLocation(GetShader()->GetProgramId(), it->first.c_str()), 1, GL_FALSE, (GLfloat*)&(*(mat4f*)(it->second.val)));
 			}
 		}
 	}
 
 	void Material::SetSubViewportRect(float left, float bottom, float right, float top)
 	{
-		subViewportRect = glm::vec4(left, bottom, right, top);
+		subViewportRect = vec4f(left, bottom, right, top);
 	}
 }
