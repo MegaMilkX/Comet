@@ -308,11 +308,11 @@ namespace Comet
 
 		//Filling voxels
 		noise::module::Perlin perlin;
-		for (int z = 0; z < d; z++)
+		for (int z = 0; z < d; ++z)
 		{
-			for (int y = 0; y < h; y++)
+			for (int y = 0; y < h; ++y)
 			{
-				for (int x = 0; x < w; x++)
+				for (int x = 0; x < w; ++x)
 				{
 					voxelCloud[x + y*cloudW + z*cloudW*cloudH] = perlin.GetValue(x*0.1f, y*0.1f, z*0.1f) + 1.0f;
 					//voxelCloud[x + y*cloudW + z*cloudW*cloudH] = 0.0f;
@@ -329,9 +329,9 @@ namespace Comet
 		//Constructing persistent vertices 
 		///////////////////////////////////////////////////////////////
 		meshData = new MeshData();
-		for (int z = 0; z < d; z++)
-			for (int y = 0; y < h; y++)
-				for (int x = 0; x < w; x++)
+		for (int z = 0; z < d; ++z)
+			for (int y = 0; y < h; ++y)
+				for (int x = 0; x < w; ++x)
 				{
 					vertices.push_back(x + 0.5f); vertices.push_back(y); vertices.push_back(z);					//
 					vertices.push_back(x); vertices.push_back(y); vertices.push_back(z + 0.5f);					//
@@ -339,9 +339,9 @@ namespace Comet
 				}
 
 		//Color
-		for (int z = 0; z < d; z++)
-			for (int y = 0; y < h; y++)
-				for (int x = 0; x < w; x++)
+		for (int z = 0; z < d; ++z)
+			for (int y = 0; y < h; ++y)
+				for (int x = 0; x < w; ++x)
 				{
 					color.push_back(0.1f + y / (float)h); color.push_back(0.1f + y / (float)h); color.push_back(0.1f + y / (float)h);					//
 					color.push_back(0.1f + y / (float)h); color.push_back(0.1f + y / (float)h); color.push_back(0.1f + y / (float)h);					//
@@ -350,11 +350,11 @@ namespace Comet
 
 		//Faces
 		indices.clear();
-		for (int z = 0; z < d-1; z++)
+		for (int z = 0; z < d-1; ++z)
 		{
-			for (int y = 0; y < h-1; y++)
+			for (int y = 0; y < h-1; ++y)
 			{
-				for (int x = 0; x < w-1; x++)
+				for (int x = 0; x < w-1; ++x)
 				{
 					_processCube(x, y, z);
 				}
@@ -389,7 +389,7 @@ namespace Comet
 		if (cubeId == 0)
 			return;
 
-		for (int i = 0; i < 16; i++)
+		for (int i = 0; i < 16; ++i)
 		{
 			if (triTable[cubeId][i] == -1)
 				break;
@@ -437,11 +437,11 @@ namespace Comet
 	void VoxelVolumeMesh::_MoveNoise(float ox, float oy, float oz)
 	{
 		noise::module::Perlin perlin;
-		for (int z = 0; z < cloudD; z++)
+		for (int z = 0; z < cloudD; ++z)
 		{
-			for (int y = 0; y < cloudH; y++)
+			for (int y = 0; y < cloudH; ++y)
 			{
-				for (int x = 0; x < cloudW; x++)
+				for (int x = 0; x < cloudW; ++x)
 				{
 					voxelCloud[x + y*cloudW + z*cloudW*cloudH] = perlin.GetValue((x+ox)*0.1f, (y+oy)*0.1f, (z+oz)*0.1f) + 1.0f;
 				}

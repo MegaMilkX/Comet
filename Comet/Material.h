@@ -47,6 +47,7 @@ namespace Comet
 		void					IgnoreParentPos(bool val){ ignoreParentPos = val; }
 		
 		void					BindTextures();
+		void					SwitchRenderMode();
 		void					glSetUniforms();
 
 		int						GetOrder(){ return order; }

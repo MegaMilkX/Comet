@@ -115,6 +115,7 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="GLBuffer.h" />
     <ClInclude Include="GUI.h" />
     <ClInclude Include="GUICursor.h" />
     <ClInclude Include="GUIElement.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="GLBuffer.cpp" />
     <ClCompile Include="GUI.cpp" />
     <ClCompile Include="GUICursor.cpp" />
     <ClCompile Include="GUIElement.cpp" />
@@ -204,6 +206,10 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\res.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="DefaultShaders\DeferredScreen.glsl" />
+    <Text Include="DefaultShaders\Particle.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

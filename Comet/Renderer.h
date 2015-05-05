@@ -70,9 +70,11 @@ namespace Comet
 		RenderTarget* GetRenderTarget(){ return renderTarget; }
 
 		Camera* GetCurrentCamera(){ return cameraRendering; }
+		void _setZTest(bool val);
+		void _setZWrite(bool val);
+		void _setPolyMode(int m);
 
 		MeshData* GetMeshDataPrimitive(std::string name);
-
 
 		static Renderer* instance;
 
@@ -101,10 +103,6 @@ namespace Comet
 
 		bool ztest;
 		bool zwrite;
-
-		void _setZTest(bool val);
-		void _setZWrite(bool val);
-		void _setPolyMode(int m);
 
 		void _regRenderable(Renderable* r);
 		void _regCamera(Camera* cam);

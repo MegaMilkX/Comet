@@ -30,11 +30,11 @@ namespace Comet
 		renderTarget->camera = this;
 	}
 
-	mat4f Camera::GetProjection()
+	mat4f Camera::GetProjection() const
 	{
 		return projection;
 	}
-	mat4f Camera::GetView()
+	mat4f Camera::GetView() const
 	{
 		if (node)
 		{

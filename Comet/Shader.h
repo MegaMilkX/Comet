@@ -28,7 +28,7 @@ namespace Comet
 		void			Unload();
 
 		unsigned int	GetProgramId() const { return shaderProgramId; }
-		int				GetAttribLocation(ATTR attr){ return attrloc[attr]; }
+		int				GetAttribLocation(ATTR attr) const { return attrloc[attr]; }
 
 	private:
 		unsigned int	shaderProgramId;

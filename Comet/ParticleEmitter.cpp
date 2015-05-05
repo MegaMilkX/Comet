@@ -1,11 +1,15 @@
 #include "ParticleEmitter.h"
 
-
-ParticleEmitter::ParticleEmitter()
+namespace Comet
 {
-}
+
+	ParticleEmitter::ParticleEmitter()
+	{
+	}
 
 
-ParticleEmitter::~ParticleEmitter()
-{
+	ParticleEmitter::~ParticleEmitter()
+	{
+	}
+
 }

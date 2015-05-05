@@ -16,11 +16,11 @@ namespace Comet
 		void Perspective(float fov, float aspect, float zNear, float zFar);
 		void Ortho(float left, float right, float bottom, float top, float zNear, float zFar);
 
-		mat4f GetProjection();
-		mat4f GetView();
+		mat4f GetProjection() const;
+		mat4f GetView() const;
 
 		void SetRenderTarget(RenderTarget* rt);
-		RenderTarget* GetRenderTarget(){ return renderTarget; }
+		RenderTarget* GetRenderTarget() const { return renderTarget; }
 
 		friend RenderTarget;
 	private:

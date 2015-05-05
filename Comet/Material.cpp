@@ -14,6 +14,8 @@
 #include <iostream>
 #include <sstream>
 
+#include "Core.h"
+
 namespace Comet
 {
 
@@ -131,6 +133,13 @@ namespace Comet
 			glBindTexture(GL_TEXTURE_2D, GetTextures()[i]->GetTextureId());
 			
 		}
+	}
+
+	void Material::SwitchRenderMode()
+	{
+		Core::GetInstance()->GetRenderer()->_setZTest(ztest);
+		Core::GetInstance()->GetRenderer()->_setZWrite(zwrite);
+		Core::GetInstance()->GetRenderer()->_setPolyMode(polyMode);
 	}
 
 	void Material::glSetUniforms()

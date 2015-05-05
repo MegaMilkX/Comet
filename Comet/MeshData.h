@@ -2,6 +2,7 @@
 #include "Resource.h"
 #include <MeshIO.h>
 #include <vector>
+#include "GLBuffer.h"
 
 #include <fbxsdk.h>
 #include <fbxsdk\fileio\fbxiosettings.h>
@@ -9,6 +10,8 @@
 #ifndef GLEW_STATIC
 #include <gl\glew.h>
 #endif
+
+#include "Shader.h"
 
 namespace Comet
 {
@@ -32,10 +35,10 @@ namespace Comet
 		//Enums
 		enum PrimitiveType
 		{
-			POINT,
-			LINE,
-			TRIANGLE,
-			TRISTRIP
+			POINT = GL_POINT,
+			LINE = GL_LINE,
+			TRIANGLE = GL_TRIANGLES,
+			TRISTRIP = GL_TRIANGLE_STRIP
 		};
 
 		enum BufferUsage
@@ -50,6 +53,10 @@ namespace Comet
 
 		void			Load(std::string path);
 		void			Unload();
+
+		virtual void	Bind(const Shader *const shader);
+		virtual void	Render();
+		virtual void	RenderInstanced();
 
 		PrimitiveType	GetPrimitiveType(){ return primitiveType; }
 		int				GetVertexAttribLayout(){ return vertexAttribLayout; }
@@ -74,7 +81,7 @@ namespace Comet
 
 		void			SetPrimitiveType(PrimitiveType type){ primitiveType = type; }
 	
-	private:
+	protected:
 		std::vector<SubMeshData*>	subMeshes;
 		PrimitiveType				primitiveType;
 		BufferUsage					bufferUsage;

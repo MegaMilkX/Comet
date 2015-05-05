@@ -5,6 +5,7 @@
 #include "MeshData.h"
 #include "Texture2D.h"
 #include "Material.h"
+#include "Camera.h"
 
 #define VATTR_POS 0x0001
 #define VATTR_UVW 0x0002
@@ -16,27 +17,26 @@ namespace Comet
 	class Renderable : public RenderObject
 	{
 	public:
-		Renderable();
-		virtual ~Renderable();
+						Renderable();
+		virtual			~Renderable();
 
-		MeshData* GetMeshData(){ return meshData; }
-		Material* GetMaterial(){ return mat; }
-		std::vector<Texture2D*> GetTextures(){ return textures; }
+		MeshData*		GetMeshData() const { return meshData; }
+		Material*		GetMaterial() const { return mat; }
+		std::vector<Texture2D*> GetTextures() const { return textures; }
 
-		void SetMeshData(std::string resname);
-		void SetMeshData(MeshData* md){ meshData = md; }
-		void SetTexture2D(Texture2D* tex, unsigned char layer);
-		void SetMaterial(std::string resname);
-		void SetMaterial(Material* mat){ this->mat = mat; }
+		void			SetMeshData(std::string resname);
+		void			SetMeshData(MeshData* md){ meshData = md; }
+		void			SetTexture2D(Texture2D* tex, unsigned char layer);
+		void			SetMaterial(std::string resname);
+		void			SetMaterial(Material* mat){ this->mat = mat; }
+		bool			IsRenderable() const { return true; }
 
-		bool IsRenderable(){ return true; }
-
-
+		virtual void	Render(const Camera *const cam);
 		
 	protected:
-		MeshData* meshData; //Переделать на смарт поинтер. Иначе пиздец
+		MeshData*		meshData; //Переделать на смарт поинтер. Иначе пиздец
 		std::vector<Texture2D*> textures; //Это тоже
-		Material* mat; //И это конечно
+		Material*		mat; //И это конечно
 	};
 
 };

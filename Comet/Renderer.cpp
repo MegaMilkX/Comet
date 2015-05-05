@@ -180,7 +180,8 @@ namespace Comet
 		for (rIt = sorted.begin(); rIt != sorted.end(); rIt++)
 		{
 			(*rIt)->Update();
-			_render(cam, (*rIt));
+			//_render(cam, (*rIt));
+			(*rIt)->Render(cam);
 		}
 
 		//Go through post-processes
@@ -209,63 +210,11 @@ namespace Comet
 		if (!r->GetMaterial()->GetShader())
 			return;
 
-		//////////////////////////////////////////////////////////////////////////////////////////
-		//Rendering
-		//TODO: Iterate through MeshData's submeshes in most effective way and render each of them
-		//If a submesh has no material attached to it, fall back to MeshData's material
-		//If meshdata has only one big mesh it will be stored in the 0th submesh
-		//////////////////////////////////////////////////////////////////////////////////////////
+		//TODO: think about submeshes and what to do with them
 
-
-
-
-
-		////////////////////////////////////////////////////////////////////////////////////////////////
-		//Setting up data arrays (these are only one of each for a renderable) and for all its submeshes
-		////////////////////////////////////////////////////////////////////////////////////////////////
 		Shader* shader = r->GetMaterial()->GetShader();
-		if (r->GetMeshData()->GetVertexAttribLayout() & VATTR_POS)
-		{
-			glGetAttribLocation(0, "vertexPosition_modelspace");
-			glEnableVertexAttribArray(shader->GetAttribLocation(Shader::POS));	//координаты
-			glBindBuffer(GL_ARRAY_BUFFER, r->GetMeshData()->GetPosBuffer());
-			glVertexAttribPointer(shader->GetAttribLocation(Shader::POS), 3, GL_FLOAT, GL_FALSE, sizeof(float)* 3, 0);
-		}
+
 		
-		if (r->GetMeshData()->GetVertexAttribLayout() & VATTR_UVW)
-		{
-			glEnableVertexAttribArray(shader->GetAttribLocation(Shader::UVW));	//uvw
-			glBindBuffer(GL_ARRAY_BUFFER, r->GetMeshData()->GetUVWBuffer());
-			glVertexAttribPointer(shader->GetAttribLocation(Shader::UVW), 3, GL_FLOAT, GL_FALSE, 0, 0);
-		}
-
-		if (r->GetMeshData()->GetVertexAttribLayout() & VATTR_NOR)
-		{
-			glEnableVertexAttribArray(shader->GetAttribLocation(Shader::NRM));	//нормали
-			glBindBuffer(GL_ARRAY_BUFFER, r->GetMeshData()->GetNormBuffer());
-			glVertexAttribPointer(shader->GetAttribLocation(Shader::NRM), 3, GL_FLOAT, GL_FALSE, 0, 0);
-		}
-
-		if (r->GetMeshData()->GetVertexAttribLayout() & VATTR_COL)
-		{
-			glEnableVertexAttribArray(shader->GetAttribLocation(Shader::COL));	//цвет
-			glBindBuffer(GL_ARRAY_BUFFER, r->GetMeshData()->GetColBuffer());
-			glVertexAttribPointer(shader->GetAttribLocation(Shader::COL), 3, GL_FLOAT, GL_FALSE, 0, 0);
-		}
-
-		//Setting Render primitive type for the whole mesh
-		GLenum primType = 0;
-		unsigned long nv = 0;
-		switch (r->GetMeshData()->GetPrimitiveType())
-		{
-		case MeshData::POINT: primType = GL_POINTS; break;
-		case MeshData::LINE: primType = GL_LINES; break;
-		case MeshData::TRIANGLE: primType = GL_TRIANGLES; break;
-		case MeshData::TRISTRIP: primType = GL_TRIANGLE_STRIP; nv = r->GetMeshData()->GetNumVerts() + 1; break;
-		default:  break;
-		}
-
-		nv = r->GetMeshData()->GetNumVerts();
 
 		_setZTest(r->GetMaterial()->ztest);
 		_setZWrite(r->GetMaterial()->zwrite);
@@ -278,29 +227,9 @@ namespace Comet
 
 		r->GetMaterial()->BindTextures();
 
-		if (r->GetMeshData()->GetFaceBuffer())
-		{
-			if (r->GetMeshData()->GetNumSubMeshes() > 0)
-			{
-				for (int i = 0; i < r->GetMeshData()->GetNumSubMeshes(); i++)
-				{
-					SubMeshData* subMesh = r->GetMeshData()->GetSubMesh(i);
 
-					//Render now
-					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r->GetMeshData()->GetFaceBuffer());
-					glDrawElements(primType, subMesh->faces() * 3, GL_UNSIGNED_SHORT, (void*)(subMesh->offset()));
-				}
-			}
-			else
-			{
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, r->GetMeshData()->GetFaceBuffer());
-				glDrawElements(primType, r->GetMeshData()->GetNumFaces() * 3, GL_UNSIGNED_SHORT, 0);
-			}
-		}
-		else // No indices - no submeshes. TODO At least for now
-		{
-			glDrawArrays(primType, 0, nv);
-		}
+		r->GetMeshData()->Bind(shader);
+		r->GetMeshData()->Render();
 	}
 
 	void Renderer::_renderNodeUnsorted(Camera* cam, Node* node)

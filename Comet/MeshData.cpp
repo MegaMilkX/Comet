@@ -110,6 +110,65 @@ namespace Comet
 		glDeleteBuffers(1, &bufNorm);
 	}
 
+	void MeshData::Bind(const Shader *const shader)
+	{
+		if (vertexAttribLayout & VATTR_POS)
+		{
+			glEnableVertexAttribArray(shader->GetAttribLocation(Shader::POS));	//координаты
+			glBindBuffer(GL_ARRAY_BUFFER, bufPos);
+			glVertexAttribPointer(shader->GetAttribLocation(Shader::POS), 3, GL_FLOAT, GL_FALSE, 0, 0);
+		}
+
+		if (vertexAttribLayout & VATTR_UVW)
+		{
+			glEnableVertexAttribArray(shader->GetAttribLocation(Shader::UVW));	//uvw
+			glBindBuffer(GL_ARRAY_BUFFER, bufUVW);
+			glVertexAttribPointer(shader->GetAttribLocation(Shader::UVW), 3, GL_FLOAT, GL_FALSE, 0, 0);
+		}
+
+		if (vertexAttribLayout & VATTR_NOR)
+		{
+			glEnableVertexAttribArray(shader->GetAttribLocation(Shader::NRM));	//нормали
+			glBindBuffer(GL_ARRAY_BUFFER, bufNorm);
+			glVertexAttribPointer(shader->GetAttribLocation(Shader::NRM), 3, GL_FLOAT, GL_FALSE, 0, 0);
+		}
+
+		if (vertexAttribLayout & VATTR_COL)
+		{
+			glEnableVertexAttribArray(shader->GetAttribLocation(Shader::COL));	//цвет
+			glBindBuffer(GL_ARRAY_BUFFER, bufCol);
+			glVertexAttribPointer(shader->GetAttribLocation(Shader::COL), 3, GL_FLOAT, GL_FALSE, 0, 0);
+		}
+	}
+
+	void MeshData::Render()
+	{
+		if (bufFace)
+		{
+			if (subMeshes.size() > 0)
+			{
+				for (int i = 0; i < subMeshes.size(); i++)
+				{
+					SubMeshData* subMesh = subMeshes[i];
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufFace);
+					glDrawElements(primitiveType, subMesh->faces() * 3, GL_UNSIGNED_SHORT, (void*)(subMesh->offset()));
+				}
+			}
+			else
+			{
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufFace);
+				glDrawElements(primitiveType, nFaces * 3, GL_UNSIGNED_SHORT, 0);
+			}
+		}
+		else // No indices - no submeshes. TODO At least for now
+			glDrawArrays(primitiveType, 0, nVerts);
+	}
+
+	void MeshData::RenderInstanced()
+	{
+
+	}
+
 	void MeshData::FillPosition(std::vector<float> data)
 	{
 		glDeleteBuffers(1, &bufPos);

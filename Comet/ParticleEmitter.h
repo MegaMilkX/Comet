@@ -1,9 +1,17 @@
 #pragma once
 
-class ParticleEmitter
-{
-public:
-	ParticleEmitter();
-	~ParticleEmitter();
-};
+#include "Renderable.h"
 
+namespace Comet
+{
+
+	class ParticleEmitter : public Renderable
+	{
+	public:
+		ParticleEmitter();
+		~ParticleEmitter();
+	private:
+
+	};
+
+}
