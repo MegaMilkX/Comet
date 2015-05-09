@@ -60,7 +60,6 @@ namespace Comet
 		//Remove this one
 		bool UpdateMultipass();
 
-		Node* GetRoot(){ return rootNode; }
 		GLFWwindow* GetWindow(){ return window; }
 		GLFWwindow* GetSecondContext(){ return loading_context; }
 		unsigned int GetWindowWidth(){ return wWidth; }
@@ -87,7 +86,6 @@ namespace Comet
 	private:
 		Core* core;
 
-		Node* rootNode;
 		std::set<Renderable*> renderables;
 		std::set<Camera*> cameras;
 		Camera* cameraRendering;

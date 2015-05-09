@@ -23,13 +23,8 @@ namespace Comet
 
 		virtual void Update(){}
 
-		//
-		void SetEntity(Entity* e);
-		void BadEntity();
-
 		friend Node;
 	protected:
-		Node* node;
 		std::string name;
 	};
 

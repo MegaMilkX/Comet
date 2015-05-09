@@ -19,11 +19,6 @@ namespace Comet
 		void SetMass(float val);
 		void SetKinematic(bool val);
 
-
-		//
-		void SetEntity(Entity* e);
-		void BadEntity();
-
 		btRigidBody* GetBody(){ return rigidBody; }
 	private:
 		btRigidBody* rigidBody;

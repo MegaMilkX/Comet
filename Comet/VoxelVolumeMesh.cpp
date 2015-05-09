@@ -2,8 +2,6 @@
 
 #include <noise.h>
 
-#include "Entity.h"
-
 namespace Comet
 {
 	int iToValues[12][6] =

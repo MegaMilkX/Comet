@@ -17,22 +17,12 @@ namespace Comet
 
 		physics = new Physics();
 
-		userConsole = new UserConsole();
-
 		dt = 0;
 	}
 
 
 	Core::~Core()
 	{
-		std::set<Entity*>::iterator it;
-		for (it = entities.begin(); it != entities.end(); it++)
-		{
-			delete (*it);
-		}
-
-		delete userConsole;
-
 		delete physics;
 		delete renderer;
 
@@ -284,19 +274,6 @@ namespace Comet
 		return val;
 	}
 
-	
-	Entity* Core::CreateEntity()
-	{
-		Entity* entity = new Entity();
-		entities.insert(entity);
-		return entity;
-	}
-
-	Entity* Core::CreateEntity(std::string resourcename)
-	{
-		return 0; //TODO
-	}
-
 	Animation* Core::CreateAnimation()
 	{
 		Animation* anim = new Animation();
@@ -304,6 +281,7 @@ namespace Comet
 		return anim;
 	}
 
+	/*
 	void Core::ReadGraphFile(std::string path, Node* node)
 	{
 		TiXmlDocument doc(path.c_str());
@@ -321,8 +299,10 @@ namespace Comet
 
 
 		entityStack.empty();
-	}
+	}*/
 
+	//DON'T DELETE that, but rewrite. It has some useful code.
+	/*
 	void Core::_digestXmlElement(TiXmlElement* elem)
 	{
 		for (TiXmlElement* e = elem->FirstChildElement(); e != 0; e = e->NextSiblingElement())
@@ -403,5 +383,5 @@ namespace Comet
 				ent->GetComponent<Camera>()->Perspective(95.0f, 1280.0f / 720.0f, 0.001f, 1000.0f);
 			}
 		}
-	}
+	}*/
 };

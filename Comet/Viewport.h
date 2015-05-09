@@ -1,7 +1,5 @@
 #pragma once
 
-#include "GUI.h"
-
 namespace Comet
 {
 	class Camera;

@@ -15,7 +15,6 @@ namespace Comet
 	Renderer::Renderer()
 	{
 		instance = this;
-		rootNode = new Node();
 		fullscreen = false;
 
 		renderTarget = 0;
@@ -29,7 +28,6 @@ namespace Comet
 	{
 		if (renderTarget)
 			delete renderTarget;
-		delete rootNode;
 	}
 
 	void Renderer::Init()

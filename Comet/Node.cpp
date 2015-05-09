@@ -2,8 +2,6 @@
 #include "RenderObject.h"
 #include "Renderer.h"
 
-#include "Entity.h"
-
 namespace Comet
 {
 
@@ -47,13 +45,6 @@ namespace Comet
 	{
 		n->parent = this;
 	}
-	void Node::Attach(RenderObject* obj)
-	{
-		if (obj->node)
-			obj->node->Detach(obj);
-		obj->node = this;
-		objects.insert(obj);
-	}
 
 	void Node::DestroyNode(Node* n)
 	{
@@ -65,11 +56,7 @@ namespace Comet
 		n->parent = 0;
 		nodes.erase(n);
 	}
-	void Node::Detach(RenderObject* obj)
-	{
-		obj->node = 0;
-		objects.erase(obj);
-	}
+	
 	void Node::SetParent(Node* n)
 	{
 		parent = n;
@@ -195,10 +182,4 @@ namespace Comet
 	bool Node::IsDirty()
 	{return drt;}
 
-	void Node::SetEntity(Entity* e)
-	{
-		Component::SetEntity(e);
-		if (e)
-			e->_setTransform(this);
-	}
 };

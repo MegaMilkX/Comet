@@ -3,8 +3,6 @@
 
 #include <sstream>
 
-#include "Entity.h"
-
 namespace Comet
 {
 
@@ -23,15 +21,4 @@ namespace Comet
 	{
 	}
 
-	void RenderObject::SetEntity(Entity* e)
-	{
-		Component::SetEntity(e);	
-	}
-
-	void RenderObject::BadEntity()
-	{
-		//TODO Get an entity's transform node and attach to it
-		entity->GetComponent<Node>()->Attach(this);
-		
-	}
 };

@@ -2,13 +2,9 @@
 
 #include "Renderer.h"
 #include "Physics.h"
-#include "GUI.h"
-#include "Entity.h"
 #include "ResMan.h"
 
 #include "Animation.h"
-
-#include "UserConsole.h"
 
 #include <sys/utime.h>
 
@@ -34,12 +30,11 @@ namespace Comet
 
 		Node*					SceneRoot() { return &sceneRoot; }
 
-		Entity*					CreateEntity();
-		Entity*					CreateEntity(std::string resourcename);
 		Animation*				CreateAnimation();
 		Animation*				CreateAnimation(std::string resourcename);
 
-		void					ReadGraphFile(std::string path, Node* node);
+		//Commented out for the time being.
+		//void					ReadGraphFile(std::string path, Node* node);
 
 		Renderer*				GetRenderer() const { return renderer; }
 		Physics*				GetPhysics() const { return physics; }
@@ -63,13 +58,9 @@ namespace Comet
 		void*					audio;
 		Physics*				physics;
 
-		std::set<Entity*>		entities;
 		std::set<Animation*>	animations;
-
-		UserConsole*			userConsole;
 	private:
-		void					_digestXmlElement(TiXmlElement* elem);
-		std::stack<Entity*>		entityStack;
+		//void					_digestXmlElement(TiXmlElement* elem);
 	};
 
 };
