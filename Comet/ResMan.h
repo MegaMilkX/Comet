@@ -7,6 +7,7 @@
 #include "MeshData.h"
 #include "Texture2D.h"
 #include "Font.h"
+#include "Sequence.h"
 
 #include <thread>
 

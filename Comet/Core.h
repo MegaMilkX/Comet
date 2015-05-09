@@ -3,10 +3,10 @@
 #include "Renderer.h"
 #include "Physics.h"
 #include "GUI.h"
-
 #include "Entity.h"
-
 #include "ResMan.h"
+
+#include "Animation.h"
 
 #include "UserConsole.h"
 
@@ -22,47 +22,54 @@ namespace Comet
 	class Core
 	{
 	public:
-						Core();
-		virtual			~Core();
+								Core();
+		virtual					~Core();
 
-		static Core*	GetInstance(){ return instance; }
+		static Core*			GetInstance(){ return instance; }
 
-		virtual void	Init();
-		virtual void	PostInit(){}
-		virtual bool	Update();
-		void			Reset();
+		virtual void			Init();
+		virtual void			PostInit(){}
+		virtual bool			Update();
+		void					Reset();
 
-		Entity*			CreateEntity();
-		Entity*			CreateEntity(std::string resourcename);
+		Node*					SceneRoot() { return &sceneRoot; }
 
-		void			ReadGraphFile(std::string path, Node* node);
+		Entity*					CreateEntity();
+		Entity*					CreateEntity(std::string resourcename);
+		Animation*				CreateAnimation();
+		Animation*				CreateAnimation(std::string resourcename);
 
-		Renderer*		GetRenderer() const { return renderer; }
-		Physics*		GetPhysics() const { return physics; }
+		void					ReadGraphFile(std::string path, Node* node);
 
-		MeshData*		GetMeshDataPrimitive(std::string name);
-		double			GetDt() const { return dt; }
+		Renderer*				GetRenderer() const { return renderer; }
+		Physics*				GetPhysics() const { return physics; }
+
+		MeshData*				GetMeshDataPrimitive(std::string name);
+		double					GetDt() const { return dt; }
 	
 	protected:
-		void				_preUpdate();
-		bool				_postUpdate();
+		void					_preUpdate();
+		bool					_postUpdate();
 
-		double				time0 = 0,
-							time1 = 0;
-		double				dt;			//Delta Time
+		Node					sceneRoot;
 
-		static Core*		instance;
+		double					time0 = 0,
+								time1 = 0;
+		double					dt;			//Delta Time
 
-		Renderer*			renderer;
-		void*				audio;
-		Physics*			physics;
+		static Core*			instance;
 
-		std::set<Entity*>	entities;
+		Renderer*				renderer;
+		void*					audio;
+		Physics*				physics;
 
-		UserConsole*		userConsole;
+		std::set<Entity*>		entities;
+		std::set<Animation*>	animations;
+
+		UserConsole*			userConsole;
 	private:
-		void				_digestXmlElement(TiXmlElement* elem);
-		std::stack<Entity*> entityStack;
+		void					_digestXmlElement(TiXmlElement* elem);
+		std::stack<Entity*>		entityStack;
 	};
 
 };

@@ -22,20 +22,21 @@ namespace Comet
 
 		MeshData*		GetMeshData() const { return meshData; }
 		Material*		GetMaterial() const { return mat; }
-		std::vector<Texture2D*> GetTextures() const { return textures; }
 
 		void			SetMeshData(std::string resname);
 		void			SetMeshData(MeshData* md){ meshData = md; }
-		void			SetTexture2D(Texture2D* tex, unsigned char layer);
 		void			SetMaterial(std::string resname);
 		void			SetMaterial(Material* mat){ this->mat = mat; }
 		bool			IsRenderable() const { return true; }
 
 		virtual void	Render(const Camera *const cam);
+
+		//TODO
+		//void SetEntity(Entity* e);
+		//void BadEntity(); ??
 		
 	protected:
 		MeshData*		meshData; //Переделать на смарт поинтер. Иначе пиздец
-		std::vector<Texture2D*> textures; //Это тоже
 		Material*		mat; //И это конечно
 	};
 

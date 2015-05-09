@@ -16,7 +16,7 @@ namespace Comet
 						Entity();
 						~Entity();
 
-		//TODO: Maybe this doesn't need to be template method
+		//TODO: Maybe this doesn't need to be a template method
 		template<typename T>
 		T*				AddComponent(T* comp);
 		//But this certainly does
@@ -31,6 +31,13 @@ namespace Comet
 		void			SetTransform(Node* n);
 		void			SetRenderable(Renderable* r);
 		void			SetRigidBody(RigidBody* rb);
+
+		//# Don't use it
+		void			_setTransform(Node* n){ transform = n; }
+		//# Don't use it
+		void			_setRenderable(Renderable* r){ renderable = r; }
+		//# Don't use it
+		void			_setRigidBody(RigidBody* rb){ rigidBody = rb; }
 	private:
 		std::map<std::type_index, Component*> components;
 		Node*			transform;
@@ -57,6 +64,11 @@ namespace Comet
 
 		components.insert(std::make_pair(std::type_index(typeid(T)), comp));
 		comp->SetEntity(this);
+
+		std::map<std::type_index, Component*>::const_iterator it;
+		for (it = components.begin(); it != components.end(); ++it)
+		{it->second->BadEntity();}
+
 		return comp;
 	}
 

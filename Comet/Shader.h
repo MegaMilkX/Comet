@@ -22,6 +22,8 @@ namespace Comet
 						Shader();
 		virtual			~Shader();
 
+		const Shader&	operator=(const Shader& other);
+
 		void			Load(std::string path);
 		//
 		void			Load(std::string fp, std::string vp);

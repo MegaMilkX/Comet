@@ -88,6 +88,12 @@
     <Filter Include="Comet\Shaders">
       <UniqueIdentifier>{03273fbd-6044-4e48-8595-39d283caf0ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Comet\Source Files\Renderer\Components\Animation">
+      <UniqueIdentifier>{e3a78473-e9a4-48e6-bcd2-cdc6ac2acc36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Comet\Header Files\Renderer\Components\Animation">
+      <UniqueIdentifier>{e4702f5e-e388-46f2-9884-98c0f0acb302}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Core.h">
@@ -232,6 +238,18 @@
       <Filter>Comet\Header Files\Renderer\Components</Filter>
     </ClInclude>
     <ClInclude Include="GLBuffer.h">
+      <Filter>Comet\Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Comet\Header Files\Renderer\Components\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimTrack.h">
+      <Filter>Comet\Header Files\Renderer\Components\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Keyframe.h">
+      <Filter>Comet\Header Files\Renderer\Components\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Sequence.h">
       <Filter>Comet\Header Files\Resources</Filter>
     </ClInclude>
   </ItemGroup>
@@ -379,6 +397,18 @@
       <Filter>Comet\Source Files\Renderer\Components</Filter>
     </ClCompile>
     <ClCompile Include="GLBuffer.cpp">
+      <Filter>Comet\Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Comet\Source Files\Renderer\Components\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimTrack.cpp">
+      <Filter>Comet\Source Files\Renderer\Components\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Keyframe.cpp">
+      <Filter>Comet\Source Files\Renderer\Components\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Sequence.cpp">
       <Filter>Comet\Source Files\Resources</Filter>
     </ClCompile>
   </ItemGroup>

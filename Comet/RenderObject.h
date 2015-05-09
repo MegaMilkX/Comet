@@ -25,6 +25,7 @@ namespace Comet
 
 		//
 		void SetEntity(Entity* e);
+		void BadEntity();
 
 		friend Node;
 	protected:

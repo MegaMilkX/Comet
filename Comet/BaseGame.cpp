@@ -34,7 +34,6 @@ namespace Comet
 		Light* light = new Light();
 		//Mesh* mesh = new Mesh(ResMan::GetInstance()->GetResource<MeshData>("data\\models\\test.xyz"));
 		Mesh* mesh2 = new Mesh(ResMan::GetInstance()->GetResource<MeshData>("data\\models\\test2.xyz"));
-		mesh2->SetTexture2D(ResMan::GetInstance()->GetResource<Texture2D>("data\\textures\\test2.tga"), 0);
 		mesh2->SetMaterial(ResMan::GetInstance()->GetResource<Material>("data\\materials\\test.mat"));
 
 		//node->Attach(mesh);

@@ -48,9 +48,9 @@ void ShooterGame::PostInit()
 
 	
 	//моделька персонажа
-	Node* node = renderer->GetRoot()->CreateNode();
+	node = renderer->GetRoot()->CreateNode();
 	node->SetPosition(vec3f(0, 3.1f, 0));
-	Mesh* mesh = new Mesh("data\\models\\girl.xyz");
+	Mesh* mesh = new Mesh("data\\models\\char.fbx");
 	node->Attach(mesh);
 
 	Material* mat = new Material();
@@ -71,6 +71,32 @@ void ShooterGame::PostInit()
 	ground->GetComponent<Node>()->Scale(vec3f(50, 50, 1));
 	ground->GetComponent<Node>()->Rotate(-3.14f / 2.0f, vec3f(1, 0, 0), Node::LOCAL);
 
+	//Particle system
+
+	Entity* ptSys = CreateEntity();
+	ptSys->AddComponent(renderer->GetRoot()->CreateNode());
+	ptSys->AddComponent(new ParticleEmitter("data\\models\\star.fbx"));
+	ptSys->GetComponent<ParticleEmitter>()->SetMaterial(new Material("data\\shaders\\deferredinstanced.glsl", "data\\textures\\Die-Sargprinzessin-1-4_.png"));
+	ptSys->GetComponent<Node>()->SetPosition(vec3f(0, 1.0f, 2.0f));
+
+	//Animations
+	vec3f test;
+	Animation* anim = CreateAnimation();
+	//anim->CreateTrack(POSITION);
+	
+	//AnimTrack<float>* track = anim->CreateTrack(&disp, "displacement");
+	//track->CreateKeyframe(0, 0.0f);
+	//track->CreateKeyframe(1, 1.0f);
+	//track->CreateKeyframe(2, 0.0f);
+	//AnimTrack<vec3f>* vecTrack = anim->CreateTrack(&test, "vector");
+	//vecTrack->CreateKeyframe(0, vec3f(0, 0, 0));
+	//vecTrack->CreateKeyframe(1, vec3f(1, 0, 1));
+
+	ResMan::GetInstance()->GetResource<Sequence>("data\\animation\\anim.fbx");
+
+	Entity* character = CreateEntity();
+	
+
 	//Hierarchy loading
 	//this->ReadGraphFile("data\\test.graph", renderer->GetRoot());
 
@@ -83,8 +109,7 @@ void ShooterGame::PostInit()
 	tetra->AddComponent(renderer->GetRoot()->CreateNode());
 	tetra->AddComponent(new VoxelVolumeMesh(16, 16, 16));
 	tetra->GetComponent<VoxelVolumeMesh>()->SetMaterial(LandMaterial);
-	volumeMesh = tetra->GetComponent<VoxelVolumeMesh>();
-	*/
+	volumeMesh = tetra->GetComponent<VoxelVolumeMesh>();*/
 }
 
 void ShooterGame::Start()
@@ -101,6 +126,10 @@ bool ShooterGame::Update()
 	
 	glfwSetCursorPos(renderer->GetWindow(), 1280 / 2, 720 / 2);
 
+	camera_->GetComponent<Node>()->SetPosition(node->GetPosition() + vec3f(0,1.5f,0));
+	camera_->GetComponent<Node>()->Translate(camera_->GetComponent<Node>()->GetBack()*9.0f);
+
+	/*
 	if (glfwGetKey(renderer->GetWindow(), GLFW_KEY_W) == GLFW_PRESS)
 	{
 		camera_->GetComponent<Node>()->Translate(vec3f(0.0f, 0.0f, -5.03f*dt), Node::LOCAL);
@@ -125,12 +154,12 @@ bool ShooterGame::Update()
 	{
 		camera_->GetComponent<Node>()->Translate(vec3f(0.0f, -5.03f*dt, 0.0f), Node::WORLD);
 	}
-
+	*/
 	if (glfwGetMouseButton(renderer->GetWindow(), GLFW_MOUSE_BUTTON_1) == GLFW_PRESS)
 	{
 		Entity* sphere = CreateEntity();
 		sphere->AddComponent(renderer->GetRoot()->CreateNode());
-		sphere->AddComponent(new Mesh("data\\models\\sphere.xyz"));
+		sphere->AddComponent(new Mesh("data\\models\\sphere.fbx"));
 		sphere->GetComponent<Mesh>()->SetMaterial(new Material("data\\shaders\\deferred.glsl", "data\\textures\\2014-11-20-688057.jpeg"));
 		btCollisionShape* shape = new btSphereShape(1);
 		btCollisionShape* cyllinder = new btCylinderShape(btVector3(1, 1, 1.5f));
@@ -149,11 +178,13 @@ bool ShooterGame::Update()
 	if (glfwGetKey(renderer->GetWindow(), GLFW_KEY_4) == GLFW_PRESS)
 		pp->GetMaterial()->SetParameter("output", 3);
 
-	disp += 1.0f * GetDt();
+	//disp += 1.0f * GetDt();
 	//volumeMesh->_MoveNoise(disp, 0, 0);
 	pp->GetMaterial()->SetParameter("cameraPos", camera_->GetComponent<Camera>()->GetNode()->GetBack());
 
 	world->Update(camera_->GetComponent<Node>()->GetPosition());
+
+	node->SetPosition(vec3f(0, 3.1f + disp, 0));
 
 	return Core::_postUpdate();
 }

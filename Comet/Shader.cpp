@@ -21,6 +21,14 @@ namespace Comet
 		Unload();
 	}
 
+
+	const Shader& Shader::operator=(const Shader& other)
+	{
+		shaderProgramId = other.shaderProgramId;
+		for (int i = 0; i < 7; i++)
+			attrloc[i] = other.attrloc[i];
+	}
+
 	void Shader::Load(std::string path)
 	{
 		// Create the shaders

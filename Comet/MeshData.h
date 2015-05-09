@@ -56,15 +56,15 @@ namespace Comet
 
 		virtual void	Bind(const Shader *const shader);
 		virtual void	Render();
-		virtual void	RenderInstanced();
+		virtual void	RenderInstanced(unsigned int count);
 
 		PrimitiveType	GetPrimitiveType(){ return primitiveType; }
 		int				GetVertexAttribLayout(){ return vertexAttribLayout; }
-		unsigned int	GetPosBuffer(){ return bufPos; }
-		unsigned int	GetUVWBuffer(){ return bufUVW; }
-		unsigned int	GetNormBuffer(){ return bufNorm; }
-		unsigned int	GetColBuffer(){ return bufCol; }
-		unsigned int	GetFaceBuffer(){ return bufFace; }
+		unsigned int	GetPosBuffer(){ return bufPos.Id(); }
+		unsigned int	GetUVWBuffer(){ return bufUVW.Id(); }
+		unsigned int	GetNormBuffer(){ return bufNorm.Id(); }
+		unsigned int	GetColBuffer(){ return bufCol.Id(); }
+		unsigned int	GetFaceBuffer(){ return bufFace.Id(); }
 		unsigned int	GetNumFaces(){ return nFaces; }
 		unsigned int	GetNumVerts(){ return nVerts; }
 
@@ -82,18 +82,21 @@ namespace Comet
 		void			SetPrimitiveType(PrimitiveType type){ primitiveType = type; }
 	
 	protected:
+		void _GetMeshes(FbxNode* node, std::vector<FbxMesh*> &meshes);
+
 		std::vector<SubMeshData*>	subMeshes;
 		PrimitiveType				primitiveType;
 		BufferUsage					bufferUsage;
 		int							vertexAttribLayout;
-		unsigned int				bufPos;
-		unsigned int				bufUVW;
-		unsigned int				bufNorm;
-		unsigned int				bufCol;
-		unsigned int				bufFace;
-
 		unsigned int				nVerts;
 		unsigned int				nFaces;
+
+		//----------------
+		GLBuffer					bufPos;
+		GLBuffer					bufUVW;
+		GLBuffer					bufNorm;
+		GLBuffer					bufCol;
+		GLBuffer					bufFace;
 	};
 
 };

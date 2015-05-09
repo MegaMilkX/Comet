@@ -15,7 +15,7 @@ namespace Comet
 		virtual			~Resource();
 
 		virtual void	Load(std::string path) = 0;
-		virtual void	Unload();
+		virtual void	Unload() = 0;
 
 		bool			IsReady(){ return isReady; }
 		void			IsReady(bool val){ isReady = val; }

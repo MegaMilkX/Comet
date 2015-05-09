@@ -79,7 +79,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>..\external\noise\win32\Release;..\external\FBX\lib\vs2013\x86\release;..\external\tinyxml\Releasetinyxml;..\external\bullet-2.82-r2704\lib\ReleaseMD;..\external\libtga-1.0.1;..\external\glew-1.10.0\lib;..\external\glfw-3.0.4\src\Release;..\external\SOIL\projects\VC9\Release;..\external\GlyphAtlasComposer\Release;..\external\freetype-2.5.0.1\objs\win32\vc2010;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32s.lib;glfw3.lib;OpenGL32.lib;libtga.lib;SOIL.lib;font_rasterizer.lib;freetype250.lib;BulletDynamics.lib;BulletCollision.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;LinearMath.lib;tinyxml.lib;libfbxsdk-md.lib;libnoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32s.lib;glfw3.lib;OpenGL32.lib;libtga.lib;SOIL.lib;font_rasterizer.lib;freetype250.lib;BulletDynamics.lib;BulletCollision.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;LinearMath.lib;tinyxml.lib;libfbxsdk.lib;libnoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -106,6 +106,8 @@
   <ItemGroup>
     <ClInclude Include="..\external\MeshWriteRead\MeshWriteRead\MeshIO.h" />
     <ClInclude Include="AdventureGame.h" />
+    <ClInclude Include="Animation.h" />
+    <ClInclude Include="AnimTrack.h" />
     <ClInclude Include="BaseGame.h" />
     <ClInclude Include="BinTree.h" />
     <ClInclude Include="Camera.h" />
@@ -122,6 +124,7 @@
     <ClInclude Include="GUIRect.h" />
     <ClInclude Include="GUISprite.h" />
     <ClInclude Include="GUIText.h" />
+    <ClInclude Include="Keyframe.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
@@ -140,6 +143,7 @@
     <ClInclude Include="ResMan.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RigidBody.h" />
+    <ClInclude Include="Sequence.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShooterGame.h" />
     <ClInclude Include="TextRenderable.h" />
@@ -156,6 +160,8 @@
   <ItemGroup>
     <ClCompile Include="..\external\MeshWriteRead\MeshWriteRead\MeshIO.cpp" />
     <ClCompile Include="AdventureGame.cpp" />
+    <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="AnimTrack.cpp" />
     <ClCompile Include="BaseGame.cpp" />
     <ClCompile Include="BinTree.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -172,6 +178,7 @@
     <ClCompile Include="GUIRect.cpp" />
     <ClCompile Include="GUISprite.cpp" />
     <ClCompile Include="GUIText.cpp" />
+    <ClCompile Include="Keyframe.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Material.cpp" />
@@ -191,6 +198,7 @@
     <ClCompile Include="ResMan.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="RigidBody.cpp" />
+    <ClCompile Include="Sequence.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShooterGame.cpp" />
     <ClCompile Include="TextRenderable.cpp" />

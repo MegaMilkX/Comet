@@ -186,8 +186,6 @@ namespace Comet
 
 		//Go through post-processes
 		_renderPostProcess(rt->GetPostProcess());
-
-		//_renderFullscreenQuad(0);
 	}
 
 	void Renderer::_renderPostProcess(PostProcess* pp)
@@ -302,4 +300,8 @@ namespace Comet
 	{
 		lights.insert(l);
 	}
+
+
+	//DEBUG ONLY
+	//
 };

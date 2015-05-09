@@ -17,6 +17,7 @@
 #include "Mesh.h"
 #include "VoxelVolumeMesh.h"
 #include "TextRenderable.h"
+#include "ParticleEmitter.h"
 
 #include "Camera.h"
 #include "Light.h"
@@ -115,6 +116,9 @@ namespace Comet
 
 		void _renderPostProcess(PostProcess* pp);
 		void _renderFullscreenQuad(Material* mat);
+
+		//Debug stuff
+		
 	};
 
 };

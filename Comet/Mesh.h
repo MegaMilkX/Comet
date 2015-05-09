@@ -18,7 +18,6 @@ namespace Comet
 		Mesh(MeshData* data, std::string subMeshName);
 		~Mesh();
 
-		void SetSubMesh(std::string name){}
 	private:
 		
 	};

@@ -22,6 +22,7 @@ private:
 	double px, py;
 
 	Comet::Entity* camera_;
+	Comet::Node* node;
 
 	Comet::VoxelVolumeMesh* volumeMesh;
 	float disp;

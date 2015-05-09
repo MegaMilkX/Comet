@@ -14,14 +14,15 @@ namespace Comet
 	TextRenderable::TextRenderable(std::string str)
 	{
 		this->font = ResMan::GetInstance()->GetResource<Font>("data\\fonts\\Magic.ttf");
-		textures.push_back(this->font->GetTexture());
+		//textures.push_back(this->font->GetTexture());
+		
 		SetText(str);
 	}
 
 	TextRenderable::TextRenderable(std::string str, int sz)
 	{
 		this->font = ResMan::GetInstance()->GetResource<Font>("data\\fonts\\Magic.ttf");
-		textures.push_back(this->font->GetTexture());
+		//textures.push_back(this->font->GetTexture());
 		SetText(str);
 	}
 
@@ -34,7 +35,7 @@ namespace Comet
 	{
 		ResMan::GetInstance()->GetParamStack()->push(sz);
 		this->font = ResMan::GetInstance()->GetResource<Font>(fontpath);
-		textures.push_back(this->font->GetTexture());
+		//textures.push_back(this->font->GetTexture());
 		
 		mat = new Material();
 		mat->SetTexture2D(this->font->GetTexture(), 0);

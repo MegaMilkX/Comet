@@ -16,7 +16,7 @@ namespace Comet
 	{
 	}
 
-	void Entity::SetTransform(Node* n){ transform = AddComponent(n); }
-	void Entity::SetRenderable(Renderable* r){ renderable = AddComponent(r); }
-	void Entity::SetRigidBody(RigidBody* rb){ rigidBody = AddComponent(rb); }
+	void Entity::SetTransform(Node* n){ _setTransform(AddComponent(n)); }
+	void Entity::SetRenderable(Renderable* r){ _setRenderable(AddComponent(r)); }
+	void Entity::SetRigidBody(RigidBody* rb){ _setRigidBody(AddComponent(rb)); }
 }

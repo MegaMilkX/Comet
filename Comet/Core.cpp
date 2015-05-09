@@ -6,7 +6,7 @@ namespace Comet
 {
 	Core* Core::instance;
 
-	Core::Core()
+	Core::Core() : dt(0)
 	{
 		ResMan::Initialize();
 
@@ -18,6 +18,8 @@ namespace Comet
 		physics = new Physics();
 
 		userConsole = new UserConsole();
+
+		dt = 0;
 	}
 
 
@@ -253,7 +255,8 @@ namespace Comet
 
 	bool Core::Update()
 	{
-		return false;
+		_preUpdate();
+		return _postUpdate();
 	}
 
 	void Core::Reset()											//Ресет используется для перезапуска И при старте -----------------------
@@ -264,12 +267,17 @@ namespace Comet
 	{
 		time0 = glfwGetTime();
 		physics->Update();
+
+		//Update animations
+		//TODO
+		std::set<Animation*>::iterator animIt;
+		for (animIt = animations.begin(); animIt != animations.end(); ++animIt)
+			(*animIt)->Update(dt);
 	}
 
 	bool Core::_postUpdate()
 	{
 		bool val = renderer->Update();
-		//bool val = renderer->UpdateMultipass();
 		time1 = glfwGetTime();
 		dt = time1 - time0;
 
@@ -287,6 +295,13 @@ namespace Comet
 	Entity* Core::CreateEntity(std::string resourcename)
 	{
 		return 0; //TODO
+	}
+
+	Animation* Core::CreateAnimation()
+	{
+		Animation* anim = new Animation();
+		animations.insert(anim);
+		return anim;
 	}
 
 	void Core::ReadGraphFile(std::string path, Node* node)

@@ -25,8 +25,13 @@ namespace Comet
 
 	void RenderObject::SetEntity(Entity* e)
 	{
-		Component::SetEntity(e);
+		Component::SetEntity(e);	
+	}
+
+	void RenderObject::BadEntity()
+	{
 		//TODO Get an entity's transform node and attach to it
-		e->GetComponent<Node>()->Attach(this);
+		entity->GetComponent<Node>()->Attach(this);
+		
 	}
 };

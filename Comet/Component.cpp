@@ -5,6 +5,7 @@ namespace Comet
 
 	Component::Component()
 	{
+		entityBad = false;
 	}
 
 
@@ -16,4 +17,7 @@ namespace Comet
 	{
 		entity = e;
 	}
+
+	void Component::BadEntity()
+	{ entityBad = true; }
 }

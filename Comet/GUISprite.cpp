@@ -18,7 +18,6 @@ namespace Comet
 
 	void GUISprite::SetTexture(std::string str)
 	{
-		mesh->SetTexture2D(ResMan::GetInstance()->GetResource<Texture2D>(str), 0);
 		material->SetTexture2D(ResMan::GetInstance()->GetResource<Texture2D>(str), 0);
 	}
 }

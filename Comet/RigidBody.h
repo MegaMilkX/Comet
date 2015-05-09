@@ -22,6 +22,7 @@ namespace Comet
 
 		//
 		void SetEntity(Entity* e);
+		void BadEntity();
 
 		btRigidBody* GetBody(){ return rigidBody; }
 	private:

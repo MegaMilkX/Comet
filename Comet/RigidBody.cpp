@@ -62,6 +62,12 @@ namespace Comet
 	void RigidBody::SetEntity(Entity* e)
 	{
 		Component::SetEntity(e);
+		if (e)
+			e->_setRigidBody(this);
+	}
+
+	void RigidBody::BadEntity()
+	{
 		motionState->SetNode(entity->GetComponent<Node>());
 	}
 }

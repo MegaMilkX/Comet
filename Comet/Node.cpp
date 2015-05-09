@@ -2,6 +2,8 @@
 #include "RenderObject.h"
 #include "Renderer.h"
 
+#include "Entity.h"
+
 namespace Comet
 {
 
@@ -193,4 +195,10 @@ namespace Comet
 	bool Node::IsDirty()
 	{return drt;}
 
+	void Node::SetEntity(Entity* e)
+	{
+		Component::SetEntity(e);
+		if (e)
+			e->_setTransform(this);
+	}
 };

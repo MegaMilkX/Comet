@@ -20,7 +20,6 @@ WorldMapTile::WorldMapTile(AdventureGame* game, int x, int y)
 	
 	//Comet::Mesh* mesh2 = new Comet::Mesh(Comet::ResMan::GetInstance()->GetResource<Comet::MeshData>("data\\models\\test2.xyz"));
 	//mesh->SetTexture2D(Comet::ResMan::GetInstance()->GetResource<Comet::Texture2D>(ss.str()), 0);
-	mesh->SetTexture2D(Comet::ResMan::GetInstance()->GetResource<Comet::Texture2D>(std::string(cstr)), 0);
 
 	Comet::Material* mat = new Comet::Material();
 	mat->SetShader(Comet::ResMan::GetInstance()->GetResource<Comet::Shader>("data\\shaders\\test.glsl"));

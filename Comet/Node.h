@@ -20,6 +20,10 @@ namespace Comet
 						Node();
 						~Node();
 
+		//Overriden
+		void			SetEntity(Entity* e);
+		
+		//
 		Node*			CreateNode();
 		void			Attach(Node* n);
 		void			Attach(RenderObject* obj);

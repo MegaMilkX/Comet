@@ -2,16 +2,13 @@
 
 #include "Renderer.h"
 
+
+
 namespace Comet
 {
 
 	MeshData::MeshData(BufferUsage usage)
 	{
-		bufPos = 0;
-		bufUVW = 0;
-		bufNorm = 0;
-		bufCol = 0;
-		bufFace = 0;
 		primitiveType = TRIANGLE;
 		bufferUsage = usage;
 	}
@@ -21,9 +18,10 @@ namespace Comet
 	{
 		Unload();
 	}
-	/*
-	void Load(std::string path) //fbx load method
+	
+	void MeshData::Load(std::string path) //fbx load method
 	{
+		printf("Loading \"%s\": ", path.c_str());
 		FbxManager* sdkManager = FbxManager::Create();
 		FbxIOSettings* ios = FbxIOSettings::Create(sdkManager, IOSROOT);
 		sdkManager->SetIOSettings(ios);
@@ -38,14 +36,113 @@ namespace Comet
 			printf("Error desc: %s\n\n", importer->GetStatus().GetErrorString());
 			return;
 		}
-
 		FbxScene* scene = FbxScene::Create(sdkManager, "scene");
 		importer->Import(scene);
 		importer->Destroy();
-		
-		scene->
-	}*/
 
+		//FbxAxisSystem::OpenGL.ConvertScene(scene);
+
+		/*
+		std::vector<float> vertexPool;
+		std::vector<float> colorPool;
+		std::vector<float> normalPool;
+		std::vector<float> uvwPool;
+		std::vector<unsigned short> facePool;
+		for (int i = 0; i < scene->GetGeometryCount(); ++i)
+		{
+			FbxGeometry* geom = scene->GetGeometry(i);
+			//geom->mControlPoints;
+			printf("%s\n", &(geom->GetName()));
+
+			for (int j = 0; j < geom->GetControlPointsCount(); ++j)
+			{
+				vertexPool.push_back(geom->mControlPoints[j].mData[0]);
+			}
+		}
+		*/
+		
+		std::vector<FbxMesh*> meshes;
+		FbxNode* node = scene->GetRootNode();
+		_GetMeshes(node, meshes);
+
+		std::vector<float> vertexPool;
+		std::vector<float> normalPool;
+		std::vector<float> uvwPool;
+		std::vector<unsigned short> facePool;
+		for (int i = 0; i < meshes.size(); ++i)
+		{
+			FbxMesh* mesh = meshes[i];
+			if (mesh->IsTriangleMesh())
+				printf("OHSHIT\n");
+			else
+				printf("ASS\n");
+
+			FbxVector4* vertices = mesh->GetControlPoints();
+			FbxLayer* layer = mesh->GetLayer(0);
+			FbxLayerElementNormal* normals = layer->GetNormals();
+			FbxLayerElementUV* uvElement = layer->GetUVs();
+			FbxLayerElementArrayTemplate<FbxVector2> uvs = uvElement->GetDirectArray();
+
+			unsigned long nV = mesh->GetControlPointsCount();
+			for (int v = 0; v < nV; ++v)
+			{
+				vertexPool.push_back(vertices[v].mData[0]);
+				vertexPool.push_back(vertices[v].mData[2]);
+				vertexPool.push_back(-vertices[v].mData[1]);
+
+				uvwPool.push_back(uvs[v].mData[0]);
+				uvwPool.push_back(uvs[v].mData[1]);
+				uvwPool.push_back(uvs[v].mData[2]);
+			}
+			normalPool.resize(vertexPool.size());
+
+			unsigned long polyCount = meshes[i]->GetPolygonCount();
+			for (unsigned long p = 0; p < polyCount; ++p)
+			{
+				unsigned int vertexCount = meshes[i]->GetPolygonSize(p);
+
+				for (unsigned int v = 0; v < vertexCount; ++v)
+				{
+					unsigned int vId = mesh->GetPolygonVertex(p, v);
+					facePool.push_back(vId);
+					
+					FbxVector4 fbxNormal;
+					mesh->GetPolygonVertexNormal(p, v, fbxNormal);
+					normalPool[vId * 3] = fbxNormal.mData[0];
+					normalPool[vId * 3 + 1] = fbxNormal.mData[2];
+					normalPool[vId * 3 + 2] = -fbxNormal.mData[1];
+				}
+			}
+		}
+
+		FillPosition(vertexPool);
+		FillNormals(normalPool);
+		FillIndices(facePool);
+		FillUVW(uvwPool);
+
+		//RebuildNormals(vertexPool, facePool);
+
+		isReady = true;
+		printf("Done.\n");
+	}
+
+	void MeshData::_GetMeshes(FbxNode* node, std::vector<FbxMesh*> &meshes)
+	{
+		if (node->GetNodeAttribute())
+		{
+			if (node->GetNodeAttribute()->GetAttributeType() == FbxNodeAttribute::eMesh)
+			{
+				meshes.push_back((FbxMesh*)node->GetNodeAttribute());
+			}
+		}
+
+		for (int i = 0; i < node->GetChildCount(); ++i)
+		{
+			_GetMeshes(node->GetChild(i), meshes);
+		}
+	}
+
+	/*
 	void MeshData::Load(std::string path)
 	{
 		MeshIO::MeshIO meshIO;
@@ -93,7 +190,7 @@ namespace Comet
 		}
 
 		isReady = true;
-	}
+	}*/
 
 	void MeshData::Unload()
 	{
@@ -102,12 +199,6 @@ namespace Comet
 			delete subMeshes[i];
 		}
 		subMeshes.clear();
-
-		glDeleteBuffers(1, &bufPos);
-		glDeleteBuffers(1, &bufCol);
-		glDeleteBuffers(1, &bufFace);
-		glDeleteBuffers(1, &bufUVW);
-		glDeleteBuffers(1, &bufNorm);
 	}
 
 	void MeshData::Bind(const Shader *const shader)
@@ -115,48 +206,48 @@ namespace Comet
 		if (vertexAttribLayout & VATTR_POS)
 		{
 			glEnableVertexAttribArray(shader->GetAttribLocation(Shader::POS));	//координаты
-			glBindBuffer(GL_ARRAY_BUFFER, bufPos);
+			glBindBuffer(GL_ARRAY_BUFFER, bufPos.Id());
 			glVertexAttribPointer(shader->GetAttribLocation(Shader::POS), 3, GL_FLOAT, GL_FALSE, 0, 0);
 		}
 
 		if (vertexAttribLayout & VATTR_UVW)
 		{
 			glEnableVertexAttribArray(shader->GetAttribLocation(Shader::UVW));	//uvw
-			glBindBuffer(GL_ARRAY_BUFFER, bufUVW);
+			glBindBuffer(GL_ARRAY_BUFFER, bufUVW.Id());
 			glVertexAttribPointer(shader->GetAttribLocation(Shader::UVW), 3, GL_FLOAT, GL_FALSE, 0, 0);
 		}
 
 		if (vertexAttribLayout & VATTR_NOR)
 		{
 			glEnableVertexAttribArray(shader->GetAttribLocation(Shader::NRM));	//нормали
-			glBindBuffer(GL_ARRAY_BUFFER, bufNorm);
+			glBindBuffer(GL_ARRAY_BUFFER, bufNorm.Id());
 			glVertexAttribPointer(shader->GetAttribLocation(Shader::NRM), 3, GL_FLOAT, GL_FALSE, 0, 0);
 		}
 
 		if (vertexAttribLayout & VATTR_COL)
 		{
 			glEnableVertexAttribArray(shader->GetAttribLocation(Shader::COL));	//цвет
-			glBindBuffer(GL_ARRAY_BUFFER, bufCol);
+			glBindBuffer(GL_ARRAY_BUFFER, bufCol.Id());
 			glVertexAttribPointer(shader->GetAttribLocation(Shader::COL), 3, GL_FLOAT, GL_FALSE, 0, 0);
 		}
 	}
 
 	void MeshData::Render()
 	{
-		if (bufFace)
+		if (bufFace.Id())
 		{
 			if (subMeshes.size() > 0)
 			{
 				for (int i = 0; i < subMeshes.size(); i++)
 				{
 					SubMeshData* subMesh = subMeshes[i];
-					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufFace);
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufFace.Id());
 					glDrawElements(primitiveType, subMesh->faces() * 3, GL_UNSIGNED_SHORT, (void*)(subMesh->offset()));
 				}
 			}
 			else
 			{
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufFace);
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufFace.Id());
 				glDrawElements(primitiveType, nFaces * 3, GL_UNSIGNED_SHORT, 0);
 			}
 		}
@@ -164,65 +255,61 @@ namespace Comet
 			glDrawArrays(primitiveType, 0, nVerts);
 	}
 
-	void MeshData::RenderInstanced()
+	void MeshData::RenderInstanced(unsigned int count)
 	{
-
+		if (bufFace.Id())
+		{
+			if (subMeshes.size() > 0)
+			{
+				for (int i = 0; i < subMeshes.size(); i++)
+				{
+					SubMeshData* subMesh = subMeshes[i];
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufFace.Id());
+					glDrawElementsInstanced(primitiveType, subMesh->faces() * 3, GL_UNSIGNED_SHORT, (void*)(subMesh->offset()), count);
+				}
+			}
+			else
+			{
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufFace.Id());
+				glDrawElementsInstanced(primitiveType, nFaces * 3, GL_UNSIGNED_SHORT, 0, count);
+			}
+		}
+		else // No indices - no submeshes. TODO At least for now
+			glDrawArraysInstanced(primitiveType, 0, nVerts, count);
 	}
 
 	void MeshData::FillPosition(std::vector<float> data)
 	{
-		glDeleteBuffers(1, &bufPos);
-
 		vertexAttribLayout |= VATTR_POS;
-		glGenBuffers(1, &bufPos);
-		glBindBuffer(GL_ARRAY_BUFFER, bufPos);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* (data.size()), &data[0], bufferUsage);
-
+		bufPos.Fill(data);
 		nVerts = data.size()/3;
 	}
 	void MeshData::FillNormals(std::vector<float> data)
 	{
-		glDeleteBuffers(1, &bufNorm);
-
 		vertexAttribLayout |= VATTR_NOR;
-		glGenBuffers(1, &bufNorm);
-		glBindBuffer(GL_ARRAY_BUFFER, bufNorm);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* (data.size()), &data[0], bufferUsage);
+		bufNorm.Fill(data);
 	}
 	void MeshData::FillColor(std::vector<float> data)
 	{
-		glDeleteBuffers(1, &bufCol);
-
 		vertexAttribLayout |= VATTR_COL;
-		glGenBuffers(1, &bufCol);
-		glBindBuffer(GL_ARRAY_BUFFER, bufCol);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* (data.size()), &data[0], bufferUsage);
+		bufCol.Fill(data);
 	}
 	void MeshData::FillIndices(std::vector<unsigned short> data)
 	{
-		glDeleteBuffers(1, &bufFace);
-
-		glGenBuffers(1, &bufFace);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufFace);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned short)*(data.size()), &data[0], bufferUsage);
-
+		bufFace.Fill(data);
 		nFaces = data.size()/3;
 	}
 	void MeshData::FillUVW(std::vector<float> data)
 	{
-		glDeleteBuffers(1, &bufUVW);
-
 		vertexAttribLayout |= VATTR_UVW;
-		glGenBuffers(1, &bufUVW);
-		glBindBuffer(GL_ARRAY_BUFFER, bufUVW);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* (data.size()), &data[0], bufferUsage);
+		bufUVW.Fill(data);
 	}
 
 	void MeshData::RebuildNormals(std::vector<float>& posdata, std::vector<unsigned short>& faces)
 	{
 		//Reserve an array for normals
-		std::vector<float> normals;
-		normals.resize(nVerts * 3);
+		std::vector<float> normals(nVerts * 3, 0);
+		//normals.resize(nVerts * 3);
 			
 		//Calculare normals using indices
 		vec3f a(0, 0, 0), b(0, 0, 0), c(0, 0, 0);
