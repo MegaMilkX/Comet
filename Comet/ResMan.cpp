@@ -5,11 +5,16 @@
 
 namespace Comet
 {
-	ResMan* ResMan::instance;
+	
+	ResMan &Resources()
+	{
+		static ResMan resManager;
+		return resManager;
+	}
 
 	ResMan::ResMan()
 	{
-		instance = 0;
+		Initialize();
 	}
 
 
@@ -24,7 +29,6 @@ namespace Comet
 
 	void ResMan::Initialize()
 	{
-		instance = new ResMan();
 
 		
 
@@ -33,8 +37,6 @@ namespace Comet
 
 	void ResMan::Destroy()
 	{
-		if (instance)
-			delete instance;
 	}
 
 };

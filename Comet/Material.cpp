@@ -87,7 +87,7 @@ namespace Comet
 
 	void Material::SetTexture2D(std::string resname, unsigned char layer)
 	{
-		SetTexture2D(ResMan::GetInstance()->GetResource<Texture2D>(resname), layer);
+		SetTexture2D(Resources().Get<Texture2D>(resname), layer);
 	}
 
 	void Material::SetTexture2D(Texture2D* tex, unsigned char layer)
@@ -110,7 +110,7 @@ namespace Comet
 
 	void Material::SetShader(std::string resname)
 	{
-		SetShader(ResMan::GetInstance()->GetResource<Shader>(resname));
+		SetShader(Resources().Get<Shader>(resname));
 	}
 
 	void Material::SetShader(Shader* shad)

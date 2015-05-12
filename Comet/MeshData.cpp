@@ -69,13 +69,12 @@ namespace Comet
 		std::vector<float> normalPool;
 		std::vector<float> uvwPool;
 		std::vector<unsigned short> facePool;
+		unsigned short maxIndex = 0;
 		for (int i = 0; i < meshes.size(); ++i)
 		{
 			FbxMesh* mesh = meshes[i];
-			if (mesh->IsTriangleMesh())
-				printf("OHSHIT\n");
-			else
-				printf("ASS\n");
+			if (!mesh->IsTriangleMesh())
+				printf("Is not triangle mesh. Prepare for a mess. ");
 
 			FbxVector4* vertices = mesh->GetControlPoints();
 			FbxLayer* layer = mesh->GetLayer(0);
@@ -104,15 +103,16 @@ namespace Comet
 				for (unsigned int v = 0; v < vertexCount; ++v)
 				{
 					unsigned int vId = mesh->GetPolygonVertex(p, v);
-					facePool.push_back(vId);
+					facePool.push_back(maxIndex + vId);
 					
 					FbxVector4 fbxNormal;
 					mesh->GetPolygonVertexNormal(p, v, fbxNormal);
-					normalPool[vId * 3] = fbxNormal.mData[0];
-					normalPool[vId * 3 + 1] = fbxNormal.mData[2];
-					normalPool[vId * 3 + 2] = -fbxNormal.mData[1];
+					normalPool[(maxIndex + vId) * 3] = fbxNormal.mData[0];
+					normalPool[(maxIndex + vId) * 3 + 1] = fbxNormal.mData[2];
+					normalPool[(maxIndex + vId) * 3 + 2] = -fbxNormal.mData[1];
 				}
 			}
+			maxIndex += nV;
 		}
 
 		FillPosition(vertexPool);

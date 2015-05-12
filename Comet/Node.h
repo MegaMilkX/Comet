@@ -20,9 +20,9 @@ namespace Comet
 						Node();
 						~Node();
 
-		//TODO: Maybe this doesn't need to be a template method
+		//TODO: Maybe this doesn't need to be a template method?
 		template<typename T>
-		T*				AddComponent(T* comp);
+		T*				AddComponent();
 		//But this certainly does
 		template<typename T>
 		T*				GetComponent() const;
@@ -30,10 +30,8 @@ namespace Comet
 		//
 		Node*			CreateNode();
 		void			Attach(Node* n);
-		void			Attach(RenderObject* obj);
 		void			DestroyNode(Node* n);
 		void			Detach(Node* n);
-		void			Detach(RenderObject* obj);
 		void			SetParent(Node* n);
 
 		void			SetPosition(vec3f pos);
@@ -74,7 +72,6 @@ namespace Comet
 
 		Node*			parent;
 		std::set<Node*> nodes;
-		std::set<RenderObject*> objects; //DELETE THIS
 		std::map<std::type_index, Component*> components;
 
 		unsigned int	layer;
@@ -82,26 +79,12 @@ namespace Comet
 		bool			drt;
 	};
 
-	//TODO: Maybe this doesn't need to be template method
 	template<typename T>
-	T* Node::AddComponent(T* comp)
+	T* Node::AddComponent()
 	{
-		//TODO What do if a component of this type already exists?
-
-		if (dynamic_cast<Component*>(comp) == 0) //Not a component, abort
-		{
-			printf("That's not a component you're trying to add\n");
-			return 0;
-		}
-
-		//TODO: Instead of type_index should use some sort of COMPID
-		//Like comp->GetID(); So all Renderable components will be of one type
-		//therefore it wont be possible to add multiple renderables to one entity.
-		//Or use dynamic_cast<Renderable*>
-
-		components.insert(std::make_pair(std::type_index(typeid(T)), comp));
+		T* comp = new T;
 		comp->SetNode(this);
-
+		components.insert(std::make_pair(std::type_index(typeid(T)), comp));
 		return comp;
 	}
 

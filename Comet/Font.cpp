@@ -29,10 +29,10 @@ namespace Comet
 		fr->AddGlyphRange(0x410, 0x44f);
 
 		int sz = 16;
-		if (!(ResMan::GetInstance()->GetParamStack()->empty()))
+		if (!(Resources().GetParamStack()->empty()))
 		{
-			sz = ResMan::GetInstance()->GetParamStack()->top();
-			ResMan::GetInstance()->GetParamStack()->pop();
+			sz = Resources().GetParamStack()->top();
+			Resources().GetParamStack()->pop();
 		}
 
 		fr->SetSize(sz);

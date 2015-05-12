@@ -19,12 +19,12 @@ namespace Comet
 
 	void Renderable::SetMeshData(std::string resname)
 	{
-		meshData = ResMan::GetInstance()->GetResource<MeshData>(resname);
+		meshData = Resources().Get<MeshData>(resname);
 	}
 
 	void Renderable::SetMaterial(std::string resname)
 	{
-		mat = ResMan::GetInstance()->GetResource<Material>(resname);
+		mat = Resources().Get<Material>(resname);
 	}
 
 	void Renderable::Render(const Camera *const cam)

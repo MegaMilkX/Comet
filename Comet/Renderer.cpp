@@ -41,12 +41,12 @@ namespace Comet
 		if (fullscreen)
 			monitor = glfwGetPrimaryMonitor();
 
-		window = glfwCreateWindow(wWidth, wHeight, "Super Peppermint", monitor, 0);
+		window = glfwCreateWindow(wWidth, wHeight, "Lava Bulge", monitor, 0);
 		glfwSetWindowSizeCallback(window, window_resize_callback);
 
 		glfwMakeContextCurrent(window);
 
-		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 		//Контекст асинхронной загрузки
 		glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
@@ -210,7 +210,7 @@ namespace Comet
 
 		Shader* shader = r->GetMaterial()->GetShader();
 
-		
+
 
 		_setZTest(r->GetMaterial()->ztest);
 		_setZWrite(r->GetMaterial()->zwrite);
@@ -226,25 +226,6 @@ namespace Comet
 
 		r->GetMeshData()->Bind(shader);
 		r->GetMeshData()->Render();
-	}
-
-	void Renderer::_renderNodeUnsorted(Camera* cam, Node* node)
-	{
-		std::set<RenderObject*>::iterator nIt;
-		for (nIt = node->objects.begin(); nIt != node->objects.end(); nIt++)
-		{
-			if ((*nIt)->IsRenderable())
-			{
-				_render(cam, (Renderable*)(*nIt));
-			}
-		}
-
-		std::set<Node*> nodes = node->GetNodes();
-		std::set<Node*>::iterator it;
-		for (it = nodes.begin(); it != nodes.end(); it++)
-		{
-			_renderNodeUnsorted(cam, (*it));
-		}
 	}
 
 	//Переделать в будущем. Пусть метод берет примитивы из менеджера ресурсов, а когда их нет, то записывает их туда же и отдает.

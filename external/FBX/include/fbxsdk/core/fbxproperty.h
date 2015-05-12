@@ -1,6 +1,6 @@
 /****************************************************************************************
  
-   Copyright (C) 2014 Autodesk, Inc.
+   Copyright (C) 2015 Autodesk, Inc.
    All rights reserved.
  
    Use of this software is subject to the terms of the Autodesk license agreement
@@ -478,12 +478,6 @@ public:
 		  */
 		inline FbxProperty GetParent() const { return FbxProperty(mPropertyHandle.GetParent());  }
 
-		/** Sets the parent for this property (this function has not been implemented, so it always return \c false).
-		  * \param pOther The parent to be set.
-		  * \return \c True on success, \c false otherwise.
-		  */
-		FBX_DEPRECATED bool SetParent(const FbxProperty& pOther);
-
 		/** Returns the first child of this property.
 		  * \return The first child of this property, if there is none, an invalid property is returned.
 		  */
@@ -566,32 +560,6 @@ public:
 			FbxProperty& mProp;
 			FbxPropertyNameCache& operator=(const FbxPropertyNameCache& pOther){ mProp = pOther.mProp; mProp.BeginCreateOrFindProperty(); return *this; }
 		};
-	//@}
-
-	/**
-	  * \name Array Management
-	  */
-	//@{
-		/** Sets the array size(not implemented).
-		  * \param pSize
-		  * \param pVariableArray
-		  */
-		FBX_DEPRECATED bool	SetArraySize( int pSize, bool pVariableArray );
-
-		//! Returns the array size(not implemented).
-		FBX_DEPRECATED int		GetArraySize() const;
-
-		/** Returns the (pIndex)th array item.
-		  * \param pIndex The item index.
-		  * \return The (pIndex)th array item.
-		  */
-		FBX_DEPRECATED FbxProperty GetArrayItem(int pIndex) const;
-
-		/** Returns the (pIndex)th array item.
-		  * \param pIndex The item index.
-		  * \return The (pIndex)th array item.
-		  */
-		FBX_DEPRECATED inline FbxProperty operator[](int /*pIndex*/) const { return FbxProperty(); }
 	//@}
 
 	/**

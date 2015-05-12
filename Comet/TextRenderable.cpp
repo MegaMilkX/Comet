@@ -13,7 +13,7 @@ namespace Comet
 
 	TextRenderable::TextRenderable(std::string str)
 	{
-		this->font = ResMan::GetInstance()->GetResource<Font>("data\\fonts\\Magic.ttf");
+		this->font = Resources().Get<Font>("data\\fonts\\Magic.ttf");
 		//textures.push_back(this->font->GetTexture());
 		
 		SetText(str);
@@ -21,7 +21,7 @@ namespace Comet
 
 	TextRenderable::TextRenderable(std::string str, int sz)
 	{
-		this->font = ResMan::GetInstance()->GetResource<Font>("data\\fonts\\Magic.ttf");
+		this->font = Resources().Get<Font>("data\\fonts\\Magic.ttf");
 		//textures.push_back(this->font->GetTexture());
 		SetText(str);
 	}
@@ -33,13 +33,13 @@ namespace Comet
 
 	TextRenderable::TextRenderable(std::string str, std::string fontpath, int sz, std::string shader)
 	{
-		ResMan::GetInstance()->GetParamStack()->push(sz);
-		this->font = ResMan::GetInstance()->GetResource<Font>(fontpath);
+		Resources().GetParamStack()->push(sz);
+		this->font = Resources().Get<Font>(fontpath);
 		//textures.push_back(this->font->GetTexture());
 		
 		mat = new Material();
 		mat->SetTexture2D(this->font->GetTexture(), 0);
-		mat->SetShader(ResMan::GetInstance()->GetResource<Shader>(shader));
+		mat->SetShader(Resources().Get<Shader>(shader));
 		mat->SetParameter("ScreenWidth", (float)(Core::GetInstance()->GetRenderer()->GetWindowWidth()));
 		mat->SetParameter("ScreenHeight", (float)(Core::GetInstance()->GetRenderer()->GetWindowHeight()));
 		

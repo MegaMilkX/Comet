@@ -7,7 +7,7 @@
 #include "MeshData.h"
 #include "Texture2D.h"
 #include "Font.h"
-#include "Sequence.h"
+#include "Animation.h"
 
 #include <thread>
 
@@ -22,10 +22,9 @@ namespace Comet
 
 		static void Initialize();
 		static void Destroy();
-		static ResMan* GetInstance(){ return instance; }
 
 		template<class T>
-		T* GetResource(std::string path)
+		T* Get(std::string path)
 		{
 			std::map<std::string, Resource*>::iterator it;
 			it = resources.find(path);
@@ -63,11 +62,10 @@ namespace Comet
 		std::stack<int>* GetParamStack(){ return &loadParamStack; }
 
 	private:
-		static ResMan* instance;
 		std::stack<int> loadParamStack;
 		std::map<std::string, Resource*> resources;
 	};
 
 
-
+	ResMan &Resources();
 };

@@ -5,6 +5,7 @@
 #include "ResMan.h"
 
 #include "Animation.h"
+#include "Animator.h"
 
 #include <sys/utime.h>
 
@@ -30,9 +31,6 @@ namespace Comet
 
 		Node*					SceneRoot() { return &sceneRoot; }
 
-		Animation*				CreateAnimation();
-		Animation*				CreateAnimation(std::string resourcename);
-
 		//Commented out for the time being.
 		//void					ReadGraphFile(std::string path, Node* node);
 
@@ -57,8 +55,6 @@ namespace Comet
 		Renderer*				renderer;
 		void*					audio;
 		Physics*				physics;
-
-		std::set<Animation*>	animations;
 	private:
 		//void					_digestXmlElement(TiXmlElement* elem);
 	};

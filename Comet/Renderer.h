@@ -109,8 +109,6 @@ namespace Comet
 
 		void _render(Camera* cam, Renderable* r);
 		void _renderCamera(Camera* cam);
-		void _renderMultipass(PostProcess* pass);
-		void _renderNodeUnsorted(Camera* cam, Node* node);
 
 		void _renderPostProcess(PostProcess* pp);
 		void _renderFullscreenQuad(Material* mat);

@@ -22,16 +22,6 @@ namespace Comet
 			delete (*it);
 		}
 		nodes.clear();
-
-		//TODO
-		//Удаляем все объекты привязаные к ноде. (Может не стоит ей давать столько власти?)
-		//(Но что тогда будет с объектами чьи ноды были удалены? Будут болтаться до полной очистки?)
-		std::set<RenderObject*>::iterator ito;
-		for (ito = objects.begin(); ito != objects.end(); ito++)
-		{
-			delete (*ito);
-		}
-		objects.clear();
 	}
 
 	Node* Node::CreateNode()

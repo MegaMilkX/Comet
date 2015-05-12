@@ -31,9 +31,6 @@
     <Filter Include="Comet\Source Files\Resources">
       <UniqueIdentifier>{eaba5705-e3f1-40a1-9cf8-3432cf6c19d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Comet\Source Files\external">
-      <UniqueIdentifier>{869812a3-33a8-4420-8dae-f529c4a37a00}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Comet\Source Files\Physics">
       <UniqueIdentifier>{c3dc6cb3-aa95-4299-8431-650571d62a86}</UniqueIdentifier>
     </Filter>
@@ -54,12 +51,6 @@
     </Filter>
     <Filter Include="Comet\Shaders">
       <UniqueIdentifier>{03273fbd-6044-4e48-8595-39d283caf0ad}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Comet\Source Files\Renderer\Components\Animation">
-      <UniqueIdentifier>{e3a78473-e9a4-48e6-bcd2-cdc6ac2acc36}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Comet\Header Files\Renderer\Components\Animation">
-      <UniqueIdentifier>{e4702f5e-e388-46f2-9884-98c0f0acb302}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -83,9 +74,6 @@
     </ClInclude>
     <ClInclude Include="Texture2D.h">
       <Filter>Comet\Header Files\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\external\MeshWriteRead\MeshWriteRead\MeshIO.h">
-      <Filter>Comet\Header Files\external</Filter>
     </ClInclude>
     <ClInclude Include="Material.h">
       <Filter>Comet\Header Files\Resources</Filter>
@@ -141,23 +129,20 @@
     <ClInclude Include="GLBuffer.h">
       <Filter>Comet\Header Files\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>Comet\Header Files\Renderer\Components\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="AnimTrack.h">
-      <Filter>Comet\Header Files\Renderer\Components\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Keyframe.h">
-      <Filter>Comet\Header Files\Renderer\Components\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Sequence.h">
-      <Filter>Comet\Header Files\Resources</Filter>
-    </ClInclude>
     <ClInclude Include="Node.h">
       <Filter>Comet\Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>Comet\Header Files\Renderer\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Comet\Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Animator.h">
+      <Filter>Comet\Header Files\Renderer\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="AutoMaterial.h">
+      <Filter>Comet\Header Files\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -181,9 +166,6 @@
     </ClCompile>
     <ClCompile Include="Texture2D.cpp">
       <Filter>Comet\Source Files\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="..\external\MeshWriteRead\MeshWriteRead\MeshIO.cpp">
-      <Filter>Comet\Source Files\external</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
       <Filter>Comet\Source Files\Resources</Filter>
@@ -240,23 +222,20 @@
     <ClCompile Include="GLBuffer.cpp">
       <Filter>Comet\Source Files\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="Animation.cpp">
-      <Filter>Comet\Source Files\Renderer\Components\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimTrack.cpp">
-      <Filter>Comet\Source Files\Renderer\Components\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="Keyframe.cpp">
-      <Filter>Comet\Source Files\Renderer\Components\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="Sequence.cpp">
-      <Filter>Comet\Source Files\Resources</Filter>
-    </ClCompile>
     <ClCompile Include="Node.cpp">
       <Filter>Comet\Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>Comet\Source Files\Renderer\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Comet\Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Animator.cpp">
+      <Filter>Comet\Source Files\Renderer\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="AutoMaterial.cpp">
+      <Filter>Comet\Source Files\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
