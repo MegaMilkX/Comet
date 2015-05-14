@@ -2,8 +2,18 @@
 #include "RenderObject.h"
 #include "Renderer.h"
 
+#include <sstream>
+
 namespace Comet
 {
+
+	int _nextNodeId()
+	{
+		static int id;
+		return id++;
+	}
+
+	//////////////////////////////////////////////////////////////////
 
 	Node::Node()
 	{
@@ -14,9 +24,14 @@ namespace Comet
 		layer = 1;	//Default rendering group
 	}
 
+	Node::Node(std::string name) : Node()
+	{
+		this->name = name;
+	}
+
 	Node::~Node()
 	{
-		std::set<Node*>::iterator it;
+		std::vector<Node*>::iterator it;
 		for (it = nodes.begin(); it != nodes.end(); it++)
 		{
 			delete (*it);
@@ -26,30 +41,13 @@ namespace Comet
 
 	Node* Node::CreateNode()
 	{
-		Node* node = new Node();
-		node->parent = this;
-		nodes.insert(node);
-		return node;
-	}
-	void Node::Attach(Node* n)
-	{
-		n->parent = this;
-	}
+		std::ostringstream sstream;
+		sstream << "Node_" << _nextNodeId();
 
-	void Node::DestroyNode(Node* n)
-	{
-		delete n;
-		nodes.erase(n);
-	}
-	void Node::Detach(Node* n)
-	{
-		n->parent = 0;
-		nodes.erase(n);
-	}
-	
-	void Node::SetParent(Node* n)
-	{
-		parent = n;
+		Node* node = new Node(sstream.str());
+		node->parent = this;
+		nodes.push_back(node);
+		return node;
 	}
 
 	//Math stuff
@@ -163,11 +161,8 @@ namespace Comet
 	void Node::dirty()
 	{
 		drt = true;
-		std::set<Node*>::iterator it;
-		for (it = nodes.begin(); it != nodes.end(); it++)
-		{
-			(*it)->dirty(); 
-		}
+		for (unsigned int i = 0; i < nodes.size(); ++i)
+			nodes[i]->dirty();
 	}
 	bool Node::IsDirty()
 	{return drt;}

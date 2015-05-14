@@ -144,6 +144,12 @@
     <ClInclude Include="AutoMaterial.h">
       <Filter>Comet\Header Files\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="Skeleton.h">
+      <Filter>Comet\Header Files\Renderer\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinMesh.h">
+      <Filter>Comet\Header Files\Renderer\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core.cpp">
@@ -236,6 +242,12 @@
     </ClCompile>
     <ClCompile Include="AutoMaterial.cpp">
       <Filter>Comet\Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Skeleton.cpp">
+      <Filter>Comet\Source Files\Renderer\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinMesh.cpp">
+      <Filter>Comet\Source Files\Renderer\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

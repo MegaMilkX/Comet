@@ -3,7 +3,8 @@
 #include <vector>
 
 #ifndef GLEW_STATIC
-#include <gl\glew.h>
+	#define GLEW_STATIC
+	#include <gl/glew.h>
 #endif
 
 namespace Comet

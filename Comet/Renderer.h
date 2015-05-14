@@ -8,13 +8,18 @@
 #include <iostream>
 #include <fstream>
 #include <algorithm>
-#define GLEW_STATIC
-#include <gl/glew.h>
+
+#ifndef GLEW_STATIC
+	#define GLEW_STATIC
+	#include <gl/glew.h>
+#endif
+
 #include <GLFW/glfw3.h>
 
 #include "Renderable.h"
 
 #include "Mesh.h"
+#include "SkinMesh.h"
 #include "VoxelVolumeMesh.h"
 #include "TextRenderable.h"
 #include "ParticleEmitter.h"

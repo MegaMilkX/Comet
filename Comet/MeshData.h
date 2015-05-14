@@ -8,7 +8,8 @@
 #include <fbxsdk\fileio\fbxiosettings.h>
 
 #ifndef GLEW_STATIC
-#include <gl\glew.h>
+	#define GLEW_STATIC
+	#include <gl/glew.h>
 #endif
 
 #include "Shader.h"

@@ -6,6 +6,7 @@
 
 #include "Animation.h"
 #include "Animator.h"
+#include "Skeleton.h"
 
 #include <sys/utime.h>
 

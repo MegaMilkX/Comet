@@ -70,7 +70,7 @@ namespace Comet
 		std::vector<float> uvwPool;
 		std::vector<unsigned short> facePool;
 		unsigned short maxIndex = 0;
-		for (int i = 0; i < meshes.size(); ++i)
+		for (unsigned int i = 0; i < meshes.size(); ++i)
 		{
 			FbxMesh* mesh = meshes[i];
 			if (!mesh->IsTriangleMesh())
@@ -83,15 +83,15 @@ namespace Comet
 			FbxLayerElementArrayTemplate<FbxVector2> uvs = uvElement->GetDirectArray();
 
 			unsigned long nV = mesh->GetControlPointsCount();
-			for (int v = 0; v < nV; ++v)
+			for (unsigned int v = 0; v < nV; ++v)
 			{
-				vertexPool.push_back(vertices[v].mData[0]);
-				vertexPool.push_back(vertices[v].mData[2]);
-				vertexPool.push_back(-vertices[v].mData[1]);
+				vertexPool.push_back(static_cast<float>(vertices[v].mData[0]));
+				vertexPool.push_back(static_cast<float>(vertices[v].mData[2]));
+				vertexPool.push_back(static_cast<float>(-vertices[v].mData[1]));
 
-				uvwPool.push_back(uvs[v].mData[0]);
-				uvwPool.push_back(uvs[v].mData[1]);
-				uvwPool.push_back(uvs[v].mData[2]);
+				uvwPool.push_back(static_cast<float>(uvs[v].mData[0]));
+				uvwPool.push_back(static_cast<float>(uvs[v].mData[1]));
+				uvwPool.push_back(static_cast<float>(uvs[v].mData[2]));
 			}
 			normalPool.resize(vertexPool.size());
 
@@ -107,12 +107,12 @@ namespace Comet
 					
 					FbxVector4 fbxNormal;
 					mesh->GetPolygonVertexNormal(p, v, fbxNormal);
-					normalPool[(maxIndex + vId) * 3] = fbxNormal.mData[0];
-					normalPool[(maxIndex + vId) * 3 + 1] = fbxNormal.mData[2];
-					normalPool[(maxIndex + vId) * 3 + 2] = -fbxNormal.mData[1];
+					normalPool[(maxIndex + vId) * 3] = static_cast<float>(fbxNormal.mData[0]);
+					normalPool[(maxIndex + vId) * 3 + 1] = static_cast<float>(fbxNormal.mData[2]);
+					normalPool[(maxIndex + vId) * 3 + 2] = static_cast<float>(-fbxNormal.mData[1]);
 				}
 			}
-			maxIndex += nV;
+			maxIndex += static_cast<unsigned short>(nV);
 		}
 
 		FillPosition(vertexPool);
@@ -194,7 +194,7 @@ namespace Comet
 
 	void MeshData::Unload()
 	{
-		for (int i = 0; i < subMeshes.size(); i++)
+		for (unsigned int i = 0; i < subMeshes.size(); i++)
 		{
 			delete subMeshes[i];
 		}
@@ -238,7 +238,7 @@ namespace Comet
 		{
 			if (subMeshes.size() > 0)
 			{
-				for (int i = 0; i < subMeshes.size(); i++)
+				for (unsigned int i = 0; i < subMeshes.size(); i++)
 				{
 					SubMeshData* subMesh = subMeshes[i];
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufFace.Id());
@@ -261,7 +261,7 @@ namespace Comet
 		{
 			if (subMeshes.size() > 0)
 			{
-				for (int i = 0; i < subMeshes.size(); i++)
+				for (unsigned int i = 0; i < subMeshes.size(); i++)
 				{
 					SubMeshData* subMesh = subMeshes[i];
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufFace.Id());
@@ -313,7 +313,7 @@ namespace Comet
 			
 		//Calculare normals using indices
 		vec3f a(0, 0, 0), b(0, 0, 0), c(0, 0, 0);
-		for (int i = 0; i < nFaces*3; i+=3)
+		for (unsigned int i = 0; i < nFaces * 3; i += 3)
 		{
 			//faces[i];//v0
 			//faces[i+1];//v1
@@ -341,7 +341,7 @@ namespace Comet
 			normals[faces[i + 2] * 3 + 2] += a.z;
 		}
 
-		for (int i = 0; i < normals.size(); i+=3)
+		for (unsigned int i = 0; i < normals.size(); i += 3)
 		{
 			vec3f norm(normals[i], normals[i + 1], normals[i + 2]);
 			float len = norm.length();

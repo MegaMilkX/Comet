@@ -130,6 +130,8 @@
     <ClInclude Include="RigidBody.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="Skeleton.h" />
+    <ClInclude Include="SkinMesh.h" />
     <ClInclude Include="TextRenderable.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Viewport.h" />
@@ -163,6 +165,8 @@
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Skeleton.cpp" />
+    <ClCompile Include="SkinMesh.cpp" />
     <ClCompile Include="TextRenderable.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Viewport.cpp" />

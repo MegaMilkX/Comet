@@ -16,6 +16,8 @@ namespace Comet
 		physics = new Physics();
 
 		dt = 0;
+
+		sceneRoot.SetName("SceneRoot");
 	}
 
 

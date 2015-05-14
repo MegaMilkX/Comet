@@ -100,7 +100,7 @@ namespace Comet
 		textures[layer] = tex;
 
 		std::vector<unsigned int> smpl;
-		for (int i = 0; i < textures.size(); i++)
+		for (unsigned int i = 0; i < textures.size(); i++)
 		{
 			smpl.push_back(i);
 		}
@@ -120,7 +120,7 @@ namespace Comet
 
 	void Material::BindTextures()
 	{
-		for (int i = 0; i < GetTextures().size(); i++)
+		for (unsigned int i = 0; i < GetTextures().size(); i++)
 		{
 			if (!(GetTextures()[i]->IsReady()))
 			{

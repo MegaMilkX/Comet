@@ -5,6 +5,7 @@
 #include "Component.h"
 #include <set>
 #include <map>
+#include <vector>
 #include <typeindex>
 
 namespace Comet
@@ -18,21 +19,18 @@ namespace Comet
 	public:
 		enum TSPACE { LOCAL, PARENT, WORLD };
 						Node();
+						Node(std::string name);
 						~Node();
 
 		//TODO: Maybe this doesn't need to be a template method?
 		template<typename T>
-		T*				AddComponent();
+		T*				NewComponent();
 		//But this certainly does
 		template<typename T>
 		T*				GetComponent() const;
 		
 		//
 		Node*			CreateNode();
-		void			Attach(Node* n);
-		void			DestroyNode(Node* n);
-		void			Detach(Node* n);
-		void			SetParent(Node* n);
 
 		void			SetPosition(vec3f pos);
 		void			SetRotation(quat rot);
@@ -56,7 +54,8 @@ namespace Comet
 		void			SetLayer(unsigned int l){ layer = l; }
 		unsigned int	GetLayer(){ return layer; }
 
-		std::set<Node*> GetNodes(){ return nodes; }
+		unsigned int	GetChildCount() const { return nodes.size(); }
+		Node*			GetChild(const unsigned int &id) const { return nodes[id]; }
 
 		void			dirty();
 		bool			IsDirty();
@@ -71,7 +70,7 @@ namespace Comet
 		std::string		name;
 
 		Node*			parent;
-		std::set<Node*> nodes;
+		std::vector<Node*> nodes;
 		std::map<std::type_index, Component*> components;
 
 		unsigned int	layer;
@@ -80,7 +79,7 @@ namespace Comet
 	};
 
 	template<typename T>
-	T* Node::AddComponent()
+	T* Node::NewComponent()
 	{
 		T* comp = new T;
 		comp->SetNode(this);

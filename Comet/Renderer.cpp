@@ -47,6 +47,7 @@ namespace Comet
 		glfwMakeContextCurrent(window);
 
 		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		glfwSwapInterval(0);
 
 		//Контекст асинхронной загрузки
 		glfwWindowHint(GLFW_VISIBLE, GL_FALSE);

@@ -17,6 +17,8 @@ namespace Comet
 		void SetAnimation(Animation* a)
 		{
 			anim = a;
+
+			//TODO: parse animation and add animators to the child nodes
 		}
 
 		void AddTime(float t)

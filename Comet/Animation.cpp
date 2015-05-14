@@ -13,7 +13,7 @@ namespace Comet
 
 	Animation::~Animation()
 	{
-		for (int i = 0; i < curves.size(); ++i)
+		for (unsigned int i = 0; i < curves.size(); ++i)
 			delete curves[i];
 		Unload();
 	}
@@ -37,8 +37,7 @@ namespace Comet
 					val = key.GetValue();
 					if (toRadians)
 						val = val * (PI / 180.0f);
-					dst->GetCurve(j)->SetKey(key.GetTime().GetFrameCount(), val);
-					printf("Val: %f\n", val);
+					dst->GetCurve(j)->SetKey((int)key.GetTime().GetFrameCount(), val);
 				}
 			}
 		}
@@ -99,13 +98,13 @@ namespace Comet
 		FbxAxisSystem oglSys;
 		oglSys.OpenGL.ConvertScene(scene);
 
-		//
+		//One stack is basically one animation track
 		int nStacks = scene->GetSrcObjectCount<FbxAnimStack>();
 		for (int stackId = 0; stackId < nStacks; ++stackId)
 		{
 			FbxAnimStack* stack = scene->GetSrcObject<FbxAnimStack>(stackId);
-			SetLength(stack->LocalStop.Get().GetFrameCount());
-			printf("Anim Length: %i\n", length);
+			//Getting the animation sequence length
+			SetLength((int)stack->LocalStop.Get().GetFrameCount());
 			std::cout << stack->GetName() << std::endl;
 			
 			int nLayers = stack->GetMemberCount<FbxAnimLayer>();

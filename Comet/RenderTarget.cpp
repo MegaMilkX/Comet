@@ -36,7 +36,7 @@ namespace Comet
 
 		delete depthBuffer;
 
-		for (int i = 0; i < imageBuffers.size(); i++)
+		for (unsigned int i = 0; i < imageBuffers.size(); i++)
 			delete imageBuffers[i];
 
 		if (camera)
@@ -64,7 +64,7 @@ namespace Comet
 
 		if (postProcess)
 		{
-			int i;
+			unsigned int i;
 			for (i = 0; i < imageBuffers.size(); i++)
 			{
 				postProcess->GetMaterial()->SetTexture2D(imageBuffers[i], i);
@@ -82,7 +82,7 @@ namespace Comet
 	{
 		postProcess = new PostProcess(mat);
 
-		int i;
+		unsigned int i;
 		for (i = 0; i < imageBuffers.size(); i++)
 		{
 			mat->SetTexture2D(imageBuffers[i], i);

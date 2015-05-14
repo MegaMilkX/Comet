@@ -9,6 +9,7 @@
 
 #include <vector>
 #include <algorithm>
+#include <memory>
 
 #include "Node.h"
 
@@ -35,7 +36,7 @@ namespace Comet
 	public:
 		~Curve()
 		{
-			for (int i = 0; i < curves.size(); ++i)
+			for (unsigned int i = 0; i < curves.size(); ++i)
 				delete curves[i];
 		}
 		void SetKey(int time, float value)
@@ -49,7 +50,7 @@ namespace Comet
 		virtual float Evaluate(float time, Node* node = 0)
 		{
 			Key a(0,0), b(0,0);
-			for (int i = 0; i < timeline.size(); ++i)
+			for (unsigned int i = 0; i < timeline.size(); ++i)
 			{
 				if (timeline[i].Time() > time)
 				{
@@ -132,29 +133,30 @@ namespace Comet
 	class Animation : public Resource
 	{
 	public:
-		Animation();
-		~Animation();
+						Animation();
+						~Animation();
 
-		void Load(std::string path);
-		void Unload();
+		void			Load(std::string path);
+		void			Unload();
 		
 		//
-		void SetLength(int l){ length = l; }
-		int GetLength(){ return length; }
+		void			SetLength(int l){ length = l; }
+		int				GetLength(){ return length; }
 
 		template<typename T>
-		Curve* NewCurve()
+		Curve*			NewCurve()
 		{
 			curves.push_back(new T());
 			return curves[curves.size() - 1];
 		}
-		int GetCurveCount(){ return curves.size(); }
-		Curve* GetCurve(int i){ return curves[i]; }
+		int				GetCurveCount(){ return curves.size(); }
+		Curve*			GetCurve(int i){ return curves[i]; }
 	private:
-		std::vector<Curve*> curves;
-		int length;
-		void _ProcessNode(FbxNode* node, FbxAnimLayer* layer);
-		void _GetKeys(FbxAnimCurveNode* curve, Curve* dst, int n, bool toRadians = false);
+		std::vector<Curve*>		curves;
+		std::vector<std::shared_ptr<Animation>> animations;
+		int						length;
+		void					_ProcessNode(FbxNode* node, FbxAnimLayer* layer);
+		void					_GetKeys(FbxAnimCurveNode* curve, Curve* dst, int n, bool toRadians = false);
 	};
 
 }

@@ -312,7 +312,7 @@ namespace Comet
 			{
 				for (int x = 0; x < w; ++x)
 				{
-					voxelCloud[x + y*cloudW + z*cloudW*cloudH] = perlin.GetValue(x*0.1f, y*0.1f, z*0.1f) + 1.0f;
+					voxelCloud[x + y*cloudW + z*cloudW*cloudH] = static_cast<float>(perlin.GetValue(x*0.1f, y*0.1f, z*0.1f)) + 1.0f;
 					//voxelCloud[x + y*cloudW + z*cloudW*cloudH] = 0.0f;
 				}
 			}
