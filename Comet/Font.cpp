@@ -8,7 +8,7 @@
 namespace Comet
 {
 
-	Font::Font()
+	Font::Font(bool make_default)
 	{
 		fr = 0;
 	}

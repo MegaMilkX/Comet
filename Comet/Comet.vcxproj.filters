@@ -141,13 +141,16 @@
     <ClInclude Include="Animator.h">
       <Filter>Comet\Header Files\Renderer\Components</Filter>
     </ClInclude>
-    <ClInclude Include="AutoMaterial.h">
-      <Filter>Comet\Header Files\Resources</Filter>
-    </ClInclude>
     <ClInclude Include="Skeleton.h">
       <Filter>Comet\Header Files\Renderer\Components</Filter>
     </ClInclude>
     <ClInclude Include="SkinMesh.h">
+      <Filter>Comet\Header Files\Renderer\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="res_ptr.h">
+      <Filter>Comet\Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
       <Filter>Comet\Header Files\Renderer\Components</Filter>
     </ClInclude>
   </ItemGroup>
@@ -240,13 +243,16 @@
     <ClCompile Include="Animator.cpp">
       <Filter>Comet\Source Files\Renderer\Components</Filter>
     </ClCompile>
-    <ClCompile Include="AutoMaterial.cpp">
-      <Filter>Comet\Source Files\Resources</Filter>
-    </ClCompile>
     <ClCompile Include="Skeleton.cpp">
       <Filter>Comet\Source Files\Renderer\Components</Filter>
     </ClCompile>
     <ClCompile Include="SkinMesh.cpp">
+      <Filter>Comet\Source Files\Renderer\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="res_ptr.cpp">
+      <Filter>Comet\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
       <Filter>Comet\Source Files\Renderer\Components</Filter>
     </ClCompile>
   </ItemGroup>
@@ -259,7 +265,10 @@
     <Text Include="DefaultShaders\DeferredScreen.glsl">
       <Filter>Comet\Shaders</Filter>
     </Text>
-    <Text Include="DefaultShaders\Particle.glsl">
+    <Text Include="DefaultShaders\ShaderBits.glsl">
+      <Filter>Comet\Shaders</Filter>
+    </Text>
+    <Text Include="DefaultShaders\Diffuse.glsl">
       <Filter>Comet\Shaders</Filter>
     </Text>
   </ItemGroup>

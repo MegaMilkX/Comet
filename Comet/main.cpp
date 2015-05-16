@@ -8,16 +8,15 @@ int main()
 {	
 	Core core;
 	core.Init();
-
+	
 	//Setting up deferred shading
 	RenderTarget* renderTarget = new RenderTarget(1280, 720);
 	renderTarget->CreateImageBuffer("diffuse");
 	renderTarget->CreateImageBuffer("position");
 	renderTarget->CreateImageBuffer("normal", Texture2D::NORM);
-	PostProcess* pp = renderTarget->CreatePostProcess(new Material("data\\shaders\\screen.glsl"));
+	PostProcess* pp = renderTarget->CreatePostProcess(new Material(std::string("data\\shaders\\screen.glsl")));
 	pp->SetOutput(core.GetRenderer()->GetRenderTarget());
 
-	
 	//The scene
 	Node* camera = core.SceneRoot()->CreateNode();
 	camera->NewComponent<Camera>();
@@ -38,19 +37,15 @@ int main()
 	character->NewComponent<SkinMesh>();
 	character->GetComponent<SkinMesh>()->SetMeshData(Resources().Get<MeshData>("data\\models\\miku.FBX"));
 	character->GetComponent<SkinMesh>()->SetMaterial(new Comet::Material("data\\shaders\\deferred.glsl", "data\\textures\\roomitems_002_body.png"));
-	character->Translate(vec3f(0, 0.0f, 0));
-
-	//
-	//Node* player = core.SceneRoot()->CreateNode("data\\models\\samus.fbx");
-
-	//AutoMaterial* mat = new AutoMaterial();
-	//mat->Ambient(vec3f(0, 0, 0));
 	
+	Node* spr = core.SceneRoot()->CreateNode();
+	spr->NewComponent<Sprite>();
+	Sprite* sprite = spr->GetComponent<Sprite>();
+	sprite->SetMaterial(new Material("data\\shaders\\deferred.glsl", "data\\textures\\test.tga"));
+
 	//The animations
-	
 	Animator* anim = character->NewComponent<Animator>();
 	Animation* seq = Resources().Get<Animation>("data\\animation\\anim.FBX");
-	printf("Loaded %i curves\n", seq->GetCurveCount());
 	anim->SetAnimation(seq);
 
 	Animator* skyanim = sky->NewComponent<Animator>();
@@ -60,6 +55,8 @@ int main()
 	crv->GetCurve(1)->SetKey(0, 0);
 	crv->GetCurve(1)->SetKey(2, 6.28f);
 	skyanim->SetAnimation(skyseq);
+
+	
 
 	float time = 0;
 	double mx = 0, my = 0;

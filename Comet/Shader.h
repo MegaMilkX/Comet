@@ -21,7 +21,7 @@ namespace Comet
 	public:
 		enum ATTR { POS, UVW, NRM, COL, M, V, P };
 
-						Shader();
+						Shader(bool make_default = false);
 		virtual			~Shader();
 
 		const Shader&	operator=(const Shader& other);
@@ -29,6 +29,10 @@ namespace Comet
 		void			Load(std::string path);
 		//
 		void			Load(std::string fp, std::string vp);
+		void			MakeDefault()
+		{
+
+		}
 		void			Unload();
 
 		unsigned int	GetProgramId() const { return shaderProgramId; }

@@ -29,10 +29,10 @@ namespace Comet
 
 	void Renderable::Render(const Camera *const cam)
 	{
-		if (!GetNode())
-			return;
-		if (!GetMeshData())
-			return;
+		//Don't check for node and meshData
+		//these are supposed to be present at all times
+		//(Renderables do not exist without the node
+		//and if MeshData wasn't set it will return the default one
 		if (!GetMaterial())
 			return;
 		if (!GetMaterial()->GetShader())

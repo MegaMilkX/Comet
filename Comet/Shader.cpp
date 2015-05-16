@@ -11,7 +11,7 @@
 namespace Comet
 {
 
-	Shader::Shader()
+	Shader::Shader(bool make_default)
 	{
 	}
 

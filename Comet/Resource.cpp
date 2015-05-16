@@ -3,7 +3,7 @@
 namespace Comet
 {
 
-	Resource::Resource()
+	Resource::Resource(bool make_default)
 	{
 		isReady = false;
 	}

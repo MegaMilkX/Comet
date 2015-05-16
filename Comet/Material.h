@@ -25,11 +25,15 @@ namespace Comet
 	public:
 		enum POLYMODE {	FILL, WIRE };
 
-								Material();
+								Material(bool make_default = false);
 								Material(std::string shader, std::string texture0 = "");
 		virtual					~Material();		
 
 		void					Load(std::string path);
+		void					MakeDefault()
+		{
+
+		}
 		void					Unload();
 
 		Shader*					GetShader(){ return shaderProgram; }

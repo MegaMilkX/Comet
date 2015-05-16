@@ -137,6 +137,10 @@ namespace Comet
 						~Animation();
 
 		void			Load(std::string path);
+		void			MakeDefault()
+		{
+
+		}
 		void			Unload();
 		
 		//

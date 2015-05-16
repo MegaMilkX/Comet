@@ -19,13 +19,17 @@ namespace Comet
 			DEPTH24,
 			DEPTH32
 		};
-						Texture2D();
+						Texture2D(bool make_default = false);
 						//Default type is GL_UNSIGNED_BYTE
 						Texture2D(unsigned int w, unsigned int h, TEXFMT fmt, unsigned int type = 0x1401);
 						~Texture2D();
 
 		void			Load(std::string path);
 		void			LoadFromMemory(unsigned char* data, unsigned int w, unsigned int h);
+		void			MakeDefault()
+		{
+
+		}
 		void			Unload();
 
 		unsigned int	GetTextureId(){ return texId; }

@@ -368,7 +368,7 @@ namespace Comet
 
 	VoxelVolumeMesh::~VoxelVolumeMesh()
 	{
-		delete meshData;
+		meshData.free();
 		delete[] voxelCloud;
 	}
 

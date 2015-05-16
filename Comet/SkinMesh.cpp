@@ -28,6 +28,10 @@ namespace Comet
 	void	SkinMesh::_CollectBones(Node* e)
 	{
 		std::cout << e->GetName() << std::endl;
+
+		bindPoseTransforms.clear();
+		bindPoseTransforms.push_back(e->GetLocalTransform());
+
 		for (unsigned int i = 0; i < e->GetChildCount(); ++i)
 			_CollectBones(e->GetChild(i));
 	}

@@ -19,7 +19,7 @@
 namespace Comet
 {
 
-	Material::Material()
+	Material::Material(bool make_default)
 	{
 		shaderProgram = 0;
 		zwrite = true;

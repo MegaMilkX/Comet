@@ -7,10 +7,13 @@
 namespace Comet
 {
 
-	MeshData::MeshData(BufferUsage usage)
+	MeshData::MeshData(bool make_default, BufferUsage usage)
 	{
 		primitiveType = TRIANGLE;
 		bufferUsage = usage;
+
+		if (make_default)
+			MakeDefault();
 	}
 
 
@@ -191,6 +194,50 @@ namespace Comet
 
 		isReady = true;
 	}*/
+
+	void MeshData::MakeDefault()
+	{
+		std::vector<float> vertexPool = {
+			// front
+			-1.0, -1.0, 1.0,
+			1.0, -1.0, 1.0,
+			1.0, 1.0, 1.0,
+			-1.0, 1.0, 1.0,
+			// back
+			-1.0, -1.0, -1.0,
+			1.0, -1.0, -1.0,
+			1.0, 1.0, -1.0,
+			-1.0, 1.0, -1.0,
+		};
+		std::vector<unsigned short> facePool = {
+			// front
+			0, 1, 2,
+			2, 3, 0,
+			// top
+			3, 2, 6,
+			6, 7, 3,
+			// back
+			7, 6, 5,
+			5, 4, 7,
+			// bottom
+			4, 5, 1,
+			1, 0, 4,
+			// left
+			4, 0, 3,
+			3, 7, 4,
+			// right
+			1, 5, 6,
+			6, 2, 1,
+		};
+
+
+
+
+		FillPosition(vertexPool);
+		FillUVW(vertexPool);
+		FillIndices(facePool);
+		RebuildNormals(vertexPool, facePool);
+	}
 
 	void MeshData::Unload()
 	{

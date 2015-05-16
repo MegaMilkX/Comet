@@ -48,11 +48,11 @@ namespace Comet
 
 	TextRenderable::~TextRenderable()
 	{
-		if (meshData)
-			delete meshData;
+		if (meshData.isnull())
+			meshData.free();
 
-		if (mat)
-			delete mat;
+		if (mat.isnull())
+			mat.free();
 	}
 
 	void TextRenderable::SetText(std::string str)
@@ -108,8 +108,8 @@ namespace Comet
 			}
 		}
 
-		if (meshData)
-			delete meshData;
+		if (meshData.isnull())
+			meshData.free();
 		meshData = new Comet::MeshData();
 
 		//Для каждого символа в строке (UTF8!)

@@ -29,7 +29,9 @@ namespace Comet
 
 	void ResMan::Initialize()
 	{
-
+		//Default 
+		//Shader* shader = new Shader();
+		//Set("DefaultShader", shader);
 		
 
 		printf("[OK]Resource Manager init OK.\n");

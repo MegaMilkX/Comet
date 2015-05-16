@@ -19,6 +19,7 @@
 #include "Renderable.h"
 
 #include "Mesh.h"
+#include "Sprite.h"
 #include "SkinMesh.h"
 #include "VoxelVolumeMesh.h"
 #include "TextRenderable.h"

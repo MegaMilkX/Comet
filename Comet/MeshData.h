@@ -49,10 +49,11 @@ namespace Comet
 			STREAM = GL_STREAM_DRAW
 		};
 
-						MeshData(BufferUsage usage = STATIC);
+						MeshData(bool make_default = false, BufferUsage usage = STATIC);
 						~MeshData();
 
 		void			Load(std::string path);
+		void			MakeDefault();
 		void			Unload();
 
 		virtual void	Bind(const Shader *const shader);

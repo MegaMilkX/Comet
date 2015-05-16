@@ -1,6 +1,8 @@
 #pragma once
 #include "Mesh.h"
 
+#include <math3f.h>
+
 namespace Comet
 {
 
@@ -16,6 +18,8 @@ namespace Comet
 		void SetNode(Node* e);
 	private:
 		void _CollectBones(Node* e);
+
+		std::vector<mat4f> bindPoseTransforms;
 	};
 
 }

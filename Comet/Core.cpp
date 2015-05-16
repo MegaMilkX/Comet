@@ -35,7 +35,7 @@ namespace Comet
 		//Such as font shader and placeholder textures
 
 		Shader* fontShader = new Shader();
-		Resources().SetResource("ShaderFontScreenDefault", fontShader);
+		Resources().Set("ShaderFontScreenDefault", fontShader);
 		//fontShader->Load("data\\shaders\\test.glsl");
 		fontShader->Load(
 			"#version 330 core\n"
@@ -89,7 +89,7 @@ namespace Comet
 
 
 		MeshData* meshRectDefault = new MeshData();
-		Resources().SetResource("MeshRectDefault", meshRectDefault);
+		Resources().Set("MeshRectDefault", meshRectDefault);
 		std::vector<float> vertices;
 		vertices.push_back(0.0f); vertices.push_back(0.0f); vertices.push_back(0.0f);
 		vertices.push_back(1.0f); vertices.push_back(0.0f); vertices.push_back(0.0f);

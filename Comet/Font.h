@@ -13,10 +13,14 @@ namespace Comet
 		public Resource
 	{
 	public:
-		Font();
+		Font(bool make_default = false);
 		~Font();
 
 		void Load(std::string path);
+		void MakeDefault()
+		{
+
+		}
 		void Unload();
 
 		Texture2D* GetTexture(){ return texture2D; }

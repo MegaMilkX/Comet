@@ -33,7 +33,7 @@ namespace Comet
 		tex2DMutex.unlock();
 	}
 
-	Texture2D::Texture2D()
+	Texture2D::Texture2D(bool make_default)
 	{
 		texId = 0;
 	}

@@ -52,7 +52,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseLibStatic|Win32'">
+    <OutDir>$(SolutionDir)lib\</OutDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -90,7 +92,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\external\libtga-1.0.1\src;..\external\MeshWriteRead\MeshWriteRead;..\external\glew-1.10.0\include;..\external\glfw-3.0.4\include;..\external\glm;..\external\SOIL\src;..\external\GlyphAtlasComposer\font_rasterizer;..\external\freetype-2.5.0.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\external\math3f;..\external\noise\src;..\external\FBX\include;..\external\tinyxml;..\external\bullet-2.82-r2704\src;..\external\libtga-1.0.1\src;..\external\MeshWriteRead\MeshWriteRead;..\external\glew-1.10.0\include;..\external\glfw-3.0.4\include;..\external\glm;..\external\SOIL\src;..\external\GlyphAtlasComposer\font_rasterizer;..\external\freetype-2.5.0.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -102,10 +104,13 @@
       <AdditionalDependencies>glew32s.lib;glfw3.lib;OpenGL32.lib;libtga.lib;SOIL.lib;font_rasterizer.lib;freetype250.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>..\external\noise\win32\Release;..\external\FBX\lib\vs2013\x86\release;..\external\tinyxml\Releasetinyxml;..\external\bullet-2.82-r2704\lib\ReleaseMD;..\external\glew-1.10.0\lib\Release\Win32;..\external\glfw-3.0.4\lib;..\external\SOIL\projects\VC9\Release;..\external\GlyphAtlasComposer\Release;..\external\freetype-2.5.0.1\objs\win32\vc2010;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32s.lib;glfw3.lib;OpenGL32.lib;SOIL.lib;font_rasterizer.lib;freetype250.lib;BulletDynamics.lib;BulletCollision.lib;BulletFileLoader.lib;BulletMultiThreaded.lib;LinearMath.lib;tinyxml.lib;libfbxsdk-md.lib;libnoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Animator.h" />
-    <ClInclude Include="AutoMaterial.h" />
     <ClInclude Include="BinTree.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
@@ -127,11 +132,13 @@
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="ResMan.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="res_ptr.h" />
     <ClInclude Include="RigidBody.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Skeleton.h" />
     <ClInclude Include="SkinMesh.h" />
+    <ClInclude Include="Sprite.h" />
     <ClInclude Include="TextRenderable.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Viewport.h" />
@@ -139,7 +146,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Animator.cpp" />
-    <ClCompile Include="AutoMaterial.cpp" />
     <ClCompile Include="BinTree.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
@@ -162,11 +168,13 @@
     <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="ResMan.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="res_ptr.cpp" />
     <ClCompile Include="RigidBody.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Skeleton.cpp" />
     <ClCompile Include="SkinMesh.cpp" />
+    <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="TextRenderable.cpp" />
     <ClCompile Include="Texture2D.cpp" />
     <ClCompile Include="Viewport.cpp" />
@@ -177,7 +185,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="DefaultShaders\DeferredScreen.glsl" />
-    <Text Include="DefaultShaders\Particle.glsl" />
+    <Text Include="DefaultShaders\Diffuse.glsl" />
+    <Text Include="DefaultShaders\ShaderBits.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

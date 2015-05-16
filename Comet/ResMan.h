@@ -1,5 +1,7 @@
 #pragma once
 
+#include "res_ptr.h"
+
 #include <set>
 #include <map>
 #include <stack>
@@ -20,8 +22,8 @@ namespace Comet
 		ResMan();
 		~ResMan();
 
-		static void Initialize();
-		static void Destroy();
+		void Initialize();
+		void Destroy();
 
 		template<class T>
 		T* Get(std::string path)
@@ -44,7 +46,7 @@ namespace Comet
 			}
 		}
 
-		void SetResource(std::string name, Resource* res)
+		void Set(std::string name, Resource* res)
 		{
 			std::map<std::string, Resource*>::iterator it;
 			it = resources.find(name);
